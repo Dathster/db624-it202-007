@@ -11,6 +11,7 @@ function bePositive($arr) {
     //start edits
     //note: use the $arr variable, don't directly touch $a1-$a4
     //TODO Take each value of the $arr, convert it to positive, and set it to the same index in the $output array but with the original data type (i.e., if the source was a string the output slot value should be a string)
+    //db624 09-19-24
     foreach($arr as $val){
         if(gettype($val)=="string"){
             $val=(string)(abs($val));

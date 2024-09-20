@@ -9,6 +9,7 @@ function getTotal($arr) {
     //start edits
     //note: use the $arr variable, don't directly touch $a1-$a4
     //TODO do adding here
+    //db624 09-19-24
     foreach($arr as $val){
         $total+=$val;
     }
