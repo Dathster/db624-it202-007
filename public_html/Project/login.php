@@ -11,11 +11,7 @@
         <label for="pw">Password</label>
         <input type="password" id="pw" name="password" required minlength="8" />
     </div>
-    <div>
-        <label for="confirm">Confirm</label>
-        <input type="password" name="confirm" required minlength="8" />
-    </div>
-    <input type="submit" value="Register" />
+    <input type="submit" value="Login" />
 </form>
 <script>
     function validate(form) {
@@ -28,11 +24,9 @@
 <?php
     //TODO 2: add PHP Code
     if(isset($_POST['email'])
-    && isset($_POST['password'])
-    && isset($_POST['confirm'])){
+    && isset($_POST['password'])){
         $email=se($_POST,"email","",false);
         $password=se($_POST,"password","",false);
-        $confirm=se($_POST,"confirm","",false);
     }
 
     $hasError=false;
@@ -53,33 +47,33 @@
         echo "Password must not be empty";
         $hasError=true;
     }
-    if(empty($confirm)){
-        echo "Confirm password must not be empty";
-        $hasError=true;
-    }
 
     if(strlen($password)<8){
         echo "Password too short";
         $hasError=true;
     }
 
-    if($password !== $confirm){
-        echo "Passwords must match";
-        $hasError=true;
-    }
-
     if(!$hasError){
-        // echo "Welcome, $email";
-        $hashed_password=password_hash($password, PASSWORD_BCRYPT);
-        $db= getDB();
-
-        $stmt = $db->prepare("insert into Users (email,password) values (:email, :password)");
+        $db = getDB();
+        $stmt = $db->prepare("select id, email, password from Users where email = :email");
         try{
-            $stmt->execute([':email'=>$email,':password'=>$hashed_password]);
-            echo "Successfully registered";
+            $r=$stmt->execute([':email'=>$email]);
+            if($r){
+                $user=$stmt->fetch(PDO::FETCH_ASSOC);
+                if($user){
+                    $hash=$user["password"];
+                    unset($user["password"]);
+                    if(password_verify($password,$hash)){
+                        echo "Welcome, $email";
+                    }else{
+                        echo "Invalid password";
+                    }
+                }else{
+                    echo "Email not found";
+                }
+            }
         }catch(Exception $e){
-            echo "There was an error registering<br>";
-            echo "<pre>".var_export($e,true)."</pre>";
+            echo "An error occured: ".$e->getMessage();
         }
     }
 ?>
