@@ -1,5 +1,5 @@
 <?php
-    require(__DIR__."/../../lib/functions.php")
+    require_once(__DIR__."/../../lib/functions.php")
 ?>
 
 <form onsubmit="return validate(this)" method="POST">
@@ -30,9 +30,9 @@
     if(isset($_POST['email'])
     && isset($_POST['password'])
     && isset($_POST['confirm'])){
-        $email=se($POST,"email","",false);
-        $password=se($POST,"password","",false);
-        $confirm=se($POST,"confirm","",false);
+        $email=se($_POST,"email","",false);
+        $password=se($_POST,"password","",false);
+        $confirm=se($_POST,"confirm","",false);
     }
 
     $hasError=false;
@@ -41,6 +41,14 @@
         echo "Email must not be empty";
         $hasError=true;
     }
+
+
+    $email= filter_var($email, FILTER_SANITIZE_EMAIL);
+    if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+        echo "Invalid email address";
+        $hasError=true;
+    }
+
     if(empty($password)){
         echo "Password must not be empty";
         $hasError=true;
@@ -50,9 +58,17 @@
         $hasError=true;
     }
 
-    $email= filter_var($email, FILTER_SANITIZE_EMAIL);
-    if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-        echo "Invalid email address";
+    if(strlen($password)<8){
+        echo "Password too short";
         $hasError=true;
+    }
+
+    if($password !== $confirm){
+        echo "Passwords must match";
+        $hasError=true;
+    }
+
+    if(!$hasError){
+        echo "Welcome, $email";
     }
 ?>
