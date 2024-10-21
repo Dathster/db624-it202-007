@@ -1,5 +1,5 @@
 <?php
-function is_logged_in() {
+function is_logged_in($redirect=false, $destination=) {
     return isset($_SESSION["user"]); //se($_SESSION, "user", false, false);
 }
 function get_username() {
