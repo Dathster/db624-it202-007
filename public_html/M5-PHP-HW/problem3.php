@@ -49,7 +49,16 @@ function joinArrays($users, $activities) {
     // TODO add logic here to join the arrays on userId
     $joined = []; // result array
     // Start edits
-    
+    for($i=0; $i<count($users); $i++){
+        $temp_arr=[];
+        foreach($users[$i] as $x=>$y){
+            $temp_arr[$x]=$y;
+        }
+        foreach($activities[$i] as $x=>$y){
+            $temp_arr[$x]=$y;
+        }
+        $joined[]=$temp_arr;
+    }
 
     // End edits
     echo "<pre>" . var_export($joined, true) . "</pre>";
