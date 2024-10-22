@@ -27,6 +27,7 @@ function processBirds($birds) {
     // TODO add logic here to create a new array with only name, color, and region
     $subset = []; // result array
     // Start edits
+    //db624 10/21/24
     foreach($birds as $ele ){
         $subset[]=["name" => $ele["name"], "color" => $ele["color"], "region" => $ele["region"]]; 
         

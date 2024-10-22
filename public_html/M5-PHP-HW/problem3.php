@@ -49,6 +49,7 @@ function joinArrays($users, $activities) {
     // TODO add logic here to join the arrays on userId
     $joined = []; // result array
     // Start edits
+    //db624 10/21/24
     for($i=0; $i<count($users); $i++){
         $temp_arr=[];
         foreach($users[$i] as $x=>$y){
