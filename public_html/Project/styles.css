@@ -1,23 +1,50 @@
 .alert-success {
-    background-color: green
+    background-color: #cbf078;
+    color:  #233142;
 }
 
 .alert-warning {
-    background-color: yellow;
+    background-color: #f8f398;
+    color:#233142;
 }
 
 .alert-danger {
-    background-color: red;
+    background-color: #e46161;
 }
 
 .alert-info {
-    background-color: teal;
+    background-color: #f1b963;
 }
-nav li{display: inline; background-color: rebeccapurple;}
-nav li a{color: hotpink}
+
+div {
+    margin: 5px;
+}
+
+nav {
+    padding: 2px;
+    background-color: #f95959;
+    margin-bottom: 5px;
+}
+nav li{display: inline;}
+nav li a{
+    background-color: #e3e3e3;
+    color: #233142;
+    padding: 5px;
+    text-decoration: none;
+}
+
+nav li a:hover{
+    background-color: #888888;
+    color: #2331426b;
+    padding: 5px;
+    text-decoration: none;
+}
+
 /* input{border-radius: 50%;} */
 body{
-    background-color: hotpink;
-    color: rgb(153, 0, 153);
-
+    background-color: #233142;
+    color: #e3e3e3;
+    font-family: "Merriweather", serif;
+    font-weight: 400;
+    font-style: normal;
 }

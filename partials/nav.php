@@ -24,6 +24,11 @@ if (($localWorks && $domain == "localhost") || $domain != "localhost") {
 session_start();
 ?>
 
+<!-- Embeds for font and css styling -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
 <link rel = "stylesheet" href = "<?php echo get_url('styles.css'); ?>">
 <script src = "<?php echo get_url("helpers.js"); ?>"></script> 
 
