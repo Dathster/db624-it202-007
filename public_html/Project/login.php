@@ -68,6 +68,23 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                     if (password_verify($password, $hash)) {
                         //flash("Weclome $email");
                         $_SESSION["user"] = $user; //sets our session data from db
+                        //fetching user roles
+                        try{
+                            //look up potential roles
+                            $stmt = $db->prepare("SELECT Roles.name FROM Roles UserRoles on Roles.id = UserRoles.role_id where UserRoles.role_id = :user_id and Roles.is_active = 1 and UserRoles.is_active = 1");
+                            $stmt = $stmt->execute([":user_id"=>$user["id"]]);    
+                            $roles = $stmt->Fetch_All(PDO::FETCH_ASSOC); //fetching all records as multiple roles could be present
+                        }catch(Exception $e){
+                            error_log(var_export($e, true));
+                        }
+
+                        //saving the roles to an array
+                        if(isset($roles)){
+                            $_SESSION["user"]["roles"] = $roles; //if user has at least one role
+                        }else{
+                            $_SESSION["user"]["roles"] = []; //empty array if user has no roles
+                        }
+
                         flash("Welcome, " . get_username());
                         die(header("Location: home.php"));
                     } else {

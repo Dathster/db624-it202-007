@@ -38,3 +38,4 @@ require_once(__DIR__ . "/../lib/functions.php");
         <?php endif; ?>
     </ul>
 </nav>
+<link rel="stylesheet" href="styles.css">
