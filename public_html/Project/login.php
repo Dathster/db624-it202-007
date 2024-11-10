@@ -71,9 +71,9 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                         //fetching user roles
                         try{
                             //look up potential roles
-                            $stmt = $db->prepare("SELECT Roles.name FROM Roles UserRoles on Roles.id = UserRoles.role_id where UserRoles.role_id = :user_id and Roles.is_active = 1 and UserRoles.is_active = 1");
-                            $stmt = $stmt->execute([":user_id"=>$user["id"]]);    
-                            $roles = $stmt->Fetch_All(PDO::FETCH_ASSOC); //fetching all records as multiple roles could be present
+                            $stmt = $db->prepare("SELECT Roles.name FROM Roles JOIN UserRoles on Roles.id = UserRoles.role_id where UserRoles.user_id = :user_id and Roles.is_active = 1 and UserRoles.is_active = 1");
+                            $stmt->execute([":user_id"=>$user["id"]]);    
+                            $roles = $stmt->FetchAll(PDO::FETCH_ASSOC); //fetching all records as multiple roles could be present
                         }catch(Exception $e){
                             error_log(var_export($e, true));
                         }
