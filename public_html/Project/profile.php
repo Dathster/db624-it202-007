@@ -6,6 +6,8 @@ if (!is_logged_in()) {
 }
 ?>
 <?php
+//Variable to track if all update operations went successfully
+$success = true;
 if (isset($_POST["save"])) {
     $email = se($_POST, "email", null, false);
     $username = se($_POST, "username", null, false);
@@ -15,23 +17,27 @@ if (isset($_POST["save"])) {
     $stmt = $db->prepare("UPDATE Users set email = :email, username = :username where id = :id");
     try {
         $stmt->execute($params);
-        flash("Profile saved", "success");
+        //flash("Profile saved", "success");
     } catch (PDOException $e) {
         if ($e->errorInfo[1] === 1062) {
             //https://www.php.net/manual/en/function.preg-match.php
             preg_match("/Users.(\w+)/", $e->errorInfo[2], $matches);
             if (isset($matches[1])) {
                 flash("The chosen " . $matches[1] . " is not available.", "warning");
+                $success = false;
             } else {
                 //TODO come up with a nice error message
                 echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
+                $success = false;
             }
         } else {
             //TODO come up with a nice error message
             echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
+            $success = false;
         }
     } catch (Exception $e){
         echo "<pre> An error occured </pre>";
+        $success = false;
     }
     //select fresh data from table
     $stmt = $db->prepare("SELECT id, email, username from Users where id = :id LIMIT 1");
@@ -44,10 +50,12 @@ if (isset($_POST["save"])) {
             $_SESSION["user"]["username"] = $user["username"];
         } else {
             flash("User doesn't exist", "danger");
+            $success = false;
         }
     } catch (Exception $e) {
         flash("An unexpected error occurred, please try again", "danger");
         //echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
+        $success = false;
     }
 
 
@@ -74,17 +82,24 @@ if (isset($_POST["save"])) {
                         flash("Password reset", "success");
                     } else {
                         flash("Current password is invalid", "warning");
+                        $success = false;
                     }
                 }
             } catch (PDOException $e) {
                 echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
+                $success = false;
             } catch (Exception $e){
                 echo "<pre> An error occured </pre>";
+                $success = false;
             }
         } else {
             flash("New passwords don't match", "warning");
+            $success = false;
         }
     }
+}
+if($success){
+    flash("Profile saved", "success");
 }
 ?>
 
@@ -122,29 +137,33 @@ $username = get_username();
     function validate(form) {
         let pw = form.newPassword.value;
         let con = form.confirmPassword.value;
+        let usr = form.username.value;
+        let email = form.email.value;
+        let currPw = form.currentPassword.value;
         let isValid = true;
         //TODO add other client side validation....
-
+        console.log(pw);
+        console.log(con);
+        console.log(usr);
+        console.log(email);
         //example of using flash via javascript
         //find the flash container, create a new element, appendChild
         if (pw !== con) {
-            //find the container
-            let flash = document.getElementById("flash");
-            //create a div (or whatever wrapper we want)
-            let outerDiv = document.createElement("div");
-            outerDiv.className = "row justify-content-center";
-            let innerDiv = document.createElement("div");
-
-            //apply the CSS (these are bootstrap classes which we'll learn later)
-            innerDiv.className = "alert alert-warning";
-            //set the content
-            innerDiv.innerText = "Password and Confirm password must match";
-
-            outerDiv.appendChild(innerDiv);
-            //add the element to the DOM (if we don't it merely exists in memory)
-            flash.appendChild(outerDiv);
+            flash("[Client]: Password and Confrim password must match", "warning");
             isValid = false;
         }
+
+        //Validate username, new password, and email
+        isValid = validate_password(pw) && isValid;
+        isValid = validate_username(usr) && isValid;
+        isValid = validate_email(email) && isValid;
+
+        //Check if user is trying to update passwords without entering current password
+        if(currPw.length == 0 && (pw && con)){
+            flash("[Client]: Must enter current password before updating password", "warning");
+            isValid = false;
+        }
+
         return isValid;
     }
 </script>
