@@ -17,10 +17,10 @@ function flash(message = "", color = "info") {
 
 //Validate emails
 function validate_email(email){
-    re = new RegExp('^([a-zA-Z0-9_-]+\.?)+@([a-zA-Z0-9_-]+\.)*([a-zA-Z0-9_-]+)$')
+    re = new RegExp('^([a-zA-Z0-9_-]+\.?)+@([a-zA-Z0-9_-]+\.)+([a-zA-Z0-9_-]+)$')
     isValid = true;
     if(!re.test(email)){
-        flash("[Client]: Email must contain only upper and lowercase letters, numbers, underscores, and hyphens", "warning");
+        flash("[Client]: Email must follow user@domain.com format and contain only upper and lowercase letters, numbers, underscores, and hyphens", "warning");
         isValid = false;
     }
 
@@ -33,7 +33,7 @@ function validate_username(usr){
     isValid = true;
     //Raise an error messsage if username doesn't follow rules
     if(!re.test(usr)){
-        flash("[Client]: Username must be between 3 and 16 characters long and can only contain a-z, 0-9, _, -");
+        flash("[Client]: Username must be between 3 and 16 characters long and can only contain a-z, 0-9, _, -","warning");
         isValid = false;
     }
     return isValid;
