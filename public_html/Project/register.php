@@ -29,7 +29,7 @@ reset_session();
         let email = form.email.value;
         let user = form.username.value;
         let pw = form.password.value
-        let con = form.con.value
+        let con = form.confirm.value
 
         //Check if email is empty
         if(!email){
@@ -50,7 +50,7 @@ reset_session();
         }
 
         //Check if password is empty
-        if(!user){
+        if(!pw){
             flash("[Client]: Password must not be empty","warning");
             isValid = false;
         }else{
