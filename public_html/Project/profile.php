@@ -141,11 +141,7 @@ $username = get_username();
         let email = form.email.value;
         let currPw = form.currentPassword.value;
         let isValid = true;
-        //TODO add other client side validation....
-        console.log(pw);
-        console.log(con);
-        console.log(usr);
-        console.log(email);
+
         //example of using flash via javascript
         //find the flash container, create a new element, appendChild
         if (pw !== con) {

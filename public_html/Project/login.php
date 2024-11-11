@@ -1,28 +1,50 @@
 <?php
 require(__DIR__ . "/../../partials/nav.php");
 ?>
-<form onsubmit="return validate(this)" method="POST">
+<form method="POST" onsubmit="return validate(this);">
     <div>
         <label for="email">Email/Username</label>
-        <input type="text" name="email" required />
+        <input type="text" id="email" name="email" required />
     </div>
     <div>
         <label for="pw">Password</label>
         <input type="password" id="pw" name="password" required minlength="8" />
     </div>
-    <input type="submit" value="Login" />
+    <input type="submit" value="Login" name="login" id="login" />
 </form>
 <script>
     function validate(form) {
         //TODO 1: implement JavaScript validation
-        //ensure it returns false for an error and true for success
+        // ensure it returns false for an error and true for success
+        
+        let isValid = true;
 
-        return true;
+        let email = form.email.value;
+        let pw = form.password.value;
+        
+        //Ensure email and password fields are not empty
+        if(!email){
+            flash("[Client]: Email/Username must not be empty", "warning");
+            isValid = false;
+        }else{
+            //Determine whether email is email or username and validate accordingly
+            isValid = (email.includes("@"))?validate_email(email):validate_username(email);
+        }
+
+        if(!pw){
+            flash("[Client]: Password must not be empty", "warning");
+            isValid = false;
+        }else{
+            //Make sure password is valid
+            isValid = validate_password(password) && isValid;
+        }
+        
+        return isValid;
     }
 </script>
 <?php
 //TODO 2: add PHP Code
-if (isset($_POST["email"]) && isset($_POST["password"])) {
+if (isset($_POST["login"]) && isset($_POST["email"]) && isset($_POST["password"])) {
     $email = se($_POST, "email", "", false);
     $password = se($_POST, "password", "", false);
 
