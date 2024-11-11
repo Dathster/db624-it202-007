@@ -36,7 +36,7 @@ require(__DIR__ . "/../../partials/nav.php");
             isValid = false;
         }else{
             //Make sure password is valid
-            isValid = validate_password(password) && isValid;
+            isValid = validate_password(pw) && isValid;
         }
         
         return isValid;

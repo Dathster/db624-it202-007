@@ -6,9 +6,10 @@ if (!is_logged_in()) {
 }
 ?>
 <?php
-//Variable to track if all update operations went successfully
-$success = true;
 if (isset($_POST["save"])) {
+    //Variable to track if all update operations went successfully
+    $success = true;
+
     $email = se($_POST, "email", null, false);
     $username = se($_POST, "username", null, false);
 
