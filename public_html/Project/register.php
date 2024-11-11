@@ -23,10 +23,47 @@ reset_session();
 </form>
 <script>
     function validate(form) {
-        //TODO 1: implement JavaScript validation
         //ensure it returns false for an error and true for success
+        let isValid = true;
+        let email = form.email.value;
+        let user = form.username.value;
+        let pw = form.password.value
+        let con = form.con.value
 
-        return true;
+        //Check if email is empty
+        if(!email){
+            flash("[Client]: Email must not be empty", "warning");
+            isValid = false; 
+        }else{
+            //Validate email
+            isValid = validate_email(email);
+        }
+
+        //Check if username is empty
+        if(!user){
+            flash("[Client]: Username must not be empty","warning");
+            isValid = false;
+        }else{
+            //Validate username
+            isValid = validate_username(user) && isValid;
+        }
+
+        //Check if password is empty
+        if(!user){
+            flash("[Client]: Password must not be empty","warning");
+            isValid = false;
+        }else{
+            //Validate password
+            isValid = validate_password(pw) && isValid;
+        }
+
+        //Check if password and confirm password match
+        if (pw !== con) {
+            flash("[Client]: Password and Confirm password must match", "warning");
+            isValid = false;
+        }
+        
+        return isValid;
     }
 </script>
 <?php
