@@ -27,17 +27,20 @@ if (isset($_POST["save"])) {
                 flash("The chosen " . $matches[1] . " is not available.", "warning");
                 $success = false;
             } else {
-                //TODO come up with a nice error message
-                echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
+                $error = $e->errorInfo[2];
+                flash("An unexpected error has occured. $error", "danger");
+                //echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
                 $success = false;
             }
         } else {
             //TODO come up with a nice error message
+                $error = $e->errorInfo[1];
+                flash("An unexpected error has occured. Code $error", "danger");
             echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
             $success = false;
         }
     } catch (Exception $e){
-        echo "<pre> An error occured </pre>";
+        flash("An unexpected error has occured, please try again.", "danger");
         $success = false;
     }
     //select fresh data from table
@@ -98,9 +101,9 @@ if (isset($_POST["save"])) {
             $success = false;
         }
     }
-}
-if($success){
-    flash("Profile saved", "success");
+    if($success){
+        flash("Profile saved", "success");
+    }
 }
 ?>
 
@@ -108,6 +111,7 @@ if($success){
 $email = get_user_email();
 $username = get_username();
 ?>
+<h1>Update profile</h1>
 <form method="POST" onsubmit="return validate(this);">
     <div class="mb-3">
         <label for="email">Email</label>
@@ -118,7 +122,7 @@ $username = get_username();
         <input type="text" name="username" id="username" value="<?php se($username); ?>" />
     </div>
     <!-- DO NOT PRELOAD PASSWORD -->
-    <div>Password Reset</div>
+    <h2>Password Reset</h2>
     <div class="mb-3">
         <label for="cp">Current Password</label>
         <input type="password" name="currentPassword" id="cp" />
@@ -151,7 +155,7 @@ $username = get_username();
         }
 
         //Validate username, new password, and email
-        isValid = validate_password(pw) && isValid;
+        isValid = (pw)?validate_password(pw) && isValid: isValid;
         isValid = validate_username(usr) && isValid;
         isValid = validate_email(email) && isValid;
 
