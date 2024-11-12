@@ -2,6 +2,7 @@
 require(__DIR__ . "/../../partials/nav.php");
 reset_session();
 ?>
+<!-- db624 it202-007 11/11/24 -->
 <h1>Register</h1>
 <form onsubmit="return validate(this)" method="POST">
     <div>
@@ -10,7 +11,7 @@ reset_session();
     </div>
     <div>
         <label for="username">Username</label>
-        <input type="text" name="username" required maxlength="30" />
+        <input type="text" name="username" required minlength="3" maxlength="16" />
     </div>
     <div>
         <label for="pw">Password</label>
@@ -23,7 +24,7 @@ reset_session();
     <input type="submit" value="Register" />
 </form>
 <script>
-    function validate(form) {
+    function validate(form) { //db624 it202-007 11/11/24
         //ensure it returns false for an error and true for success
         let isValid = true;
         let email = form.email.value;
@@ -68,21 +69,20 @@ reset_session();
     }
 </script>
 <?php
-//TODO 2: add PHP Code
-if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm"])) {
+//db624 it202-007 11/11/24
+if (isset($_POST["email"]) && isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["confirm"])) {
     $email = se($_POST, "email", "", false);
     $password = se($_POST, "password", "", false);
-    $confirm = se(
-        $_POST,
-        "confirm",
-        "",
-        false
-    );
+    $confirm = se($_POST, "confirm", "", false);
     $username = se($_POST, "username", "", false);
     //TODO 3
     $hasError = false;
     if (empty($email)) {
         flash("Email must not be empty", "danger");
+        $hasError = true;
+    }
+    if(empty($username)){
+        flash("Username must not be empty", "danger");
         $hasError = true;
     }
     //sanitize
@@ -93,7 +93,7 @@ if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm
         $hasError = true;
     }
     if (!is_valid_username($username)) {
-        flash("Username must only contain 3-30 characters a-z, 0-9, _, or -", "danger");
+        flash("Username must only contain 3-16 characters a-z, 0-9, _, or -", "danger");
         $hasError = true;
     }
     if (empty($password)) {
@@ -114,6 +114,7 @@ if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm
         flash("Passwords must match", "danger");
         $hasError = true;
     }
+    //db624 it202-007 11/11/24
     if (!$hasError) {
         //TODO 4
         $hash = password_hash($password, PASSWORD_BCRYPT);

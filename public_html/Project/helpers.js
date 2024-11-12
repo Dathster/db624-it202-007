@@ -15,10 +15,11 @@ function flash(message = "", color = "info") {
     flash.appendChild(outerDiv);
 }
 
+//db624 it202-007 11/11/24
 //Validate emails
 function validate_email(email){
-    re = new RegExp('^([a-zA-Z0-9_-]+\.?)+@([a-zA-Z0-9_-]+\.)+([a-zA-Z0-9_-]+)$')
-    isValid = true;
+    let re = new RegExp('^([a-zA-Z0-9_-]+\.?)+@([a-zA-Z0-9_-]+\.)+([a-zA-Z0-9_-]+)$')
+    let isValid = true;
     if(!re.test(email)){
         flash("[Client]: Email must follow user@domain.com format and contain only upper and lowercase letters, numbers, underscores, and hyphens", "warning");
         isValid = false;
