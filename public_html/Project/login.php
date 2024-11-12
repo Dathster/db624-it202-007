@@ -17,7 +17,7 @@ require(__DIR__ . "/../../partials/nav.php");
     function validate(form) {
 
         // ensure it returns false for an error and true for success
-        
+        //db624 it202-007 11/11/24
         let isValid = true;
 
         let email = form.email.value;
@@ -44,7 +44,7 @@ require(__DIR__ . "/../../partials/nav.php");
     }
 </script>
 <?php
-//TODO 2: add PHP Code
+//db624 it202-007 11/11/24
 if (isset($_POST["login"]) && isset($_POST["email"]) && isset($_POST["password"])) {
     $email = se($_POST, "email", "", false);
     $password = se($_POST, "password", "", false);
@@ -84,7 +84,7 @@ if (isset($_POST["login"]) && isset($_POST["email"]) && isset($_POST["password"]
         flash("Password too short");
         $hasError = true;
     }
-    if (!$hasError) {
+    if (!$hasError) { //db624 it202-007 11/11/24
         //flash("Welcome, $email");
         //TODO 4
         $db = getDB();
