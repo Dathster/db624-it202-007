@@ -4,6 +4,7 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+//db624 it202-007 11/11/24
 function getDB(){
     global $db;
     //this function returns an existing connection or creates a new one if needed
