@@ -2,7 +2,7 @@
     require(__DIR__ . "/../../../partials/nav.php");
 
     // Redirect user to home if they don't have admin permission
-    if(!has_role("Admin")){
+    if(!has_role("Admin")){ //db624 it202-007 11/11/24
         flash("You don't have permission to view this page", "warning");
         die(header("Location: " . get_url("home.php")));
     }

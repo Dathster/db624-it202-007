@@ -9,7 +9,7 @@ function is_logged_in($redirect = false, $destination = "login.php")//db624 it20
     }
     return $isLoggedIn;
 }
-function has_role($role)
+function has_role($role) //db624 it202-007 11/11/24
 {
     if (is_logged_in() && isset($_SESSION["user"]["roles"])) {
         foreach ($_SESSION["user"]["roles"] as $r) {
