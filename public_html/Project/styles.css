@@ -1,0 +1,57 @@
+.alert-success {
+    background-color: #cbf078;
+    color:  #233142;
+}
+
+.alert-warning {
+    background-color: #f8f398;
+    color:#233142;
+}
+
+.alert-danger {
+    background-color: #e46161;
+}
+
+.alert-info {
+    background-color: #f1b963;
+}
+
+div {
+    margin: 5px;
+}
+
+nav {
+    padding: 2px;
+    background-color: #f95959;
+    margin-bottom: 5px;
+}
+nav li{display: inline;}
+nav li a, input[type=submit]{
+    background-color: #e3e3e3;
+    color: #233142;
+    padding: 5px;
+    text-decoration: none;
+}
+
+nav li a:hover, input[type=submit]:hover{
+    transition: background-color 0.1s ease-in-out;
+    /* transition: color 0.5s ease-in-out; */
+    background-color: #888888;
+    /* color: #2331426b; */
+    padding: 5px;
+    text-decoration: none;
+}
+
+/* input{border-radius: 50%;} */
+input{
+    font-family: "Merriweather", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+body{
+    background-color: #233142;
+    color: #e3e3e3;
+    font-family: "Merriweather", serif;
+    font-weight: 400;
+    font-style: normal;
+}
