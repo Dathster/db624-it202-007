@@ -1,5 +1,5 @@
 <?php
-
+//db624 it202-007 11/11/24
 function sanitize_email($email = "")
 {
     return filter_var(trim($email), FILTER_SANITIZE_EMAIL);
