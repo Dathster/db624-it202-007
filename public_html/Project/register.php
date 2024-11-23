@@ -3,7 +3,7 @@ require(__DIR__ . "/../../partials/nav.php");
 reset_session();
 ?>
 <!-- db624 it202-007 11/11/24 -->
-<h1>Register</h1>
+<h1 class='ms-3'>Register</h1>
 <form onsubmit="return validate(this)" method="POST">
     <?php render_input(["type"=>"email", "id"=>"email", "name"=>"email", "label"=>"Email", "rules"=>["required"=>true]]);?>
     <?php render_input(["type"=>"text", "id"=>"username", "name"=>"username", "label"=>"Username", "rules"=>["required"=>true, "maxlength"=>16]]);?>

@@ -109,23 +109,46 @@ if (isset($_POST["save"])) {
 $email = get_user_email();
 $username = get_username();
 ?>
-<h1>Update profile</h1>
+<h1 class='ms-3'>Update profile</h1>
 <form method="POST" onsubmit="return validate(this);">
-    <div class="mb-3">
+        
+    <?php /*render_input(["type"=>"email", "name"=>"email", "id"=>"email", "label"=>"Email", "value"=>$email]); ?>
+    <?php render_input(["type"=>"text", "name"=>"username", "label"=>"Username", "value"=>$username]) ?>
+
+    <!-- <div class="mb-3">
         <label for="email">Email</label>
         <input type="email" name="email" id="email" value="<?php se($email); ?>" />
-    </div>
-    <div class="mb-3">
+    </div> -->
+    <!-- <div class="mb-3">
         <label for="username">Username</label>
         <input type="text" name="username" id="username" value="<?php se($username); ?>" />
-    </div>
+    </div> -->
     <!-- DO NOT PRELOAD PASSWORD -->
-    <h2>Password Reset</h2>
-    <div class="mb-3">
+    
+    <?php render_input(["type"=>"password", "name"=>"currentPassword", "id"=>"cp", "label"=>"Current Password"]) ?>
+    <!-- <div class="mb-3">
         <label for="cp">Current Password</label>
         <input type="password" name="currentPassword" id="cp" />
-    </div>
-    <div class="mb-3">
+    </div> -->
+    <?php render_input(["type"=>"password", "name"=>"newPassword", "id"=>"np", "label"=>"New Password"]); ?>
+    <?php render_input(["type"=>"password", "name"=>"confrimPassword", "id"=>"conp", "label"=>"Confirm Password"]); ?>
+    <input type="hidden" name="save" value="save", id="save"/>
+    <?php render_button(["text"=>"Update Profile", "type"=>"submit"]);*/ ?>
+
+
+        <?php render_input(["type" => "email", "id" => "email", "name" => "email", "label" => "Email", "value" => $email, "rules" => ["required" => true]]); ?>
+        <?php render_input(["type" => "text", "id" => "username", "name" => "username", "label" => "Username", "value" => $username, "rules" => ["required" => true, "maxlength" => 30]]); ?>
+        
+        <!-- DO NOT PRELOAD PASSWORD -->
+        <h2 class='ms-3'>Password Reset</h2>
+        
+        <?php render_input(["type" => "password", "id" => "cp", "name" => "currentPassword", "label" => "Current Password", "rules" => ["minlength" => 8]]); ?>
+        <?php render_input(["type" => "password", "id" => "np", "name" => "newPassword", "label" => "New Password", "rules" => ["minlength" => 8]]); ?>
+        <?php render_input(["type" => "password", "id" => "conp", "name" => "confirmPassword", "label" => "Confirm Password", "rules" => ["minlength" => 8]]); ?>
+        <?php render_input(["type" => "hidden", "name" => "save"]);/*lazy value to check if form submitted, not ideal*/ ?>
+        <?php render_button(["text" => "Update Profile", "type" => "submit"]); ?>
+
+    <!-- <div class="mb-3">
         <label for="np">New Password</label>
         <input type="password" name="newPassword" id="np" />
     </div>
@@ -133,7 +156,7 @@ $username = get_username();
         <label for="conp">Confirm Password</label>
         <input type="password" name="confirmPassword" id="conp" />
     </div>
-    <input type="submit" value="Update Profile" name="save" />
+    <input type="submit" value="Update Profile" name="save" /> -->
 </form>
 
 <script>
