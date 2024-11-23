@@ -1,18 +1,27 @@
 <?php
 require(__DIR__ . "/../../partials/nav.php");
 ?>
-<h1>Login</h1>
-<form method="POST" onsubmit="return validate(this);">
-    <div>
-        <label for="email">Email/Username</label>
-        <input type="text" id="email" name="email" required />
-    </div>
-    <div>
-        <label for="pw">Password</label>
-        <input type="password" id="pw" name="password" required minlength="8" />
-    </div>
-    <input type="submit" value="Login" name="login" id="login" />
-</form>
+<h1 class='ms-3'>Login</h1>
+
+<div class = 'container-fluid'>
+    <form method="POST" onsubmit="return validate(this);">
+        <?php render_input(["type"=>"text", "id"=>"email", "name"=>"email", "label"=>"Email/Username", "rules"=>["required"=>true]]); ?>
+        <!-- <div class='mb-3'>
+            <label for="email">Email/Username</label>
+            <input type="text" id="email" name="email" required />
+        </div> -->
+        <?php render_input(["type"=>"password", "id"=>"pw", "name"=>"password", "label"=>"Password", "rules"=>["required"=>true, "minlength"=>8]]); ?>
+        <!-- <div>
+            <label for="pw">Password</label>
+            <input type="password" id="pw" name="password" required minlength="8" />
+        </div> -->
+        <?php render_input(["type"=>"submit", "value"=>"Login", "name"=>"login", "id"=>"login"]); ?>
+
+        <!-- <input type="submit" value="Login" name="login" id="login" /> -->
+    </form>
+</div>
+
+
 <script>
     function validate(form) {
 

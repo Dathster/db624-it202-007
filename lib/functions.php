@@ -22,5 +22,9 @@ require(__DIR__ . "/duplicate_user_details.php");
 //reset session
 require(__DIR__ . "/reset_session.php");
 
+//Get the path for a file
 require(__DIR__ . "/get_url.php");
+
+//Helper functions for rendering input fields
+require(__DIR__ . "/render_functions.php")
 ?>
