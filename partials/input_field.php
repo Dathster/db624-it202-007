@@ -23,7 +23,7 @@
     ?>
     <?php /* Include margin open tag */ ?>
     <?php if ($_include_margin) : ?>
-        <div class="mb-3 ms-3 me-3">
+        <div class="mb-3">
         <?php endif; ?>
         <?php if ($_label) : ?>
             <?php /* label field */ ?>

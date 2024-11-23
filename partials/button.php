@@ -9,7 +9,7 @@
     <?php if ($_btn_type === "button") : ?>
         <button class="btn btn-<?php se($_btn_color); ?>"><?php se($_btn_text); ?></button>
     <?php elseif ($_btn_type === "submit") : ?>
-        <input type="submit" class="btn btn-<?php se($_btn_color); ?> ms-3 me-3" value="<?php se($_btn_text); ?>" />
+        <input type="submit" class="btn btn-<?php se($_btn_color); ?>" value="<?php se($_btn_text); ?>" />
     <?php endif; ?>
 
     <?php

@@ -2,9 +2,9 @@
 require(__DIR__ . "/../../partials/nav.php");
 ?>
 <body class='bg-dark'>
-    <h1 class='ms-3'>Login</h1>
+    <div class='container-fluid'>
+        <h1>Login</h1>
 
-    <div>
         <form method="POST" onsubmit="return validate(this);">
             <?php render_input(["type"=>"text", "id"=>"email", "name"=>"email", "label"=>"Email/Username", "rules"=>["required"=>true]]); ?>
             <?php render_input(["type"=>"password", "id"=>"pw", "name"=>"password", "label"=>"Password", "rules"=>["required"=>true, "minlength"=>8]]); ?>
