@@ -1,26 +1,17 @@
 <?php
 require(__DIR__ . "/../../partials/nav.php");
 ?>
-<h1 class='ms-3'>Login</h1>
+<body class='bg-dark'>
+    <h1 class='ms-3'>Login</h1>
 
-<div class = 'container-fluid'>
-    <form method="POST" onsubmit="return validate(this);">
-        <?php render_input(["type"=>"text", "id"=>"email", "name"=>"email", "label"=>"Email/Username", "rules"=>["required"=>true]]); ?>
-        <!-- <div class='mb-3'>
-            <label for="email">Email/Username</label>
-            <input type="text" id="email" name="email" required />
-        </div> -->
-        <?php render_input(["type"=>"password", "id"=>"pw", "name"=>"password", "label"=>"Password", "rules"=>["required"=>true, "minlength"=>8]]); ?>
-        <!-- <div>
-            <label for="pw">Password</label>
-            <input type="password" id="pw" name="password" required minlength="8" />
-        </div> -->
-        <?php render_input(["type"=>"submit", "value"=>"Login", "name"=>"login", "id"=>"login"]); ?>
-
-        <!-- <input type="submit" value="Login" name="login" id="login" /> -->
-    </form>
-</div>
-
+    <div class = 'container-fluid'>
+        <form method="POST" onsubmit="return validate(this);">
+            <?php render_input(["type"=>"text", "id"=>"email", "name"=>"email", "label"=>"Email/Username", "rules"=>["required"=>true]]); ?>
+            <?php render_input(["type"=>"password", "id"=>"pw", "name"=>"password", "label"=>"Password", "rules"=>["required"=>true, "minlength"=>8]]); ?>
+            <?php render_button(["text"=>"Login", "type"=>"submit"]); ?>
+        </form>
+    </div>
+</body>
 
 <script>
     function validate(form) {
@@ -54,7 +45,7 @@ require(__DIR__ . "/../../partials/nav.php");
 </script>
 <?php
 //db624 it202-007 11/11/24
-if (isset($_POST["login"]) && isset($_POST["email"]) && isset($_POST["password"])) {
+if (isset($_POST["email"]) && isset($_POST["password"])) {
     $email = se($_POST, "email", "", false);
     $password = se($_POST, "password", "", false);
 

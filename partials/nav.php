@@ -37,7 +37,7 @@ session_start();
 <script src = "<?php echo get_url("helpers.js"); ?>"></script> 
 
 
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg bg-primary">
     <ul class='navbar-nav ms-3'>
         <?php if (is_logged_in()) : ?>
             <li class='nav-item'><a class='nav-link' href="<?php echo get_url('home.php'); ?>">Home</a></li>
