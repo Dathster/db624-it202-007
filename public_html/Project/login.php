@@ -1,7 +1,7 @@
 <?php
 require(__DIR__ . "/../../partials/nav.php");
 ?>
-<body class='bg-dark'>
+<body>
     <div class='container-fluid'>
         <h1>Login</h1>
 
