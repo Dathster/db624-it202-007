@@ -26,5 +26,11 @@ require(__DIR__ . "/reset_session.php");
 require(__DIR__ . "/get_url.php");
 
 //Helper functions for rendering input fields
-require(__DIR__ . "/render_functions.php")
+require(__DIR__ . "/render_functions.php");
+
+// //Function to help make API calls
+// require(__DIR__ . "/api_helper.php");
+
+//File containing wrappers for API calls
+require(__DIR__ . "/steam_api.php")
 ?>
