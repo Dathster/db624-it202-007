@@ -60,7 +60,7 @@ function _sendRequest($url, $key, $data = [], $method = 'GET', $isRapidAPI = tru
         $options[CURLOPT_URL] = "https://games-details.p.rapidapi.com/single_game/730"; //key1=v1&key2=v2
     }
     // error_log("curl options:" . var_export($options, true));
-    echo var_export($options[CURLOPT_URL],true);
+    // echo var_export($options[CURLOPT_URL],true);
     curl_setopt_array($curl, $options);
     
     $response = curl_exec($curl);
