@@ -1,18 +1,18 @@
 <?php
 require(__DIR__ . "/../../partials/nav.php");
 ?>
-<h1>Login</h1>
-<form method="POST" onsubmit="return validate(this);">
-    <div>
-        <label for="email">Email/Username</label>
-        <input type="text" id="email" name="email" required />
+<body>
+    <div class='container-fluid'>
+        <h1>Login</h1>
+
+        <form method="POST" onsubmit="return validate(this);">
+            <?php render_input(["type"=>"text", "id"=>"email", "name"=>"email", "label"=>"Email/Username", "rules"=>["required"=>true]]); ?>
+            <?php render_input(["type"=>"password", "id"=>"pw", "name"=>"password", "label"=>"Password", "rules"=>["required"=>true, "minlength"=>8]]); ?>
+            <?php render_button(["text"=>"Login", "type"=>"submit"]); ?>
+        </form>
     </div>
-    <div>
-        <label for="pw">Password</label>
-        <input type="password" id="pw" name="password" required minlength="8" />
-    </div>
-    <input type="submit" value="Login" name="login" id="login" />
-</form>
+</body>
+
 <script>
     function validate(form) {
 
@@ -45,7 +45,7 @@ require(__DIR__ . "/../../partials/nav.php");
 </script>
 <?php
 //db624 it202-007 11/11/24
-if (isset($_POST["login"]) && isset($_POST["email"]) && isset($_POST["password"])) {
+if (isset($_POST["email"]) && isset($_POST["password"])) {
     $email = se($_POST, "email", "", false);
     $password = se($_POST, "password", "", false);
 

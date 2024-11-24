@@ -33,21 +33,16 @@
     }
 ?>
 
-<h1>
-    Create Role
-</h1>
-<form method="POST">
-    <!-- Get the name and description of the role -->
-    <div>
-        <label for="r">Role name</label>
-        <input type="text" id="r" name="name" required></input>
-    </div>
-    <div>
-        <label for="d">Description</label>
-        <input type="textarea" id="d" name="description"></textarea>
-    </div>
-    <input type="submit" value="Create Role"></input>
-</form>
+<div class='container-fluid'>
+    <h1>
+        Create Role
+    </h1>
+    <form method="POST">
+        <?php render_input(["type"=>"text", "id"=>"r", "name"=>"name", "label"=>"Role name", "rules"=>["required"=>true]]); ?>
+        <?php render_input(["type"=>"textarea", "id"=>"d", "name"=>"description", "label"=>"Description"]); ?>
+        <?php render_button(["text"=>"Create Role", "type"=>"submit"]); ?>
+    </form>
+</div>
 
 <?php
 require_once(__DIR__ . "/../../../partials/flash.php");
