@@ -1,10 +1,10 @@
-CREATE TABLE IF NOT EXISTS `Games_details` (
+CREATE TABLE IF NOT EXISTS `Game_media` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `modified` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     `game_id` INT NOT NULL,
-    `game_name` VARCHAR(100) NOT NULL,
-    `price` DECIMAL(6,2),
+    `url` VARCHAR(200),
+    `type` ENUM('screenshot', 'video'),
     PRIMARY KEY (`id`),
-    UNIQUE (`game_id`)
+    FOREIGN KEY (`game_id`) REFERENCES `Games_details`(`game_id`) ON DELETE CASCADE
 )
