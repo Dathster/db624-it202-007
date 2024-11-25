@@ -9,9 +9,15 @@
     if(isset($_POST["action"]) && isset($_POST["game_name"])){
         $game_name = $_POST['game_name'];
         $result = fetch_searchResults($game_name);
+        $displayResult = [];
         foreach($result as $record){
-            echo $record["id"] . " " . $record["name"] . "<br>";
+            $ele = [];
+            $ele["id"] = se($record, "id", "", false);
+            $ele["name"] = se($record,"name","",false);
+            $displayResult[] = $ele;
         }
+        //echo var_export($result);
+        // echo var_export($displayResult);
     }
 
     if(isset($_POST["action2"]) && isset($_POST["game_id"])){
@@ -58,7 +64,7 @@
             } else {
                 // Handle other PDO exceptions
                 flash("A database error occured, please try again later","danger");
-                error_log($e->getMessage(),true);
+                echo $e->getMessage();
             }
         }catch (Exception $e){
             flash("An unknown error has occured, please try again later","danger");
@@ -138,7 +144,8 @@
             "release_date"=>$release_date,
             "developer_name"=>$dev_name,
             "publisher_name"=>$publisher_name,
-            "franchise_name"=>$franchise_name
+            "franchise_name"=>$franchise_name,
+            "from_api"=>0
         ];
 
         if($tags){
@@ -156,11 +163,11 @@
             // Check if the error is a duplicate entry error
             if ($e->getCode() == 23000) {
                 flash("Duplicate entry detected: Please try a different game id", "danger");
-                error_log($e->getMessage(),true);
+                echo error_log($e->getMessage(),true);
             } else {
                 // Handle other PDO exceptions
                 flash("A database error occured, please try again later","danger");
-                error_log($e->getMessage(),true);
+                echo $e->getMessage();
             }
         }catch (Exception $e){
             flash("An unknown error has occured, please try again later","danger");
@@ -196,6 +203,18 @@
             <?php render_input(["type" => "hidden", "name" => "action2", "value" => "fetch_details"]); ?>
             <?php render_button(["text" => "Get details", "type" => "submit",]); ?>
         </form>
+
+        <?php if(isset($displayResult) && !empty($displayResult)) : ?>
+            <hr>
+            <h3>Search results</h3>
+            <form>
+                <?php 
+                    render_table(["data"=>$displayResult]);
+                    render_button(["text"=>"clear", "type"=>"submit"]);
+                ?>
+            </form>
+            
+        <?php endif; ?>
     </div>
     <div id="create" style="display: none;" class="tab-target">
         <form method="POST">

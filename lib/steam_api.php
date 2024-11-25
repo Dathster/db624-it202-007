@@ -38,7 +38,7 @@
     function prep_gamesDetails($game_id, $result){
         $id = $game_id;
         $name = $result["name"];
-        $price = $result['pricing'][0]['price'];
+        $price = ($result['pricing'])?$result['pricing'][0]['price']:NULL;
         $dateString = $result['release_date'];
         // Create a DateTime object
         $date = new DateTime($dateString);

@@ -28,12 +28,6 @@ if (isset($_GET["symbol"]) and !empty($_GET["symbol"])) {
                 </pre>
             <?php endforeach; ?>
         <?php endif; ?>
-
-        <?php
-            echo "$name <br>";
-            echo "$desc <br>";
-            echo "$release_date <br>";
-        ?>
     </div>
 </div>
 <?php
