@@ -1,2 +1,0 @@
-ALTER TABLE `Games_details`
-MODIFY COLUMN `price` VARCHAR(15)

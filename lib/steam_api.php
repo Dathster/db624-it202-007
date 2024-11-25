@@ -113,7 +113,7 @@
 
             $recom_arr = [];
             $recom_arr['game_id'] = $game_id;
-            $recom_arr['requirement_type'] = 'min';
+            $recom_arr['requirement_type'] = 'recom';
             foreach($reqs['recomm'] as $attr){
                 if(str_starts_with($attr,'OS:')){
                         $recom_arr['os_version']=substr($attr, strlen('OS:')+1);
