@@ -32,5 +32,8 @@ require(__DIR__ . "/render_functions.php");
 // require(__DIR__ . "/api_helper.php");
 
 //File containing wrappers for API calls
-require(__DIR__ . "/steam_api.php")
+require(__DIR__ . "/steam_api.php");
+
+//Function for helping with database inserts
+require(__DIR__ . "/db_helpers.php");
 ?>
