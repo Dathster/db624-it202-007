@@ -1,11 +1,10 @@
-CREATE TABLE IF NOT EXISTS `Users` (
+CREATE TABLE IF NOT EXISTS `Games_details` (
     `id` INT NOT NULL AUTO_INCREMENT,
-    `email` VARCHAR(100) NOT NULL,
-    `password` VARCHAR(60) NOT NULL,
     `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `modified` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `game_id` INT NOT NULL,
+    `game_name` VARCHAR(100) NOT NULL,
+    `price` DECIMAL(6,2),
     PRIMARY KEY (`id`),
-    UNIQUE (`email`)
+    UNIQUE (`game_id`)
 )
-
-
