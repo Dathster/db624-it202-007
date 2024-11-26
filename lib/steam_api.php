@@ -100,6 +100,8 @@
             foreach($reqs['min'] as $attr){
                 if(str_starts_with($attr,'OS:')){
                         $min_arr['os_version']=substr($attr, strlen('OS:')+1);
+                }else if(str_starts_with($attr,'OS *:')){
+                    $min_arr['os_version']=substr($attr, strlen('OS *:')+1);
                 }else if(str_starts_with($attr,'Processor:')){
                     $min_arr['processor']=substr($attr, strlen('Processor:')+1);
                 }else if(str_starts_with($attr,'Memory:')){
