@@ -14,7 +14,7 @@
         } else {
             $result = [];
         }
-
+        //echo $result;
         return $result;
     }
 
@@ -94,9 +94,8 @@
         $output_arr = [];
         $relevant_columns = ['OS:', 'Processor:', 'Memory:', 'Graphics:', 'Storage:'];
         foreach($sys_req as $os=>$reqs){
+            
             $min_arr = [];
-            $min_arr['game_id'] = $game_id;
-            $min_arr['requirement_type'] = 'min';
             foreach($reqs['min'] as $attr){
                 if(str_starts_with($attr,'OS:')){
                         $min_arr['os_version']=substr($attr, strlen('OS:')+1);
@@ -112,27 +111,47 @@
                     $min_arr['storage']=substr($attr, strlen('Storage:')+1);
                 }
             }
+            if(count($min_arr)>1){
+                $min_arr['game_id'] = $game_id;
+                $min_arr['requirement_type'] = 'min';
+                $output_arr[] = $min_arr;
+            }
 
-            $recom_arr = [];
-            $recom_arr['game_id'] = $game_id;
-            $recom_arr['requirement_type'] = 'recom';
-            foreach($reqs['recomm'] as $attr){
-                if(str_starts_with($attr,'OS:')){
+
+            if($reqs["recomm"]){
+                $recom_arr = [];
+                foreach($reqs['recomm'] as $attr){
+                    if(str_starts_with($attr,'OS:')){
                         $recom_arr['os_version']=substr($attr, strlen('OS:')+1);
-                }else if(str_starts_with($attr,'Processor:')){
-                    $recom_arr['processor']=substr($attr, strlen('Processor:')+1);
-                }else if(str_starts_with($attr,'Memory:')){
-                    $recom_arr['memory']=substr($attr, strlen('Memory:')+1);
-                }else if(str_starts_with($attr,'Graphics:')){
-                    $recom_arr['graphics']=substr($attr, strlen('Graphics:')+1);
-                }else if(str_starts_with($attr,'Storage:')){
-                    $recom_arr['storage']=substr($attr, strlen('Storage:')+1);
+                    }else if(str_starts_with($attr,'OS *:')){
+                        $recom_arr['os_version']=substr($attr, strlen('OS *:')+1);
+                    }else if(str_starts_with($attr,'Processor:')){
+                        $recom_arr['processor']=substr($attr, strlen('Processor:')+1);
+                    }else if(str_starts_with($attr,'Memory:')){
+                        $recom_arr['memory']=substr($attr, strlen('Memory:')+1);
+                    }else if(str_starts_with($attr,'Graphics:')){
+                        $recom_arr['graphics']=substr($attr, strlen('Graphics:')+1);
+                    }else if(str_starts_with($attr,'Storage:')){
+                        $recom_arr['storage']=substr($attr, strlen('Storage:')+1);
+                    }
+                }
+                // echo var_export(count($recom_arr));
+                if(count($recom_arr)>1){
+                    $recom_arr['game_id'] = $game_id;
+                    $recom_arr['requirement_type'] = 'recom';
+                    $output_arr[] = $recom_arr;
                 }
             }
+
+            // print_r(empty($reqs["recomm"]) . " " . $os . "." . "<br>");
+            // error_log("Response: " . var_export($reqs, true));
+            // error_log("Response: " . var_export($reqs["recomm"], true));
+            // error_log(empty($reqs["min"]), true);
             
-            $output_arr[] = $min_arr;
-            $output_arr[] = $recom_arr;
+            
         }
+
+        // error_log(var_export($output_arr, true), true);
 
         return $output_arr;
     }
