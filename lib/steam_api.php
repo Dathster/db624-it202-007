@@ -135,7 +135,6 @@
                         $recom_arr['storage']=substr($attr, strlen('Storage:')+1);
                     }
                 }
-                // echo var_export(count($recom_arr));
                 if(count($recom_arr)>1){
                     $recom_arr['game_id'] = $game_id;
                     $recom_arr['requirement_type'] = 'recom';
@@ -143,15 +142,10 @@
                 }
             }
 
-            // print_r(empty($reqs["recomm"]) . " " . $os . "." . "<br>");
-            // error_log("Response: " . var_export($reqs, true));
-            // error_log("Response: " . var_export($reqs["recomm"], true));
-            // error_log(empty($reqs["min"]), true);
+            
             
             
         }
-
-        // error_log(var_export($output_arr, true), true);
 
         return $output_arr;
     }

@@ -174,7 +174,7 @@
             }catch (PDOException $e){
                 // Check if the error is a duplicate entry error
                 if ($e->getCode() == 23000) {
-                    flash("Duplicate entry detected: Please try a different game id", "danger");
+                    flash("Duplicate entry detected: Please try a different game id or game name", "danger");
                     echo error_log($e->getMessage(),true);
                 } else {
                     // Handle other PDO exceptions
