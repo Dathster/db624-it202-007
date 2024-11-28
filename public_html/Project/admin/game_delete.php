@@ -35,6 +35,3 @@ unset($_GET["game_id"]);
 $loc = get_url("games_view.php")."?" . http_build_query($_GET);
 error_log("Location: $loc");
 die(header("Location: $loc"));
-
-
-// require_once(__DIR__ . "/../../../partials/flash.php");
