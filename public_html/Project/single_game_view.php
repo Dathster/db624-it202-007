@@ -19,22 +19,22 @@
 	from `Games_details` `gd` where `gd`.`game_id` = $game_id";
   $query_game_tags = "select * from `Game_tags` where `game_id` = $game_id";
   $query_game_media = "select * from `Game_media` where `game_id` = $game_id";
-  $query_game_requirements = "select * from `Game_requirements` where `game_id` = $game_id";
+//   $query_game_requirements = "select * from `Game_requirements` where `game_id` = $game_id";
 
   $results_games_details = select($query_games_details);
   $results_game_tags = select($query_game_tags);
   $results_game_media = select($query_game_media);
-  $results_game_requirements = select($query_game_requirements);
+//   $results_game_requirements = select($query_game_requirements);
 
   if(empty($results_games_details)){
     flash("Invalid game id detected please try a different game", "warning");
     die(header("Location: games_view.php"));
   }
 
-  $table_games_details = ["data"=>$results_games_details, "title"=>"game details"];
-  $table_game_tags = ["data"=>$results_game_tags, "title"=>"game tags"];
-  $table_game_media = ["data"=>$results_game_media, "title"=>"game media"];
-  $table_games_requirements = ["data"=>$results_game_requirements, "title"=>"game requirements"];
+//   $table_games_details = ["data"=>$results_games_details, "title"=>"game details"];
+//   $table_game_tags = ["data"=>$results_game_tags, "title"=>"game tags"];
+//   $table_game_media = ["data"=>$results_game_media, "title"=>"game media"];
+//   $table_games_requirements = ["data"=>$results_game_requirements, "title"=>"game requirements"];
 
   $query_screenshots = "select distinct `url` from `Game_media` where `game_id` = $game_id and `type` = 'screenshot'";
   $results_screenshots = select($query_screenshots);
@@ -42,6 +42,16 @@
   $query_videos = "select distinct `url` from `Game_media` where `game_id` = $game_id and `type` = 'video'";
   $results_videos = select($query_videos);
   
+  $query_min_requirements = "select * from `Game_requirements` where `game_id` = $game_id and `requirement_type` = 'min'";
+  $results_min_requirements = select($query_min_requirements);
+
+  $query_recom_requirements = "select * from `Game_requirements` where `game_id` = $game_id and `requirement_type` = 'recom'";
+  $results_recom_requirements = select($query_recom_requirements);
+
+  $table_min_requirements = ["data"=>$results_min_requirements, "title"=>"min requirements"];
+  $table_recom_requirements = ["data"=>$results_recom_requirements, "title"=>"recom requirements"];
+
+
   $game_name = se($results_games_details[0], "game_name", "", false);
   $price =  se($results_games_details[0], "price", "", false);
   $developer_name = se($results_games_details[0], "developer_name", "", false);
@@ -52,6 +62,16 @@
   $modified = se($results_games_details[0], "modified", "", false);
   $from_api = se($results_games_details[0], "from_api", "", false);
 
+  	$edit_url = get_url("admin/game_edit.php");;
+	$delete_url = get_url("admin/game_delete.php");
+
+  	$_edit_label = "Edit";
+	$_delete_label = "Delete";
+
+	$_edit_classes = "btn btn-warning";
+    $_delete_classes = "btn btn-danger";
+
+	// echo var_export($results_min_requirements);
 ?>
 
 
@@ -91,7 +111,7 @@
 			</div>
 
 		
-			<div class='row'>
+			<div class='row '>
 				<div class='col-8'>
 					<div id="screenshot" class="carousel slide tab-target">
 						<div class="carousel-inner">
@@ -182,7 +202,7 @@
 					<h5 class="card-header">Record data</h5>
 					<ul class="list-group list-group-flush">
 						<li class="list-group-item">Created: <?php se($created) ?></li>
-						<li class="list-group-item">Modified: <?php se($modified) ?></li>
+						<li class="list-group-item">Last Updated: <?php se($modified) ?></li>
 						<li class="list-group-item">From API: <?php se($from_api) ?></li>
 					</ul>
 				</div>
@@ -190,20 +210,82 @@
 		</div>
 	</div>
 
-	<div class='row ms-3 me-3'>
-	<div class="card">
-					<h5 class="card-header">Tags</h5>
-						<div class='row'>
-							<?php foreach ($results_game_tags as $tag): ?>
-								<div class="col-1">
-									<p><?php se($tag["tag"]);?></p>
-								</div>
-					
-							<?php endforeach; ?>
-						</div>
-						
+	<div class="row card ms-3 me-3 mb-3">
+		<h5 class="card-header">Tags</h5>
+		<div class='row mt-3'>
+			<?php foreach ($results_game_tags as $tag): ?>
+				<div class="col-1">
+					<p><?php se($tag["tag"]);?></p>
 				</div>
+			<?php endforeach; ?>
+		</div>				
+	</div>
 	
+	<div class="row mb-3">
+		<div class='col mt-3'>
+			<div class="card ms-2">
+				<h5 class="card-header">Minimum Specs</h5>
+				<div class="card-body">
+					<?php foreach($results_min_requirements as $min): ?>
+						<h5 class="card-title mb-3"><?php se($min, "os_version") ?></h5>
+						<hr>
+						<h6 class="card-title mb-3">Processor: <?php se($min, "processor") ?></h6>
+						<h6 class="card-title mb-3">Graphics: <?php se($min, "graphics") ?></h6>
+						<h6 class="card-title mb-3">Memory: <?php se($min, "graphics") ?></h6>
+						<h6 class="card-title mb-3">Storage: <?php se($min, "storage") ?></h6>
+						
+						<hr class='mb-3'></hr>
+					<?php endforeach ?>
+					
+				</div>
+			</div>
+		</div>
+
+		<div class='col mt-3'>
+			<div class="card me-2">
+				<h5 class="card-header">Recommended Specs</h5>
+				<div class="card-body">
+					<?php foreach($results_recom_requirements as $recom): ?>
+						<h5 class="card-title mb-3"><?php se($recom, "os_version") ?></h5>
+						<hr>
+						<h6 class="card-title mb-3">Processor: <?php se($recom, "processor") ?></h6>
+						<h6 class="card-title mb-3">Graphics: <?php se($recom, "graphics") ?></h6>
+						<h6 class="card-title mb-3">Memory: <?php se($recom, "graphics") ?></h6>
+						<h6 class="card-title mb-3">Storage: <?php se($recom, "storage") ?></h6>
+						
+						<hr class='mb-3'></hr>
+					<?php endforeach ?>
+					
+				</div>
+			</div>
+		</div>				
+	</div>
+
+	<?php if(has_role("Admin")): ?>
+		<div class="row card ms-3 me-3 mb-3"> 
+			<div class="card-body">
+				<h5 class="card-title">
+					Admin functions
+				</h5>
+
+				<div>
+					<ul class="list-group">
+						<div class="row">
+							<div class="col-1">
+								<?php if ($edit_url) : ?>
+									<a href="<?php echo $edit_url; ?>?<?php echo "game_id"; ?>=<?php echo $game_id; ?>" class="<?php se($_edit_classes); ?>"><?php se($_edit_label); ?></a>
+								<?php endif; ?>
+							</div>
+							<div class="col-1">
+								<?php if ($delete_url) : ?>
+									<a href="<?php echo $delete_url; ?>?<?php echo "game_id"; ?>=<?php echo $game_id; ?>" class="<?php se($_delete_classes); ?>"><?php se($_delete_label); ?></a>
+								<?php endif; ?>        
+							</div>
+						</div>
+					</ul>
+				</div>  
+		</div>
+    <?php endif ?>
 	
 </div>
 
@@ -213,7 +295,16 @@
 			
 
 
-<?php render_table($table_games_requirements); ?>
+
+
+
+
+
+
+
+
+
+
 
 <script>
     function switchTab(tab) {
@@ -231,6 +322,8 @@
 		}
     }
 </script>
+
+
 
 <?php
 require_once(__DIR__ . "/../../partials/flash.php");
