@@ -50,6 +50,7 @@
                 // Handle other PDO exceptions
                 flash("A database error occured, please try again later","danger");
                 error_log(var_export($e->getMessage(),true));
+                
             }
         }catch (Exception $e){
             flash("An unknown error has occured, please try again later","danger");
