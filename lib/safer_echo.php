@@ -23,7 +23,7 @@ function se($v, $k = null, $default = "", $isEcho = true) {
     }
     if ($isEcho) {
         //https://www.php.net/manual/en/function.htmlspecialchars.php
-        echo htmlspecialchars($returnValue, ENT_QUOTES);
+        echo html_entity_decode(htmlspecialchars($returnValue, ENT_QUOTES));
     } else {
         //https://www.php.net/manual/en/function.htmlspecialchars.php
         return html_entity_decode(htmlspecialchars($returnValue, ENT_QUOTES));

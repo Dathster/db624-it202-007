@@ -243,3 +243,21 @@ if (php_sapi_name() == "cli") {
     // Call the function to execute
     test_insert();
 }
+
+function select($query){
+    
+    $db = getDB();
+    $stmt = $db->prepare($query);
+    
+    try {
+        $stmt->execute();
+        $r = $stmt->fetchAll();
+        return $r;
+        echo "result: " . var_export($r);
+    } catch (PDOException $e) {
+        error_log(var_export($e, true),true);
+        flash("An unexpected database error occured", "danger");
+        return [];
+    }
+
+}

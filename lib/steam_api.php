@@ -14,7 +14,7 @@
         } else {
             $result = [];
         }
-        //echo $result;
+        // echo $result;
         return $result;
     }
 
@@ -39,6 +39,14 @@
         $id = $game_id;
         $name = $result["name"];
         $price = ($result['pricing'])?$result['pricing'][0]['price']:NULL;
+        echo $price;
+        echo $price === "Free To Play"; 
+        if($price === "Free To Play"){
+            $price = 0.00;
+        }else if($price){
+            $price = preg_replace('/[^\d.]/', '', $price);
+        }
+        echo "<br> $price <br>";
         $dateString = $result['release_date'];
         // Create a DateTime object
         $date = new DateTime($dateString);

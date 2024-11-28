@@ -17,8 +17,7 @@
                 $ele["name"] = se($record,"name","",false);
                 $displayResult[] = $ele;
             }
-            //echo var_export($result);
-            // echo var_export($displayResult);
+
         }
     }
 
@@ -31,47 +30,30 @@
         $media= prep_gameMedia($game_id, $result);
         $tags= prep_gameTags($game_id, $result);
         $requirements= prep_gameRequirements($game_id, $result);
-        // print_r($requirements);
-        // echo var_export($details, true);
-        // echo "<br>";
-        // echo var_export($media, true);
-        // echo "<br>";
-        // echo var_export($tags, true);
-        // echo "<br>";
-        // echo var_export($requirements, true);
-        // echo "<br>";
 
         try{
             $a = insert('Games_details', $details);
-            // // echo "<br><br><br>";
-            // // echo var_export($a);
 
             $a = insert('Game_media', $media);
-            // // echo "<br><br><br>";
-            // // echo var_export($a);
 
             $a = insert('Game_tags', $tags);
-            // // echo "<br><br><br>";
-            // // echo var_export($a);
 
             $a = insert('Game_requirements', $requirements);
-            // // echo "<br><br><br>";
-            // echo var_export($a);
 
             flash("Inserted records successfuly", "success");
         }catch (PDOException $e){
             // Check if the error is a duplicate entry error
             if ($e->getCode() == 23000) {
                 flash("Duplicate entry detected: Please try a different game", "danger");
-                error_log($e->getMessage(),true);
+                error_log(var_export($e->getMessage(),true));
             } else {
                 // Handle other PDO exceptions
                 flash("A database error occured, please try again later","danger");
-                echo $e->getMessage();
+                error_log(var_export($e->getMessage(),true));
             }
         }catch (Exception $e){
             flash("An unknown error has occured, please try again later","danger");
-            error_log($e->getMessage(),true);
+            error_log(var_export($e->getMessage(),true));
         }
     }
 
@@ -102,7 +84,6 @@
             $id = se($_POST, "game_id", "", false);
             $name = se($_POST, "name", "", false);
             $price = se($_POST, "price", "", false);
-            // echo $_POST["release_date"];
             $release_date = $_POST["release_date"];
             $dev_name = se($_POST, "dev_name", "", false);
             $publisher_name = isset($_POST["publisher_name"])?se($_POST, "publisher_name", "", false):NULL;
@@ -128,7 +109,7 @@
                 flash("Franchise name must be maximum 50 characters long", "warning");
                 $insert = False;
             }
-            if(!preg_match("/^\\$[0-9]+\.[0-9][0-9]$/", $price)){
+            if(!preg_match("/^[0-9]+\.[0-9][0-9]$/", $price)){
                 flash("Price must be in format \$dd.dd $price", "warning");
                 $insert = False;
             }
@@ -175,16 +156,15 @@
                 // Check if the error is a duplicate entry error
                 if ($e->getCode() == 23000) {
                     flash("Duplicate entry detected: Please try a different game id or game name", "danger");
-                    echo error_log($e->getMessage(),true);
+                    error_log(var_export($e->getMessage(),true));
                 } else {
                     // Handle other PDO exceptions
                     flash("A database error occured, please try again later","danger");
-                    echo $e->getMessage();
+                    error_log(var_export($e->getMessage(),true));
                 }
             }catch (Exception $e){
                 flash("An unknown error has occured, please try again later","danger");
                 error_log($e->getMessage(),true);
-                echo $e->getMessage();
             }
         }
         
@@ -207,12 +187,6 @@
             <?php render_input(["type" => "hidden", "name" => "action", "value" => "fetch_search"]); ?>
             <?php render_button(["text" => "Find game", "type" => "submit",]); ?>
         </form>
-        <!-- <p></p>
-        <form method="POST">
-            <?php //render_input(["type" => "number", "name" => "game_id", "placeholder" => "Game ID"]); ?>
-            <?php //render_input(["type" => "hidden", "name" => "action2", "value" => "fetch_details"]); ?>
-            <?php //render_button(["text" => "Get details", "type" => "submit",]); ?>
-        </form> -->
 
         <?php if(isset($displayResult)) : ?>
             <hr>
@@ -233,7 +207,7 @@
         <form method="POST">
             <?php render_input(["type" => "number", "name" => "game_id", "label" => "Game ID", "rules" => ["required" => "required"]]); ?>
             <?php render_input(["type" => "text", "name" => "name", "label" => "Name", "rules" => ["required" => "required", "maxlength"=>100]]); ?>
-            <?php render_input(["type" => "text", "name" => "price", "label" => "Price", "rules" => ["required" => "required", "pattern"=>"\\\$\d{1,}\.\d\d"]]); ?>
+            <?php render_input(["type" => "text", "name" => "price", "label" => "Price", "rules" => ["required" => "required", "pattern"=>"\d{1,}\.\d\d"]]); ?>
             <?php render_input(["type" => "date", "name" => "release_date", "label" => "Release Date", "rules" => ["required" => "required"]]); ?>
             <?php render_input(["type" => "text", "name" => "dev_name", "label" => "Developer Name", "rules" => ["required" => "required", "maxlength"=>50]]); ?>
             <?php render_input(["type" => "text", "name" => "publisher_name", "label" => "Publisher Name", "rules"=>["maxlength"=>50]]); ?>
