@@ -104,21 +104,38 @@
         foreach($sys_req as $os=>$reqs){
             
             $min_arr = [];
+            $min_set = false;
             foreach($reqs['min'] as $attr){
                 if(str_starts_with($attr,'OS:')){
                         $min_arr['os_version']=substr($attr, strlen('OS:')+1);
+                        $min_set = true;
                 }else if(str_starts_with($attr,'OS *:')){
                     $min_arr['os_version']=substr($attr, strlen('OS *:')+1);
+                    $min_set = true;
                 }else if(str_starts_with($attr,'Processor:')){
                     $min_arr['processor']=substr($attr, strlen('Processor:')+1);
+                    $min_set = true;
                 }else if(str_starts_with($attr,'Memory:')){
                     $min_arr['memory']=substr($attr, strlen('Memory:')+1);
+                    $min_set = true;
                 }else if(str_starts_with($attr,'Graphics:')){
                     $min_arr['graphics']=substr($attr, strlen('Graphics:')+1);
+                    $min_set = true;
                 }else if(str_starts_with($attr,'Storage:')){
+                    $min_set = true;
                     $min_arr['storage']=substr($attr, strlen('Storage:')+1);
                 }
             }
+            
+            if($min_set){
+                $min_arr["os_version"]=(isset($min_arr["os_version"]))?$min_arr["os_version"]:NULL;
+                $min_arr["processor"]=(isset($min_arr["processor"]))?$min_arr["processor"]:NULL;
+                $min_arr["graphics"]=(isset($min_arr["graphics"]))?$min_arr["graphics"]:NULL;
+                $min_arr["memory"]=(isset($min_arr["memory"]))?$min_arr["memory"]:NULL;
+                $min_arr["storage"]=(isset($min_arr["storage"]))?$min_arr["storage"]:NULL;
+
+            }
+            
             if(count($min_arr)>1){
                 $min_arr['game_id'] = $game_id;
                 $min_arr['requirement_type'] = 'min';
@@ -128,20 +145,35 @@
 
             if($reqs["recomm"]){
                 $recom_arr = [];
+                $recom_set = false;
                 foreach($reqs['recomm'] as $attr){
                     if(str_starts_with($attr,'OS:')){
                         $recom_arr['os_version']=substr($attr, strlen('OS:')+1);
+                        $recom_set = true;
                     }else if(str_starts_with($attr,'OS *:')){
                         $recom_arr['os_version']=substr($attr, strlen('OS *:')+1);
+                        $recom_set = true;
                     }else if(str_starts_with($attr,'Processor:')){
                         $recom_arr['processor']=substr($attr, strlen('Processor:')+1);
+                        $recom_set = true;
                     }else if(str_starts_with($attr,'Memory:')){
                         $recom_arr['memory']=substr($attr, strlen('Memory:')+1);
+                        $recom_set = true;
                     }else if(str_starts_with($attr,'Graphics:')){
                         $recom_arr['graphics']=substr($attr, strlen('Graphics:')+1);
+                        $recom_set = true;
                     }else if(str_starts_with($attr,'Storage:')){
                         $recom_arr['storage']=substr($attr, strlen('Storage:')+1);
+                        $recom_set = true;
                     }
+                }
+                if($recom_set){
+                    $recom_arr["os_version"]=(isset($recom_arr["os_version"]))?$recom_arr["os_version"]:NULL;
+                    $recom_arr["processor"]=(isset($recom_arr["processor"]))?$recom_arr["processor"]:NULL;
+                    $recom_arr["graphics"]=(isset($recom_arr["graphics"]))?$recom_arr["graphics"]:NULL;
+                    $recom_arr["memory"]=(isset($recom_arr["memory"]))?$recom_arr["memory"]:NULL;
+                    $recom_arr["storage"]=(isset($recom_arr["storage"]))?$recom_arr["storage"]:NULL;
+    
                 }
                 if(count($recom_arr)>1){
                     $recom_arr['game_id'] = $game_id;
