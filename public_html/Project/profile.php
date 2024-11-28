@@ -34,11 +34,12 @@ if (isset($_POST["save"])) {
             //TODO come up with a nice error message
                 $error = $e->errorInfo[1];
                 flash("An unexpected error has occured. Code $error", "danger");
-            echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
+                error_log(var_export($e->errorInfo, true));
             $success = false;
         }
     } catch (Exception $e){
         flash("An unexpected error has occured, please try again.", "danger");
+        error_log(var_export($e, true));
         $success = false;
     }
     //select fresh data from table
@@ -57,6 +58,7 @@ if (isset($_POST["save"])) {
     } catch (Exception $e) {
         flash("An unexpected error occurred, please try again", "danger");
         //echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
+        error_log(var_export($e, true));
         $success = false;
     }
 

@@ -36,8 +36,12 @@
             <?php echo $_rules;?> />
         <?php elseif($_type === "textarea"):?>
             <textarea class="form-control" name="<?php se($_name); ?>" id="<?php se($_id); ?>" placeholder="<?php se($_placeholder); ?>" <?php echo $_rules;?>><?php se($_value);?></textarea>
-        <?php elseif ($_type === "TBD type") : ?>
-            <?php /* TODO other non-form-control elements */ ?>
+        <?php elseif ($_type === "select") : ?>
+            <select name = "<?php se($_name) ?>" class="form-control">
+                <?php foreach ($data["options"] as $option) : ?>
+                    <option value = "<?php se($option) ?>" <?php if($option == $data["selected"]) echo ("selected")?> ><?php se($option) ?></option>
+                <?php endforeach ?>
+            </select>
         <?php endif; ?>
         <?php /* Include margin close tag */ ?>
         <?php if ($_include_margin) : ?>
