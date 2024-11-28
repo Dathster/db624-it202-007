@@ -19,7 +19,8 @@ if ($id > 0) {
         // alternatively, during FOREIGN KEY creation would could have used cascade delete
         $stmt = $db->prepare("DELETE FROM `Games_details` where game_id = :id");
         $stmt->execute([":id" => $id]);
-        if($stmt->rowCount()>1){
+        // flash($stmt->rowCount());
+        if($stmt->rowCount()>0){
             flash("Delete successful", "success");
         }else{
             flash("No records were found with the given game id", "warning");

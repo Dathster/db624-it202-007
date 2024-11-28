@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS `Game_descriptions` (
     `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `modified` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     `game_id` INT NOT NULL,
-    `desc` VARCHAR(1000),
+    `description` VARCHAR(1000),
     `about` TEXT,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`game_id`) REFERENCES `Games_details`(`game_id`) ON DELETE CASCADE

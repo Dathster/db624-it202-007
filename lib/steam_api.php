@@ -189,5 +189,15 @@
 
         return $output_arr;
     }
+
+    function prep_gameDescriptions($game_id, $result){
+        $desc = se($result, 'desc', "", false);
+        $about = se($result, 'about_game', "", false);
+        $output_arr = ["game_id"=>$game_id,
+                    "description"=>$desc,
+                    "about"=>$about];
+
+        return $output_arr;
+    }
 ?>
 

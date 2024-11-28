@@ -19,6 +19,7 @@
         $_tags = (empty($data["combined_tags"]))?"None":$data["combined_tags"];
         $_game_id = se($data,"game_id", "", false);
         $_release_date = se($data, "release_date", "", false);
+        $_about = se($data, "about", "", false);
         $_query_string = se($data, "query_string", "", false);
     ?>    
     
@@ -51,7 +52,7 @@
             <button class="btn btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#gameTags_<?php echo $_game_id; ?>" aria-expanded="false" aria-controls="gameTags_<?php echo $_game_id; ?>">
                 Tags
             </button>
-
+        
             <!-- Collapsible Content -->
             <div class="collapse mt-3" id="gameTags_<?php echo $_game_id; ?>">
                 <div class="card card-body">
@@ -59,11 +60,12 @@
                 </div>
             </div>
 
-            <!-- <div class="card-text">
-                
-            </div> -->
-
-            <div class="card-footer">
+            <?php if(!empty($_about)) : ?>
+                <hr>
+                <p class="card-text"><?php se($_about); ?></p>
+            <?php endif ?>
+            
+            <div class="card-footer mt-3">
                 <ul class="list-group list-group-flush">
                     <div class="row">
                         <div class="col-3">
