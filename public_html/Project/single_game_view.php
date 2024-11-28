@@ -1,67 +1,67 @@
 <?php require(__DIR__ . "/../../partials/nav.php"); ?>
 
 <?php
-$game_id = $_GET["game_id"];
-$query_games_details = "select 
-`gd`.`game_id`,
-`gd`.`game_name`,
-`gd`.`release_date`,
-`gd`.`developer_name`,
-`gd`.`publisher_name`,
-`gd`.`franchise_name`,
-`gd`.`created`,
-`gd`.`modified`,
-case when `gd`.`price` = 0.00 then 'Free To Play'
-else concat('$', `gd`.`price`) end as `price`,
-if(`gd`.`from_api`, 'true', 'false') as `from_api`
-from `Games_details` `gd` where `gd`.`game_id` = $game_id";
-$query_game_tags = "select * from `Game_tags` where `game_id` = $game_id";
-$query_game_media = "select * from `Game_media` where `game_id` = $game_id";
+	$game_id = $_GET["game_id"];
+	$query_games_details = "select 
+	`gd`.`game_id`,
+	`gd`.`game_name`,
+	`gd`.`release_date`,
+	`gd`.`developer_name`,
+	`gd`.`publisher_name`,
+	`gd`.`franchise_name`,
+	`gd`.`created`,
+	`gd`.`modified`,
+	case when `gd`.`price` = 0.00 then 'Free To Play'
+	else concat('$', `gd`.`price`) end as `price`,
+	if(`gd`.`from_api`, 'true', 'false') as `from_api`
+	from `Games_details` `gd` where `gd`.`game_id` = $game_id";
+	$query_game_tags = "select * from `Game_tags` where `game_id` = $game_id";
+	$query_game_media = "select * from `Game_media` where `game_id` = $game_id";
 
-$results_games_details = select($query_games_details);
-$results_game_tags = select($query_game_tags);
-$results_game_media = select($query_game_media);
-
-
-if(empty($results_games_details)){
-flash("Invalid game id detected please try a different game", "warning");
-die(header("Location: games_view.php"));
-}
-
-$query_screenshots = "select distinct `url` from `Game_media` where `game_id` = $game_id and `type` = 'screenshot'";
-$results_screenshots = select($query_screenshots);
-
-$query_videos = "select distinct `url` from `Game_media` where `game_id` = $game_id and `type` = 'video'";
-$results_videos = select($query_videos);
-
-$query_min_requirements = "select * from `Game_requirements` where `game_id` = $game_id and `requirement_type` = 'min'";
-$results_min_requirements = select($query_min_requirements);
-
-$query_recom_requirements = "select * from `Game_requirements` where `game_id` = $game_id and `requirement_type` = 'recom'";
-$results_recom_requirements = select($query_recom_requirements);
-
-$table_min_requirements = ["data"=>$results_min_requirements, "title"=>"min requirements"];
-$table_recom_requirements = ["data"=>$results_recom_requirements, "title"=>"recom requirements"];
+	$results_games_details = select($query_games_details);
+	$results_game_tags = select($query_game_tags);
+	$results_game_media = select($query_game_media);
 
 
-$game_name = se($results_games_details[0], "game_name", "", false);
-$price =  se($results_games_details[0], "price", "", false);
-$developer_name = se($results_games_details[0], "developer_name", "", false);
-$publiser_name = se($results_games_details[0], "publisher_name", "", false);
-$franchise_name = se($results_games_details[0], "franchise_name", "", false);
-$release_date = se($results_games_details[0], "release_date", "", false);
-$created = se($results_games_details[0], "created", "", false);
-$modified = se($results_games_details[0], "modified", "", false);
-$from_api = se($results_games_details[0], "from_api", "", false);
+	if(empty($results_games_details)){
+	flash("Invalid game id detected please try a different game", "warning");
+	die(header("Location: games_view.php"));
+	}
 
-$edit_url = get_url("admin/game_edit.php");;
-$delete_url = get_url("admin/game_delete.php");
+	$query_screenshots = "select distinct `url` from `Game_media` where `game_id` = $game_id and `type` = 'screenshot'";
+	$results_screenshots = select($query_screenshots);
 
-$_edit_label = "Edit";
-$_delete_label = "Delete";
+	$query_videos = "select distinct `url` from `Game_media` where `game_id` = $game_id and `type` = 'video'";
+	$results_videos = select($query_videos);
 
-$_edit_classes = "btn btn-warning";
-$_delete_classes = "btn btn-danger";
+	$query_min_requirements = "select * from `Game_requirements` where `game_id` = $game_id and `requirement_type` = 'min'";
+	$results_min_requirements = select($query_min_requirements);
+
+	$query_recom_requirements = "select * from `Game_requirements` where `game_id` = $game_id and `requirement_type` = 'recom'";
+	$results_recom_requirements = select($query_recom_requirements);
+
+	$table_min_requirements = ["data"=>$results_min_requirements, "title"=>"min requirements"];
+	$table_recom_requirements = ["data"=>$results_recom_requirements, "title"=>"recom requirements"];
+
+
+	$game_name = se($results_games_details[0], "game_name", "", false);
+	$price =  se($results_games_details[0], "price", "", false);
+	$developer_name = se($results_games_details[0], "developer_name", "", false);
+	$publiser_name = se($results_games_details[0], "publisher_name", "", false);
+	$franchise_name = se($results_games_details[0], "franchise_name", "", false);
+	$release_date = se($results_games_details[0], "release_date", "", false);
+	$created = se($results_games_details[0], "created", "", false);
+	$modified = se($results_games_details[0], "modified", "", false);
+	$from_api = se($results_games_details[0], "from_api", "", false);
+
+	$edit_url = get_url("admin/game_edit.php");;
+	$delete_url = get_url("admin/game_delete.php");
+
+	$_edit_label = "Edit";
+	$_delete_label = "Delete";
+
+	$_edit_classes = "btn btn-warning";
+	$_delete_classes = "btn btn-danger";
 ?>
 
 <div class='container-fluid'>
