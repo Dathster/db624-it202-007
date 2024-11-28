@@ -30,17 +30,13 @@
         $media= prep_gameMedia($game_id, $result);
         $tags= prep_gameTags($game_id, $result);
         $requirements= prep_gameRequirements($game_id, $result);
+        $descriptions= prep_gameDescriptions($game_id, $result);
 
+        // echo var_export($descriptions);
+
+        $insert_rest = true;
         try{
             $a = insert('Games_details', $details);
-
-            $a = insert('Game_media', $media);
-
-            $a = insert('Game_tags', $tags);
-
-            $a = insert('Game_requirements', $requirements);
-
-            flash("Inserted records successfuly", "success");
         }catch (PDOException $e){
             // Check if the error is a duplicate entry error
             if ($e->getCode() == 23000) {
@@ -50,11 +46,43 @@
                 // Handle other PDO exceptions
                 flash("A database error occured, please try again later","danger");
                 error_log(var_export($e->getMessage(),true));
+                // echo var_export($e->getMessage(),true);
                 
             }
+            $insert_rest = false;
         }catch (Exception $e){
             flash("An unknown error has occured, please try again later","danger");
             error_log(var_export($e->getMessage(),true));
+            $insert_rest = false;
+        }
+
+        if($insert_rest){
+            try{
+                $a = insert('Game_media', $media);
+    
+                $a = insert('Game_tags', $tags);
+    
+                $a = insert('Game_requirements', $requirements);
+    
+                $a = insert('Game_descriptions', $descriptions);
+    
+                flash("Inserted records successfuly", "success");
+            }catch (PDOException $e){
+                // Check if the error is a duplicate entry error
+                if ($e->getCode() == 23000) {
+                    flash("Duplicate entry detected: Please try a different game", "danger");
+                    error_log(var_export($e->getMessage(),true));
+                } else {
+                    // Handle other PDO exceptions
+                    flash("A database error occured, please try again later","danger");
+                    error_log(var_export($e->getMessage(),true));
+                    // echo var_export($e->getMessage(),true);
+                    
+                }
+            }catch (Exception $e){
+                flash("An unknown error has occured, please try again later","danger");
+                error_log(var_export($e->getMessage(),true));
+            }
         }
     }
 
@@ -90,6 +118,9 @@
             $publisher_name = isset($_POST["publisher_name"])?se($_POST, "publisher_name", "", false):NULL;
             $franchise_name = isset($_POST["franchise_name"])?se($_POST, "franchise_name", "", false):NULL;
             $tags = isset($_POST["tags"])?se($_POST, "tags", "", false):NULL;
+            $description = se($_POST, "description", "", false);
+            $about = se($_POST, "about", "", false);
+
             $insert = True;
             $gamesDetailsdata= [];
             $gameTagsdata = [];
@@ -127,6 +158,16 @@
                 $tags = explode(",", $tags);
             }
             
+            if(strlen($franchise_name)>1000){
+                flash("Summary description must be maximum 1,000 characters long", "warning");
+                $insert = False;
+            }
+
+            if($franchise_name && strlen($about)>60000){
+                flash("About game must be maximum 60,000 characters long", "warning");
+                $insert = False;
+            }
+
             $data = [
                 "game_id"=>$id,
                 "game_name"=>$name,
@@ -143,15 +184,16 @@
                     $gameTagsdata[] = ["game_id"=>$id, "tag"=>$tag];
                 }
             }
-    
+
+            $gameDescriptionData[] = ["game_id"=>$id, "description"=>$description, "about"=>$about];
+            $insert_rest = false;
             try{
                 if($insert){
                     $a = insert('Games_details', $data);
                     if($tags){
                         $a = insert('Game_tags', $gameTagsdata);
                     }
-        
-                    flash("Inserted records successfuly", "success");
+                    $insert_rest=true;
                 }
             }catch (PDOException $e){
                 // Check if the error is a duplicate entry error
@@ -167,7 +209,36 @@
                 flash("An unknown error has occured, please try again later","danger");
                 error_log($e->getMessage(),true);
             }
+
+            if($insert_rest){
+                try{
+                    if($insert){
+                        if($tags){
+                            $a = insert('Game_tags', $gameTagsdata);
+                        }
+                        
+                        $a = insert('Game_descriptions', $gameDescriptionData);
+    
+                        flash("Inserted records successfuly", "success");
+                    }
+                }catch (PDOException $e){
+                    // Check if the error is a duplicate entry error
+                    if ($e->getCode() == 23000) {
+                        flash("Duplicate entry detected: Please try a different game id or game name", "danger");
+                        error_log(var_export($e->getMessage(),true));
+                    } else {
+                        // Handle other PDO exceptions
+                        flash("A database error occured, please try again later","danger");
+                        error_log(var_export($e->getMessage(),true));
+                    }
+                }catch (Exception $e){
+                    flash("An unknown error has occured, please try again later","danger");
+                    error_log($e->getMessage(),true);
+                }
+            }
         }
+
+        
         
     }
 ?>
@@ -215,6 +286,9 @@
             <?php render_input(["type" => "text", "name" => "franchise_name", "label" => "Franchise Name", "rules"=>["maxlength"=>50]]); ?>
             
             <?php render_input(["type" => "text", "name" => "tags", "label" => "Tags (do not include spaces after commas)", "rules" => ["pattern"=>"^([^,\s]+,)*[^,\s]+$"]]); ?>
+
+            <?php render_input(["type" => "textarea", "name" => "description", "label" => "Summary Description", "rules"=>["maxlength"=>1000]]); ?>
+            <?php render_input(["type" => "textarea", "name" => "about", "label" => "About Game", "rules"=>["maxlength"=>60000]]); ?>
 
             <?php render_input(["type" => "hidden", "name" => "action3", "value" => "create"]); ?>
             <?php render_button(["text" => "Search", "type" => "submit", "text" => "Create"]); ?>

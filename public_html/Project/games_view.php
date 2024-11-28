@@ -59,6 +59,10 @@ if(`gd`.`from_api`, 'true', 'false') as `from_api`
 
             $game_media_arr = (empty($results_game_media))?[]:$results_game_media;
             
+            $query_game_description="select `description` from `Game_descriptions` where `game_id` = $game_id";
+            $result_game_description=select($query_game_description);
+            $game_description = (empty($result_game_description))?"":se($result_game_description[0],'description', "", false);
+            
             $single_result = [
                 "game_id"=>$game_id,
                 "game_name"=>$record["game_name"],
@@ -68,6 +72,7 @@ if(`gd`.`from_api`, 'true', 'false') as `from_api`
                 "from_api"=>$record["from_api"],
                 "combined_tags"=>$record["combined_tags"],
                 "screenshots"=>$game_media_arr,
+                "about"=>$game_description,
                 "view_url"=>get_url("single_game_view.php")
             ]; 
             if(has_role("Admin")){

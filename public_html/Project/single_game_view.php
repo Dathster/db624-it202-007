@@ -17,10 +17,14 @@
 	from `Games_details` `gd` where `gd`.`game_id` = $game_id";
 	$query_game_tags = "select * from `Game_tags` where `game_id` = $game_id";
 	$query_game_media = "select * from `Game_media` where `game_id` = $game_id";
+	$query_game_about = "select `about` from `Game_descriptions` where `game_id` = $game_id";
 
 	$results_games_details = select($query_games_details);
 	$results_game_tags = select($query_game_tags);
 	$results_game_media = select($query_game_media);
+	$result_game_about = select($query_game_about);
+
+	$game_about = (empty($result_game_about))?"":se($result_game_about[0],'about', "", false);
 
 
 	if(empty($results_games_details)){
@@ -53,6 +57,7 @@
 	$created = se($results_games_details[0], "created", "", false);
 	$modified = se($results_games_details[0], "modified", "", false);
 	$from_api = se($results_games_details[0], "from_api", "", false);
+	$game_about = (empty($result_game_about))?"":se($result_game_about[0],'about', "", false);
 
 	$edit_url = get_url("admin/game_edit.php");;
 	$delete_url = get_url("admin/game_delete.php");
@@ -230,6 +235,13 @@
 			</div>
 		</div>
 	</div>				
+</div>
+
+<div class="card ms-3 me-3 mb-3">
+  <div class="card-body">
+    <h5 class="card-title">About Game</h5>
+    <p class="card-text"><?php se($game_about); ?></p>
+  </div>
 </div>
 
 <?php if(has_role("Admin")): ?>
