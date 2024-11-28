@@ -172,7 +172,7 @@
 ?>
 
 <div class="container-fluid">
-    <h3>Create or Fetch Stock</h3>
+    <h3>Create or Fetch Game</h3>
     <ul class="nav nav-tabs">
         <li class="nav-item">
             <a class="nav-link" href="#" onclick="switchTab('create')">Fetch</a>

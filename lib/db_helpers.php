@@ -253,7 +253,7 @@ function select($query){
         $stmt->execute();
         $r = $stmt->fetchAll();
         return $r;
-        echo "result: " . var_export($r);
+        // echo "result: " . var_export($r);
     } catch (PDOException $e) {
         error_log(var_export($e, true),true);
         flash("An unexpected database error occured", "danger");
@@ -261,3 +261,4 @@ function select($query){
     }
 
 }
+

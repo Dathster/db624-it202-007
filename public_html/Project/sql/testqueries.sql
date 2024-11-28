@@ -115,3 +115,32 @@ select * from details where details.game_name like '%jfldjal%';
 -- );
 
 select url from Game_media where type = 'screenshot' limit 1;
+
+
+
+
+
+select 
+`gd`.`game_id`,
+`gd`.`game_name`,
+`gd`.`release_date`,
+`gd`.`developer_name`,
+case when `gd`.`price` = 0.00 then 'Free To Play'
+else concat('$', `gd`.`price`) end as `price`,
+if(`gd`.`from_api`, 'true', 'false') as `from_api`
+from `Games_details` `gd` where `gd`.`game_id` = 
+
+with `ct` as (
+    select `game_id`, group_concat(`tag` separator ', ') as `combined_tags` from `Game_tags`
+    group by `game_id`
+)
+select 
+`gd`.`game_id`,
+`gd`.`game_name`,
+`gd`.`release_date`,
+`gd`.`developer_name`,
+`ct`.`combined_tags`,
+case when `gd`.`price` = 0.00 then 'Free To Play'
+else concat('$', `gd`.`price`) end as `price`,
+if(`gd`.`from_api`, 'true', 'false') as `from_api`
+ from `Games_details` `gd` left join `ct` on `gd`.`game_id` = `ct`.`game_id` where 1;
