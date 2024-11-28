@@ -1,11 +1,6 @@
 <?php
     //note we need to go up 1 more directory
-    require(__DIR__ . "/../../../partials/nav.php");
-
-    if (!has_role("Admin")) {
-        flash("You don't have permission to view this page", "warning");
-        die(header("Location: $BASE_PATH" . "/home.php"));
-    }
+    require(__DIR__ . "/../../partials/nav.php");
 
     if(isset($_POST["reset"])){
         $_POST = [];
@@ -32,8 +27,7 @@ select
 case when `gd`.`price` = 0.00 then 'Free To Play'
 else concat('$', `gd`.`price`) end as `price`,
 if(`gd`.`from_api`, 'true', 'false') as `from_api`
- from `Games_details` `gd`, `ct`
-where `gd`.`game_id` = `ct`.`game_id`";
+ from `Games_details` `gd` left join `ct` on `gd`.`game_id` = `ct`.`game_id` where 1";
 
     if($search){
         $query_games_details .= " and `gd`.`game_name` like '%$search%'";
@@ -64,21 +58,25 @@ where `gd`.`game_id` = `ct`.`game_id`";
             $results_game_media = select($query_game_media);
 
             $game_media_arr = (empty($results_game_media))?[]:$results_game_media;
-
-            $results[] = [
-                                "game_id"=>$game_id,
-                                "game_name"=>$record["game_name"],
-                                "price"=>$record["price"],
-                                "release_date"=>$record["release_date"],
-                                "developer_name"=>$record["developer_name"],
-                                "from_api"=>$record["from_api"],
-                                "combined_tags"=>$record["combined_tags"],
-                                "screenshots"=>$game_media_arr,
-                                "view_url"=>get_url("admin/single_game_view.php"),
-                                "edit_url"=>get_url("admin/game_edit.php"),
-                                "delete_url"=>get_url("admin/game_delete.php")
-                            ];
+            
+            $single_result = [
+                "game_id"=>$game_id,
+                "game_name"=>$record["game_name"],
+                "price"=>$record["price"],
+                "release_date"=>$record["release_date"],
+                "developer_name"=>$record["developer_name"],
+                "from_api"=>$record["from_api"],
+                "combined_tags"=>$record["combined_tags"],
+                "screenshots"=>$game_media_arr,
+                "view_url"=>get_url("single_game_view.php")
+            ]; 
+            if(has_role("Admin")){
+                $single_result["edit_url"]=get_url("admin/game_edit.php");
+                $single_result["delete_url"]=get_url("admin/game_delete.php");
+            }
+            $results[] = $single_result;
         }
+            
         unset($record);
     }  
 ?>
@@ -141,5 +139,5 @@ where `gd`.`game_id` = `ct`.`game_id`";
 </div>
 
 <?php
-require_once(__DIR__ . "/../../../partials/flash.php");
+require_once(__DIR__ . "/../../partials/flash.php");
 ?>  

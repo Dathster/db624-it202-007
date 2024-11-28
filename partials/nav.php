@@ -57,13 +57,16 @@ session_start();
             <li><a class="dropdown-item" href="<?php echo get_url('admin/list_roles.php'); ?>">List Roles</a></li>
             <li><a class="dropdown-item" href="<?php echo get_url('admin/assign_roles.php'); ?>">Assign Roles</a></li>
             <li><a class="dropdown-item" href="<?php echo get_url('admin/game_fetch.php'); ?>">Fetch/Insert Games</a></li>
-            <li><a class="dropdown-item" href="<?php echo get_url('admin/games_view.php'); ?>">View Games</a></li>
             <li><a class="dropdown-item" href="<?php echo get_url('admin/games_edit.php'); ?>">Edit Games</a></li>
           </ul>
         <?php endif; ?>
         <?php if (is_logged_in()) : ?>
+            <li class='nav-item'><a class="nav-link" href="<?php echo get_url('games_view.php'); ?>">View Games</a></li>
             <li class='nav-item'><a class='nav-link' href="<?php echo get_url('logout.php'); ?>">Logout</a></li>
         <?php endif; ?>
     </ul>
 </nav>
 
+<title>
+    Steamed Games
+</title>

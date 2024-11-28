@@ -1,9 +1,22 @@
-<?php require(__DIR__ . "/../../../partials/nav.php"); ?>
+<?php require(__DIR__ . "/../../partials/nav.php"); ?>
 
 <?php
   $game_id = $_GET["game_id"];
   
-  $query_games_details = "select * from `Games_details` where `game_id` = $game_id";
+//   $query_games_details = "select * from `Games_details` where `game_id` = $game_id";
+	$query_games_details = "select 
+	`gd`.`game_id`,
+	`gd`.`game_name`,
+	`gd`.`release_date`,
+	`gd`.`developer_name`,
+	`gd`.`publisher_name`,
+	`gd`.`franchise_name`,
+	`gd`.`created`,
+	`gd`.`modified`,
+	case when `gd`.`price` = 0.00 then 'Free To Play'
+	else concat('$', `gd`.`price`) end as `price`,
+	if(`gd`.`from_api`, 'true', 'false') as `from_api`
+	from `Games_details` `gd` where `gd`.`game_id` = $game_id";
   $query_game_tags = "select * from `Game_tags` where `game_id` = $game_id";
   $query_game_media = "select * from `Game_media` where `game_id` = $game_id";
   $query_game_requirements = "select * from `Game_requirements` where `game_id` = $game_id";
@@ -14,7 +27,7 @@
   $results_game_requirements = select($query_game_requirements);
 
   if(empty($results_games_details)){
-    flash("Invalid game id detected", "warning");
+    flash("Invalid game id detected please try a different game", "warning");
     die(header("Location: games_view.php"));
   }
 
@@ -177,26 +190,29 @@
 		</div>
 	</div>
 
-	<div class='row'>
-			
-	</div>
+	<div class='row ms-3 me-3'>
+	<div class="card">
+					<h5 class="card-header">Tags</h5>
+						<div class='row'>
+							<?php foreach ($results_game_tags as $tag): ?>
+								<div class="col-1">
+									<p><?php se($tag["tag"]);?></p>
+								</div>
+					
+							<?php endforeach; ?>
+						</div>
+						
+				</div>
+	
+	
 </div>
 
 
 
 
-<!-- <div class="container mt-4 tab-target" id="video">
-    <div class="ratio ratio-16x9">
-        <video controls>
-            <source src="<?php //echo $results_videos[0]["url"] ?>" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
-</div> -->
+			
 
-<?php render_table($table_games_details); ?>
-<?php render_table($table_game_tags); ?>
-<?php render_table($table_game_media); ?>
+
 <?php render_table($table_games_requirements); ?>
 
 <script>
@@ -217,5 +233,5 @@
 </script>
 
 <?php
-require_once(__DIR__ . "/../../../partials/flash.php");
+require_once(__DIR__ . "/../../partials/flash.php");
 ?>  
