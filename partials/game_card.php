@@ -19,6 +19,7 @@
         $_tags = (empty($data["combined_tags"]))?"None":$data["combined_tags"];
         $_game_id = se($data,"game_id", "", false);
         $_release_date = se($data, "release_date", "", false);
+        $_query_string = se($data, "query_string", "", false);
     ?>    
     
     
@@ -77,7 +78,7 @@
                         </div>
                         <div class="col-3">
                             <?php if ($_delete_url) : ?>
-                                <a href="<?php echo $_delete_url; ?>?<?php echo "game_id"; ?>=<?php echo $_game_id; ?>" class="<?php se($_delete_classes); ?>"><?php se($_delete_label); ?></a>
+                                <a href="<?php echo $_delete_url; ?>?<?php echo "game_id"; ?>=<?php echo $_game_id . "&$_query_string"; ?>" class="<?php se($_delete_classes); ?>"><?php se($_delete_label); ?></a>
                             <?php endif; ?>        
                         </div>
                     </div>

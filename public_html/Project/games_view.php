@@ -2,16 +2,16 @@
     //note we need to go up 1 more directory
     require(__DIR__ . "/../../partials/nav.php");
 
-    if(isset($_POST["reset"])){
-        $_POST = [];
+    if(isset($_GET["reset"])){
+        $_GET = [];
     }
 
-    $search = (isset($_POST["game_search"]))?se($_POST,"game_search","",false):NULL;
-    $tag_search = (isset($_POST["tag_filter"]))?se($_POST,"tag_filter","",false):NULL;
-    $num_records = (isset($_POST["num_records"]))?$_POST["num_records"]:10;
-    $order_column = (isset($_POST["order_columns"]))?$_POST["order_columns"]:"game_name";
-    $order = (isset($_POST["order"]))?$_POST["order"]:"asc";
-    $api_filter = (isset($_POST["api_filter"]))?$_POST["api_filter"]:"Both";
+    $search = (isset($_GET["game_search"]))?se($_GET,"game_search","",false):NULL;
+    $tag_search = (isset($_GET["tag_filter"]))?se($_GET,"tag_filter","",false):NULL;
+    $num_records = (isset($_GET["num_records"]))?$_GET["num_records"]:10;
+    $order_column = (isset($_GET["order_columns"]))?$_GET["order_columns"]:"game_name";
+    $order = (isset($_GET["order"]))?$_GET["order"]:"asc";
+    $api_filter = (isset($_GET["api_filter"]))?$_GET["api_filter"]:"Both";
 
     // echo $search . "<br>" . $tag_search . "<br>" . $num_records . "<br>" . $order_column . "<br>" . $order . "<br>"; 
     $query_games_details = "with `ct` as (
@@ -73,18 +73,21 @@ if(`gd`.`from_api`, 'true', 'false') as `from_api`
             if(has_role("Admin")){
                 $single_result["edit_url"]=get_url("admin/game_edit.php");
                 $single_result["delete_url"]=get_url("admin/game_delete.php");
+                $single_result["query_string"]=se($_SERVER, "QUERY_STRING", "", false);
             }
             $results[] = $single_result;
         }
             
         unset($record);
+
+        
     }  
 ?>
 <div class="container-fluid">
     <h3 class='mt-3 mb-3'>Steam Game Data</h3>
     <hr class='mt-3 mb-3'>
     <h3 class='mt-3 mb-3'>Filter Results</h3>
-    <form method="POST">
+    <form method="GET">
         <div class="row">
             <div class="col-3">
             <?php render_input(["type" => "search", "label"=>"Search game by name", "name" => "game_search", "placeholder" => "Game name filer", "value"=>$search]);/*lazy value to check if form submitted, not ideal*/ ?>
@@ -117,7 +120,7 @@ if(`gd`.`from_api`, 'true', 'false') as `from_api`
         </div>
     </form>
     <div class="col-1">
-        <form method="POST">
+        <form method="GET">
             <?php render_input(["type"=>"hidden", "name"=>"reset", "value"=>"1"]); ?>
             <?php render_button(["text" => "Reset", "type" => "submit"]); ?>
         </form>
