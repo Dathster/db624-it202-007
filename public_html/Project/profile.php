@@ -34,11 +34,12 @@ if (isset($_POST["save"])) {
             //TODO come up with a nice error message
                 $error = $e->errorInfo[1];
                 flash("An unexpected error has occured. Code $error", "danger");
-            echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
+                error_log(var_export($e->errorInfo, true));
             $success = false;
         }
     } catch (Exception $e){
         flash("An unexpected error has occured, please try again.", "danger");
+        error_log(var_export($e, true));
         $success = false;
     }
     //select fresh data from table
@@ -57,6 +58,7 @@ if (isset($_POST["save"])) {
     } catch (Exception $e) {
         flash("An unexpected error occurred, please try again", "danger");
         //echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
+        error_log(var_export($e, true));
         $success = false;
     }
 
@@ -109,32 +111,23 @@ if (isset($_POST["save"])) {
 $email = get_user_email();
 $username = get_username();
 ?>
-<h1>Update profile</h1>
-<form method="POST" onsubmit="return validate(this);">
-    <div class="mb-3">
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email" value="<?php se($email); ?>" />
-    </div>
-    <div class="mb-3">
-        <label for="username">Username</label>
-        <input type="text" name="username" id="username" value="<?php se($username); ?>" />
-    </div>
-    <!-- DO NOT PRELOAD PASSWORD -->
-    <h2>Password Reset</h2>
-    <div class="mb-3">
-        <label for="cp">Current Password</label>
-        <input type="password" name="currentPassword" id="cp" />
-    </div>
-    <div class="mb-3">
-        <label for="np">New Password</label>
-        <input type="password" name="newPassword" id="np" />
-    </div>
-    <div class="mb-3">
-        <label for="conp">Confirm Password</label>
-        <input type="password" name="confirmPassword" id="conp" />
-    </div>
-    <input type="submit" value="Update Profile" name="save" />
-</form>
+<div class='container-fluid'>
+    <h1>Update profile</h1>
+    <form method="POST" onsubmit="return validate(this);">
+            <?php render_input(["type" => "email", "id" => "email", "name" => "email", "label" => "Email", "value" => $email, "rules" => ["required" => true]]); ?>
+            <?php render_input(["type" => "text", "id" => "username", "name" => "username", "label" => "Username", "value" => $username, "rules" => ["required" => true, "maxlength" => 30]]); ?>
+            
+            <!-- DO NOT PRELOAD PASSWORD -->
+            <h2>Password Reset</h2>
+
+            <?php render_input(["type" => "password", "id" => "cp", "name" => "currentPassword", "label" => "Current Password", "rules" => ["minlength" => 8]]); ?>
+            <?php render_input(["type" => "password", "id" => "np", "name" => "newPassword", "label" => "New Password", "rules" => ["minlength" => 8]]); ?>
+            <?php render_input(["type" => "password", "id" => "conp", "name" => "confirmPassword", "label" => "Confirm Password", "rules" => ["minlength" => 8]]); ?>
+            <?php render_input(["type" => "hidden", "name" => "save"]);/*lazy value to check if form submitted, not ideal*/ ?>
+            <?php render_button(["text" => "Update Profile", "type" => "submit"]); ?>
+    </form>
+
+</div>
 
 <script>
     function validate(form) {

@@ -22,5 +22,18 @@ require(__DIR__ . "/duplicate_user_details.php");
 //reset session
 require(__DIR__ . "/reset_session.php");
 
+//Get the path for a file
 require(__DIR__ . "/get_url.php");
+
+//Helper functions for rendering input fields
+require(__DIR__ . "/render_functions.php");
+
+// //Function to help make API calls
+// require(__DIR__ . "/api_helper.php");
+
+//File containing wrappers for API calls
+require(__DIR__ . "/steam_api.php");
+
+//Function for helping with database inserts
+require(__DIR__ . "/db_helpers.php");
 ?>
