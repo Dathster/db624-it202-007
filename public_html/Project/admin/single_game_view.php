@@ -1,95 +1,221 @@
 <?php require(__DIR__ . "/../../../partials/nav.php"); ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Searchable Dropdown - Bootstrap 5.3.3</title>
-  <!-- Bootstrap 5.3.3 CSS -->
-  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"> -->
-  <style>
-    .dropdown-menu {
-      max-height: 200px; /* Limit the height of the dropdown */
-      overflow-y: auto;  /* Enable scrolling */
-    }
-  </style>
-</head>
-<body>
-  <div class="container mt-5">
-    <h2>Searchable Dropdown</h2>
-    <div class="dropdown">
-      <!-- Searchable input field -->
-      <input 
-        type="text" 
-        class="form-control" 
-        id="searchInput" 
-        placeholder="Type to search..." 
-        data-bs-toggle="dropdown" 
-        aria-expanded="false"
-      />
-      <ul class="dropdown-menu w-100" id="dropdownList">
-        <li><a class="dropdown-item" href="#" data-value="None">None</a></li>
-        <li><a class="dropdown-item" href="#" data-value="Option1">Option 1</a></li>
-        <li><a class="dropdown-item" href="#" data-value="Option2">Option 2</a></li>
-        <li><a class="dropdown-item" href="#" data-value="Option3">Option 3</a></li>
-        <li><a class="dropdown-item" href="#" data-value="Option4">Option 4</a></li>
-        <li><a class="dropdown-item" href="#" data-value="Option5">Option 5</a></li>
-      </ul>
-    </div>
-    <p class="mt-3">Selected: <span id="selectedValue">None</span></p>
-  </div>
 
-  <!-- Bootstrap 5.3.3 JS Bundle (includes Popper.js) -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<?php
+  $game_id = $_GET["game_id"];
   
-  <script>
-    // Elements
-    const searchInput = document.getElementById('searchInput');
-    const dropdownList = document.getElementById('dropdownList');
-    const selectedValueDisplay = document.getElementById('selectedValue');
+  $query_games_details = "select * from `Games_details` where `game_id` = $game_id";
+  $query_game_tags = "select * from `Game_tags` where `game_id` = $game_id";
+  $query_game_media = "select * from `Game_media` where `game_id` = $game_id";
+  $query_game_requirements = "select * from `Game_requirements` where `game_id` = $game_id";
 
-    // Initialize the Bootstrap dropdown instance
-    const dropdownInstance = new bootstrap.Dropdown(searchInput, { autoClose: false });
+  $results_games_details = select($query_games_details);
+  $results_game_tags = select($query_game_tags);
+  $results_game_media = select($query_game_media);
+  $results_game_requirements = select($query_game_requirements);
 
-    // Filter dropdown items based on input
-    searchInput.addEventListener('input', function () {
-      const filter = searchInput.value.toLowerCase(); // Get the input text
-      const items = dropdownList.querySelectorAll('.dropdown-item'); // Get all dropdown items
+  if(empty($results_games_details)){
+    flash("Invalid game id detected", "warning");
+    die(header("Location: games_view.php"));
+  }
 
-      items.forEach(item => {
-        const text = item.textContent.toLowerCase();
-        // Show or hide the item based on the filter
-        if (text.includes(filter)) {
-          item.style.display = 'block';
-        } else {
-          item.style.display = 'none';
-        }
-      });
+  $table_games_details = ["data"=>$results_games_details, "title"=>"game details"];
+  $table_game_tags = ["data"=>$results_game_tags, "title"=>"game tags"];
+  $table_game_media = ["data"=>$results_game_media, "title"=>"game media"];
+  $table_games_requirements = ["data"=>$results_game_requirements, "title"=>"game requirements"];
 
-      // Show the dropdown if input has focus and filter is applied
-      dropdownInstance.show();
-    });
+  $query_screenshots = "select distinct `url` from `Game_media` where `game_id` = $game_id and `type` = 'screenshot'";
+  $results_screenshots = select($query_screenshots);
 
-    // Handle item selection
-    dropdownList.addEventListener('click', function (e) {
-      if (e.target.classList.contains('dropdown-item')) {
-        e.preventDefault(); // Prevent default link behavior
-        const selectedValue = e.target.getAttribute('data-value'); // Get the selected value
-        const selectedText = e.target.textContent; // Get the text of the selected item
+  $query_videos = "select distinct `url` from `Game_media` where `game_id` = $game_id and `type` = 'video'";
+  $results_videos = select($query_videos);
+  
+  $game_name = se($results_games_details[0], "game_name", "", false);
+  $price =  se($results_games_details[0], "price", "", false);
+  $developer_name = se($results_games_details[0], "developer_name", "", false);
+  $publiser_name = se($results_games_details[0], "publisher_name", "", false);
+  $franchise_name = se($results_games_details[0], "franchise_name", "", false);
+  $release_date = se($results_games_details[0], "release_date", "", false);
+  $created = se($results_games_details[0], "created", "", false);
+  $modified = se($results_games_details[0], "modified", "", false);
+  $from_api = se($results_games_details[0], "from_api", "", false);
 
-        // Display the selected value and update the input field
-        selectedValueDisplay.textContent = selectedText;
-        searchInput.value = selectedText;
+?>
 
-        // Close the dropdown after selection
-        dropdownInstance.hide();
-      }
-    });
 
-    // Close dropdown on blur if the input loses focus
-    searchInput.addEventListener('blur', function () {
-      setTimeout(() => dropdownInstance.hide(), 150);
-    });
-  </script>
-</body>
-</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class='container-fluid'>
+	<h1 class='ms-3 me-3'>
+		<?php se($game_name); ?>
+	</h1>
+
+		<?php if (!(empty($results_screenshots) || empty($results_videos))) : ?>
+			<div class="row ms-3 me-3">
+				<ul class="nav nav-pills">
+					<li class="nav-item">
+						<a class="switcher nav-link active" href="#" onclick="switchTab('video')">Screenshots</a>
+					</li>
+					<li class="nav-item">
+						<a class="switcher nav-link" href="#" onclick="switchTab('screenshot')">Videos</a>
+					</li>
+				</ul>  
+			</div>
+
+		
+			<div class='row'>
+				<div class='col-8'>
+					<div id="screenshot" class="carousel slide tab-target">
+						<div class="carousel-inner">
+							<div class="carousel-item active">
+								<img src="<?php echo $results_screenshots[0]["url"]?>" class="d-block w-100" alt="...">
+							</div>
+							<?php if (count($results_screenshots)>1) : ?>
+								<?php foreach (array_slice($results_screenshots, 1) as $screenshot): ?>
+									<div class="carousel-item">
+									<img src="<?php echo $screenshot["url"]?>" class="d-block w-100" alt="...">
+									</div>
+								<?php endforeach ?>
+							<?php endif ?>
+						</div>
+						<?php if (count($results_screenshots)>1) : ?>
+							<button class="carousel-control-prev" type="button" data-bs-target="#screenshot" data-bs-slide="prev">
+								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+								<span class="visually-hidden">Previous</span>
+							</button>
+							<button class="carousel-control-next" type="button" data-bs-target="#screenshot" data-bs-slide="next">
+								<span class="carousel-control-next-icon" aria-hidden="true"></span>
+								<span class="visually-hidden">Next</span>
+							</button>
+						<?php endif ?>
+					</div>
+				
+					<div id="video" class="carousel slide tab-target" style="display: none;">
+						<div class="carousel-inner">
+							<div class="carousel-item active">
+								<div class="ratio ratio-16x9">
+									<video controls>
+									<source src="<?php echo $results_videos[0]["url"] ?>" type="video/mp4">
+									Your browser does not support the video tag.
+								</video>
+							</div>
+						</div>
+						
+						<?php if (count($results_videos)>1) : ?>
+							<?php foreach (array_slice($results_videos, 1) as $videos): ?>
+								<div class="carousel-item">
+									<div class="ratio ratio-16x9">
+										<video controls>
+											<source src="<?php echo $videos["url"] ?>" type="video/mp4">
+											Your browser does not support the video tag.
+										</video>
+									</div>
+								</div>
+							<?php endforeach ?>
+
+
+						<?php endif ?>
+
+					</div>
+					
+					<?php if(count($results_videos)>1) : ?>
+						<button class="carousel-control-prev" type="button" data-bs-target="#video" data-bs-slide="prev">
+							<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+							<span class="visually-hidden">Previous</span>
+						</button>
+						<button class="carousel-control-next" type="button" data-bs-target="#video" data-bs-slide="next">
+							<span class="carousel-control-next-icon" aria-hidden="true"></span>
+							<span class="visually-hidden">Next</span>
+						</button>
+					<?php endif ?>	
+				</div>
+
+			</div>
+		<?php endif ?>
+
+		<div class='col-3 mt-3'>
+			<div class="row">	
+				<div class="card">
+					<h5 class="card-header">Details</h5>
+					<div class="card-body">
+						<h5 class="card-title"><?php se($price) ?></h5>
+						<hr>
+						<h5 class="card-title mb-3">Developer: <?php se($developer_name) ?></h5>
+						<h5 class="card-title mb-3">Publisher: <?php se($publiser_name) ?></h5>
+						<h5 class="card-title mb-3">Franchise: <?php se($franchise_name) ?></h5>
+						<hr>
+						<h5 class="card-title">Release date: <?php se($release_date) ?></h5>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="card">
+					<h5 class="card-header">Record data</h5>
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item">Created: <?php se($created) ?></li>
+						<li class="list-group-item">Modified: <?php se($modified) ?></li>
+						<li class="list-group-item">From API: <?php se($from_api) ?></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class='row'>
+			
+	</div>
+</div>
+
+
+
+
+<!-- <div class="container mt-4 tab-target" id="video">
+    <div class="ratio ratio-16x9">
+        <video controls>
+            <source src="<?php //echo $results_videos[0]["url"] ?>" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+</div> -->
+
+<?php render_table($table_games_details); ?>
+<?php render_table($table_game_tags); ?>
+<?php render_table($table_game_media); ?>
+<?php render_table($table_games_requirements); ?>
+
+<script>
+    function switchTab(tab) {
+        let target = document.getElementById(tab);
+        if (target) {
+            let eles = document.getElementsByClassName("tab-target");
+            for (let ele of eles) {
+                ele.style.display = (ele.id === tab) ? "none" : "block";
+            }
+			let navs = document.getElementsByClassName("switcher");
+			for(let nav of navs) {
+				nav.classList.remove("active");
+			}
+			event.target.classList.add("active");
+		}
+    }
+</script>
+
+<?php
+require_once(__DIR__ . "/../../../partials/flash.php");
+?>  
