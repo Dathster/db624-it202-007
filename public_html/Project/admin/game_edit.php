@@ -1,6 +1,6 @@
 <?php require(__DIR__ . "/../../../partials/nav.php");?>
 
-<?php
+<?php //db624 it202-007 11/28/24
     if (!has_role("Admin")) {
         flash("You don't have permission to view this page", "warning");
         die(header("Location: $BASE_PATH" . "/home.php"));
@@ -14,7 +14,7 @@
     $game_id = se($_GET, "game_id", -1, false);
 
     if(isset($_POST["action"])){
-
+        //db624 it202-007 11/28/24
         $update = true;
         
         if(empty($_POST["name"])){
@@ -64,7 +64,7 @@
                 flash("Franchise name must be maximum 50 characters long", "warning");
                 $update = False;
             }
-            if(!validateDateFormat($release_date)){
+            if(!validateDateFormat($release_date)){//db624 it202-007 11/28/24
                 flash("Date must follow yyyy-mm-dd format", "warning");
                 $insert = False;
             }
@@ -172,7 +172,7 @@
 ?>
 
 <div class='container-fluid'>
-    <h1>Edit Game Details</h1>  
+    <h1>Edit Game Details</h1>  <!-- db624 it202-007 11/28/24 -->
 
     <form method="POST" onsubmit="return validate(this);">
         <?php render_input(["type" => "text", "name" => "name", "value"=>$game_name, "label" => "Name", "rules" => ["required" => "required", "maxlength"=>100]]); ?>
@@ -195,12 +195,11 @@
 </div>
 
 <script>
-    function validate(form) {
-        let game_id = form.game_id.value;
+    function validate(form) {//db624 it202-007 11/28/24
         let name = form.name.value;
         let price = form.price.value;
         let release_date = form.release_date.value;
-        let developer_name = form.dev_name.value;
+        let developer_name = form.developer_name.value;
         let publisher_name = form.publisher_name.value;
         let franchise_name = form.franchise_name.value;
         let tags = form.tags.value;
@@ -208,15 +207,10 @@
         let about = form.about.value;
         let isValid = true;
 
-        let gameIdPattern = /^\d+$/;
         let pricePattern = /^\d{1,7}\.\d\d$/;
         let datePattern = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
         let tagsPattern = /^([^,\s][^,]*,)*[^,\s][^,]*$/;
 
-        if(!game_id){
-            flash("[Client]: Game ID cannot be empty", "warning");
-            isValid = false;
-        }
         if(!name){
             flash("[Client]: Game Name cannot be empty", "warning");
             isValid = false;
@@ -254,7 +248,7 @@
             flash("[Client]: Description must be at most 1,000 characters long", "warning");
             isValid = false;
         }
-        if(about.length && about.length> 60000){
+        if(about.length && about.length> 60000){//db624 it202-007 11/28/24
             flash("[Client]: About field must be at most 60,0000 characters long", "warning");
             isValid = false;
         }
