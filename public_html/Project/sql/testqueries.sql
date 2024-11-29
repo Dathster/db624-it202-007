@@ -144,3 +144,19 @@ case when `gd`.`price` = 0.00 then 'Free To Play'
 else concat('$', `gd`.`price`) end as `price`,
 if(`gd`.`from_api`, 'true', 'false') as `from_api`
  from `Games_details` `gd` left join `ct` on `gd`.`game_id` = `ct`.`game_id` where 1;
+
+
+
+
+        update `Games_details` set `game_name` = '$game_name',
+        `price` = $price,
+        `release_date` = '$release_date',
+        `developer_name` = '$developer_name',
+        `publisher_name` = '$publisher_name',
+        `franchise_name` = '$franchise_name',
+        where `game_id` = '1';
+
+
+
+        update `Game_descriptions` set `description` = '$description',
+        `about` = '$about' where `game_id` = 1

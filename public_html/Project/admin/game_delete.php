@@ -8,6 +8,11 @@ if (!has_role("Admin")) {
     die(header("Location: $BASE_PATH" . "/home.php"));
 }
 
+if (!isset($_GET["game_id"])) {
+    flash("No Game ID provided", "warning");
+    die(header("Location: $BASE_PATH" . "/home.php"));
+}
+
 
 $id = se($_GET, "game_id", -1, false);
 // $referrer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'No referrer';

@@ -158,12 +158,12 @@
                 $tags = explode(",", $tags);
             }
             
-            if(strlen($franchise_name)>1000){
+            if(strlen($description)>1000){
                 flash("Summary description must be maximum 1,000 characters long", "warning");
                 $insert = False;
             }
 
-            if($franchise_name && strlen($about)>60000){
+            if(strlen($about)>60000){
                 flash("About game must be maximum 60,000 characters long", "warning");
                 $insert = False;
             }
@@ -245,12 +245,12 @@
 
 <div class="container-fluid">
     <h3>Create or Fetch Game</h3>
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-pills">
         <li class="nav-item">
-            <a class="nav-link" href="#" onclick="switchTab('create')">Fetch</a>
+            <a class="switcher nav-link active" href="#" onclick="switchTab('create')">Fetch</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#" onclick="switchTab('fetch')">Create</a>
+            <a class="switcher nav-link" href="#" onclick="switchTab('fetch')">Create</a>
         </li>
     </ul>
     <div id="fetch" class="tab-target">
@@ -303,6 +303,11 @@
             for (let ele of eles) {
                 ele.style.display = (ele.id === tab) ? "none" : "block";
             }
+            let navs = document.getElementsByClassName("switcher");
+		    for(let nav of navs) {
+			nav.classList.remove("active");
+		}
+		event.target.classList.add("active");
         }
         document.querySelector("form").reset();
     }
