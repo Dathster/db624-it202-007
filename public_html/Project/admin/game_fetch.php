@@ -125,7 +125,7 @@
             $gamesDetailsdata= [];
             $gameTagsdata = [];
         
-            if(!validate_numbers($id) || $id % 1 == 0){
+            if(!validate_numbers($id)){
                 flash("Game ID must be a positive integer", "warning");
                 $insert = False;
             }
