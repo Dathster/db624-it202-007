@@ -1,6 +1,13 @@
 <?php require(__DIR__ . "/../../partials/nav.php"); ?>
 
 <?php
+
+
+	if (!isset($_GET["game_id"]) || empty($_GET["game_id"])) {
+		flash("No Game ID provided", "warning");
+		die(header("Location: $BASE_PATH" . "/games_view.php"));
+	}
+
 	$game_id = $_GET["game_id"];
 	$query_games_details = "select 
 	`gd`.`game_id`,
