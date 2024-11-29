@@ -48,10 +48,15 @@
         }
         // echo "<br> $price <br>";
         $dateString = $result['release_date'];
-        // Create a DateTime object
-        $date = new DateTime($dateString);
-        // Format it to yyyy-mm-dd
-        $formattedDate = $date->format('Y-m-d');
+        if($dateString != 'To be announced'){
+            // Create a DateTime object
+            $date = new DateTime($dateString);
+            // Format it to yyyy-mm-dd
+            $formattedDate = $date->format('Y-m-d');
+        }else{
+            $formattedDate = NULL;
+        }
+        
         $dev_name = $result["dev_details"]['developer_name'][0];
         $publisher_name = $result["dev_details"]['publisher'][0];
         $franchise_name = (empty($result["dev_details"]['franchise']))?null:$result["dev_details"]['franchise'][0];
@@ -186,6 +191,16 @@
             
             
         }
+
+        return $output_arr;
+    }
+
+    function prep_gameDescriptions($game_id, $result){
+        $desc = se($result, 'desc', "", false);
+        $about = se($result, 'about_game', "", false);
+        $output_arr = ["game_id"=>$game_id,
+                    "description"=>$desc,
+                    "about"=>$about];
 
         return $output_arr;
     }
