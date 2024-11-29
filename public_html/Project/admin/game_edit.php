@@ -199,13 +199,15 @@
         let name = form.name.value;
         let price = form.price.value;
         let release_date = form.release_date.value;
-        let developer_name = form.developer_name.value;
+        let developer_name = form.dev_name.value;
         let publisher_name = form.publisher_name.value;
         let franchise_name = form.franchise_name.value;
         let tags = form.tags.value;
         let description = form.description.value;
         let about = form.about.value;
         let isValid = true;
+        
+        console.log(developer_name);
 
         let pricePattern = /^\d{1,7}\.\d\d$/;
         let datePattern = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
@@ -253,10 +255,6 @@
             isValid = false;
         }
 
-        if(game_id && !gameIdPattern.test(game_id)){
-            flash("[Client]: Game ID must be a positive integer", "warning");
-            isValid = false;
-        }
         if(price && !pricePattern.test(price)){
             flash("[Client]: Price must be in d.dd format, at most 9 digits long, and be positive", "warning");
             isValid = false;
