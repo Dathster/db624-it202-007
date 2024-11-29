@@ -125,7 +125,7 @@
             $gamesDetailsdata= [];
             $gameTagsdata = [];
         
-            if(!validate_numbers($id) || $input % 1 == 0){
+            if(!validate_numbers($id) || $id % 1 == 0){
                 flash("Game ID must be a positive integer", "warning");
                 $insert = False;
             }
@@ -262,7 +262,7 @@
         </li>
     </ul>
     <div id="fetch" class="tab-target">
-        <form method="POST" >
+        <form method="POST" > <!-- db624 it202-007 11/28/24 -->
             <?php render_input(["type" => "search", "name" => "game_name", "placeholder" => "Game name"]); ?>
             <?php render_input(["type" => "hidden", "name" => "action", "value" => "fetch_search"]); ?>
             <?php render_button(["text" => "Find game", "type" => "submit",]); ?>
