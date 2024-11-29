@@ -73,7 +73,7 @@ function _sendRequest($url, $key, $data = [], $method = 'GET', $isRapidAPI = tru
     } else {
         return ["status" => 200, "response" => $response];
     }
-    echo var_export($response, true);
+    // echo var_export($response, true);
 }
 
 /**

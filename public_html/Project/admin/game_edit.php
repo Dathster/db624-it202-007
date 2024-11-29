@@ -13,28 +13,6 @@
 
     $game_id = se($_GET, "game_id", -1, false);
 
-
-    $query_games_details = "select * from `Games_details` where `game_id` = $game_id";
-    $query_game_tags = "select `game_id`, group_concat(`tag`) as `tags` from `Game_tags` where `game_id` = $game_id group by `game_id`";
-    $query_game_descriptions = "select * from `Game_descriptions` where `game_id` = $game_id";
-
-    $results_games_details = select($query_games_details);
-    $results_game_tags = select($query_game_tags);
-    $results_game_descriptions = select($query_game_descriptions);
-
-    $game_name = se($results_games_details[0], "game_name", "", false);
-    $price = se($results_games_details[0], "price", "", false);
-    $release_date = se($results_games_details[0], "release_date", "", false);
-    $developer_name = se($results_games_details[0], "developer_name", "", false);
-    $publisher_name = se($results_games_details[0], "publisher_name", "", false);
-    $franchise_name = se($results_games_details[0], "franchise_name", "", false);
-
-    $tags = (!isset($results_game_tags[0]))?"":se($results_game_tags[0], "tags", "", false);
-
-    $description = se($results_game_descriptions[0], "description", "", false);
-    $about = se($results_game_descriptions[0], "about", "", false);
-
-
     if(isset($_POST["action"])){
 
         if(empty($_POST["name"])){
@@ -64,7 +42,7 @@
         $description = se($_POST, "description", "", false);
         $about = se($_POST, "about", "", false);
         
-        echo var_export($tags);
+        // echo var_export($tags);
 
         $update = true;
         if(strlen($game_name)>100){
@@ -97,7 +75,7 @@
         }
 
         if($tags){
-            $tags_new = explode(",", $tags_new);
+            $tags = explode(",", $tags);
         }
         
         if(strlen($description)>1000){
@@ -112,7 +90,7 @@
         
         $gameTagsData = [];
         if($tags){
-            foreach($tags_new as $tag){
+            foreach($tags as $tag){
                 $gameTagsData[] = ["game_id"=>$game_id, "tag"=>$tag];
             }
         }
@@ -140,7 +118,7 @@
             try {
                 $stmt1->execute();
                     $stmt2->execute();
-                    echo var_export($gameTagsData);
+                    // echo var_export($gameTagsData);
                     if(!empty($gameTagsData)){
                         insert('Game_tags', $gameTagsData);
                     }
@@ -152,17 +130,38 @@
             } catch (PDOException $e) {
                 error_log(var_export($e, true),true);
                 flash("An unexpected database error occured", "danger");
-                echo var_export($e, true);
+                // echo var_export($e, true);
             } catch(Exception $e){
                 error_log(var_export($e, true),true);
                 flash("An unexpected error occured", "danger");
-                echo var_export($e, true);
-
+                // echo var_export($e, true);
             }
         }
 
-        unset($_POST);
+        // unset($_POST);
     }
+
+
+
+    $query_games_details = "select * from `Games_details` where `game_id` = $game_id";
+    $query_game_tags = "select `game_id`, group_concat(`tag`) as `tags` from `Game_tags` where `game_id` = $game_id group by `game_id`";
+    $query_game_descriptions = "select * from `Game_descriptions` where `game_id` = $game_id";
+
+    $results_games_details = select($query_games_details);
+    $results_game_tags = select($query_game_tags);
+    $results_game_descriptions = select($query_game_descriptions);
+
+    $game_name = se($results_games_details[0], "game_name", "", false);
+    $price = se($results_games_details[0], "price", "", false);
+    $release_date = se($results_games_details[0], "release_date", "", false);
+    $developer_name = se($results_games_details[0], "developer_name", "", false);
+    $publisher_name = se($results_games_details[0], "publisher_name", "", false);
+    $franchise_name = se($results_games_details[0], "franchise_name", "", false);
+
+    $tags = (!isset($results_game_tags[0]))?"":se($results_game_tags[0], "tags", "", false);
+
+    $description = se($results_game_descriptions[0], "description", "", false);
+    $about = se($results_game_descriptions[0], "about", "", false);
 ?>
 
 <div class='container-fluid'>
@@ -176,7 +175,7 @@
         <?php render_input(["type" => "text", "name" => "publisher_name", "value"=>$publisher_name, "label" => "Publisher Name", "rules"=>["maxlength"=>50]]); ?>
         <?php render_input(["type" => "text", "name" => "franchise_name", "value"=>$franchise_name, "label" => "Franchise Name", "rules"=>["maxlength"=>50]]); ?>
         
-        <?php render_input(["type" => "text", "name" => "tags", "value"=>se($tags, "", "", false), "label" => "Tags (do not include spaces after commas)", "rules" => ["pattern"=>"^([^,\s][^,]*,)*[^,\s][^,]*$"]]); ?>
+        <?php render_input(["type" => "text", "name" => "tags", "value"=>$tags, "label" => "Tags (do not include spaces after commas)", "rules" => ["pattern"=>"^([^,\s][^,]*,)*[^,\s][^,]*$"]]); ?>
 
         <?php render_input(["type" => "textarea", "name" => "description", "value"=>$description, "label" => "Summary Description", "rules"=>["maxlength"=>1000]]); ?>
         <?php render_input(["type" => "textarea", "name" => "about", "value"=>$about, "label" => "About Game", "rules"=>["maxlength"=>60000]]); ?>

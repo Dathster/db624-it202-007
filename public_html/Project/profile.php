@@ -90,10 +90,12 @@ if (isset($_POST["save"])) {
                     }
                 }
             } catch (PDOException $e) {
-                echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
+                // echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
+                flash("An error occured", "danger");
                 $success = false;
             } catch (Exception $e){
-                echo "<pre> An error occured </pre>";
+                // echo "<pre> An error occured </pre>";
+                flash("An error occured", "danger");
                 $success = false;
             }
         } else {
