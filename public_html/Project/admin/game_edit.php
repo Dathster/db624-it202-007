@@ -176,7 +176,7 @@
 
     <form method="POST" onsubmit="return validate(this);">
         <?php render_input(["type" => "text", "name" => "name", "value"=>$game_name, "label" => "Name", "rules" => ["required" => "required", "maxlength"=>100]]); ?>
-        <?php render_input(["type" => "number", "name" => "price", "value"=>$price, "label" => "Price", "rules" => ["required" => "required", "pattern"=>"\d{1,}\.\d\d"]]); ?>
+        <?php render_input(["type" => "text", "name" => "price", "value"=>$price, "label" => "Price", "rules" => ["required" => "required", "pattern"=>"\d{1,}\.\d\d"]]); ?>
         <?php render_input(["type" => "date", "name" => "release_date", "value"=>$release_date, "label" => "Release Date", "rules" => ["required" => "required"]]); ?>
         <?php render_input(["type" => "text", "name" => "dev_name", "value"=>$developer_name, "label" => "Developer Name", "rules" => ["required" => "required", "maxlength"=>50]]); ?>
         <?php render_input(["type" => "text", "name" => "publisher_name", "value"=>$publisher_name, "label" => "Publisher Name", "rules"=>["maxlength"=>50]]); ?>
