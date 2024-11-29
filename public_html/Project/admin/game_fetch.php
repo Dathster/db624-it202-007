@@ -158,12 +158,12 @@
                 $tags = explode(",", $tags);
             }
             
-            if(strlen($franchise_name)>1000){
+            if(strlen($description)>1000){
                 flash("Summary description must be maximum 1,000 characters long", "warning");
                 $insert = False;
             }
 
-            if($franchise_name && strlen($about)>60000){
+            if(strlen($about)>60000){
                 flash("About game must be maximum 60,000 characters long", "warning");
                 $insert = False;
             }
