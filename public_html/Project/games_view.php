@@ -29,7 +29,7 @@ else concat('$', `gd`.`price`) end as `price`,
 if(`gd`.`from_api`, 'true', 'false') as `from_api`
  from `Games_details` `gd` left join `ct` on `gd`.`game_id` = `ct`.`game_id` where 1";
 
-    if($search){
+    if($search){//db624 it202-007 11/28/24
         $query_games_details .= " and `gd`.`game_name` like '%$search%'";
     }
 
@@ -58,7 +58,7 @@ if(`gd`.`from_api`, 'true', 'false') as `from_api`
             $results_game_media = select($query_game_media);
 
             $game_media_arr = (empty($results_game_media))?[]:$results_game_media;
-            
+            //db624 it202-007 11/28/24
             $query_game_description="select `description` from `Game_descriptions` where `game_id` = $game_id";
             $result_game_description=select($query_game_description);
             $game_description = (empty($result_game_description))?"":se($result_game_description[0],'description', "", false);
@@ -93,7 +93,7 @@ if(`gd`.`from_api`, 'true', 'false') as `from_api`
     <hr class='mt-3 mb-3'>
     <h3 class='mt-3 mb-3'>Filter Results</h3>
     <form method="GET">
-        <div class="row">
+        <div class="row"> <!-- db624 it202-007 11/28/24 -->
             <div class="col-3">
             <?php render_input(["type" => "search", "label"=>"Search game by name", "name" => "game_search", "placeholder" => "Game name filer", "value"=>$search]);/*lazy value to check if form submitted, not ideal*/ ?>
             </div>
@@ -140,7 +140,7 @@ if(`gd`.`from_api`, 'true', 'false') as `from_api`
     <div class="row">
             <?php foreach ($results as $games): ?>
                 <div class="col-3">
-                    <?php render_card($games); ?>
+                    <?php render_card($games); ?> <!-- db624 it202-007 11/28/24 -->
                 </div>
             <?php endforeach; ?>
     </div>

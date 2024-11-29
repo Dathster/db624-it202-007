@@ -22,7 +22,7 @@
     }
 
     if (isset($_POST["id"]) && !empty($_POST["id"])){
-        $game_id = $_POST["id"];
+        $game_id = $_POST["id"];//db624 it202-007 11/28/24
         
         $result = fetch_gameDetails($game_id);
 
@@ -125,7 +125,7 @@
             $gamesDetailsdata= [];
             $gameTagsdata = [];
         
-            if(!validate_numbers($id)){
+            if(!validate_numbers($id)   ){
                 flash("Game ID must be a positive integer", "warning");
                 $insert = False;
             }
@@ -176,7 +176,7 @@
                 $tags = explode(",", $tags);
             }
 
-            $data = [
+            $data = [//db624 it202-007 11/28/24
                 "game_id"=>$id,
                 "game_name"=>$name,
                 "price"=>$price,
