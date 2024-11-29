@@ -125,6 +125,10 @@
             $gamesDetailsdata= [];
             $gameTagsdata = [];
         
+            if(!validate_numbers($id) || $input % 1 == 0){
+                flash("Game ID must be a positive integer", "warning");
+                $insert = False;
+            }
             if(strlen($name)>100){
                 flash("Game name must be maximum 100 characters long", "warning");
                 $insert = False;
@@ -141,21 +145,17 @@
                 flash("Franchise name must be maximum 50 characters long", "warning");
                 $insert = False;
             }
-            if(!preg_match("/^[0-9]+\.[0-9][0-9]$/", $price)){
-                flash("Price must be in format \$dd.dd $price", "warning");
+            if(!validateDateFormat($release_date)){
+                flash("Date must follow yyyy-mm-dd format", "warning");
                 $insert = False;
             }
-            if($tags && !preg_match("/^([^,\s]+,)*[^,\s]+$/", $tags)){
+            if(!preg_match("/^[0-9]{1,7}\.[0-9][0-9]$/", $price)){
+                flash("Price must be in format \$dd.dd and have maximum of nine digits", "warning");
+                $insert = False;
+            }
+            if($tags && !preg_match("/^([^,\s][^,]*,)*[^,\s][^,]*$/", $tags)){
                 flash("Tags should be seperated by commas and have no spaces after comma", "warning");
                 $insert = False;
-            }
-            
-            if(preg_match("/^\\$0+\.00$/", $price)){
-                $price = "Free To Play";
-            }
-    
-            if($tags){
-                $tags = explode(",", $tags);
             }
             
             if(strlen($description)>1000){
@@ -166,6 +166,14 @@
             if(strlen($about)>60000){
                 flash("About game must be maximum 60,000 characters long", "warning");
                 $insert = False;
+            }
+            
+            if(preg_match("/^\\$0+\.00$/", $price)){
+                $price = "Free To Play";
+            }
+    
+            if($tags){
+                $tags = explode(",", $tags);
             }
 
             $data = [
@@ -254,7 +262,7 @@
         </li>
     </ul>
     <div id="fetch" class="tab-target">
-        <form method="POST">
+        <form method="POST" >
             <?php render_input(["type" => "search", "name" => "game_name", "placeholder" => "Game name"]); ?>
             <?php render_input(["type" => "hidden", "name" => "action", "value" => "fetch_search"]); ?>
             <?php render_button(["text" => "Find game", "type" => "submit",]); ?>
@@ -275,17 +283,17 @@
             
         <?php endif; ?>
     </div>
-    <div id="create" style="display: none;" class="tab-target">
-        <form method="POST">
+    <div id="create" style="display: none;" class="tab-target"> <!-- db624 it202-007 11/28/24 -->
+        <form method="POST" onsubmit="return validate(this);">
             <?php render_input(["type" => "number", "name" => "game_id", "label" => "Game ID", "rules" => ["required" => "required"]]); ?>
             <?php render_input(["type" => "text", "name" => "name", "label" => "Name", "rules" => ["required" => "required", "maxlength"=>100]]); ?>
-            <?php render_input(["type" => "text", "name" => "price", "label" => "Price", "rules" => ["required" => "required", "pattern"=>"\d{1,}\.\d\d"]]); ?>
+            <?php render_input(["type" => "number", "name" => "price", "label" => "Price", "rules" => ["required" => "required", "pattern"=>"\d{1,}\.\d\d"]]); ?>
             <?php render_input(["type" => "date", "name" => "release_date", "label" => "Release Date", "rules" => ["required" => "required"]]); ?>
             <?php render_input(["type" => "text", "name" => "dev_name", "label" => "Developer Name", "rules" => ["required" => "required", "maxlength"=>50]]); ?>
             <?php render_input(["type" => "text", "name" => "publisher_name", "label" => "Publisher Name", "rules"=>["maxlength"=>50]]); ?>
             <?php render_input(["type" => "text", "name" => "franchise_name", "label" => "Franchise Name", "rules"=>["maxlength"=>50]]); ?>
             
-            <?php render_input(["type" => "text", "name" => "tags", "label" => "Tags (do not include spaces after commas)", "rules" => ["pattern"=>"^([^,\s]+,)*[^,\s]+$"]]); ?>
+            <?php render_input(["type" => "text", "name" => "tags", "label" => "Tags (do not include spaces after commas)", "rules" => ["pattern"=>"^([^,\s][^,]*,)*[^,\s][^,]*$"]]); ?>
 
             <?php render_input(["type" => "textarea", "name" => "description", "label" => "Summary Description", "rules"=>["maxlength"=>1000]]); ?>
             <?php render_input(["type" => "textarea", "name" => "about", "label" => "About Game", "rules"=>["maxlength"=>60000]]); ?>
@@ -312,6 +320,83 @@
         document.querySelector("form").reset();
     }
 </script>
+
+<script>
+    function validate(form) {
+        let game_id = form.game_id.value;
+        let name = form.name.value;
+        let price = form.price.value;
+        let release_date = form.release_date.value;
+        let developer_name = form.dev_name.value;
+        let publisher_name = form.publisher_name.value;
+        let franchise_name = form.franchise_name.value;
+        let tags = form.tags.value;
+        let isValid = true;
+
+        let gameIdPattern = /^\d+$/;
+        let pricePattern = /^\d{1,7}\.\d\d$/;
+        let datePattern = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
+        let tagsPattern = /^([^,\s][^,]*,)*[^,\s][^,]*$/;
+
+        if(!game_id){
+            flash("[Client]: Game ID cannot be empty", "warning");
+            isValid = false;
+        }
+        if(!name){
+            flash("[Client]: Game Name cannot be empty", "warning");
+            isValid = false;
+        }
+        if(!price){
+            flash("[Client]: Price cannot be empty", "warning");
+            isValid = false;
+        }
+        if(!release_date){
+            flash("[Client]: Release date cannot be empty", "warning");
+            isValid = false;
+        }
+        if(!developer_name){
+            flash("[Client]: Developer name cannot be empty", "warning");
+            isValid = false;
+        }
+
+        if(name.length > 100){
+            flash("[Client]: Game name must be at most 100 characters long", "warning");
+            isValid = false;
+        }
+        if(developer_name.length > 100){
+            flash("[Client]: Game name must be at most 100 characters long", "warning");
+            isValid = false;
+        }
+        if(publisher_name && publisher_name.length > 100){
+            flash("[Client]: Game name must be at most 100 characters long", "warning");
+            isValid = false;
+        }
+        if(franchise_name.length && franchise_name.length> 100){
+            flash("[Client]: Game name must be at most 100 characters long", "warning");
+            isValid = false;
+        }
+
+        if(game_id && !gameIdPattern.test(game_id)){
+            flash("[Client]: Game ID must be a positive integer", "warning");
+            isValid = false;
+        }
+        if(price && !pricePattern.test(price)){
+            flash("[Client]: Price must be in d.dd format, at most 9 digits long, and be positive", "warning");
+            isValid = false;
+        }
+        if(release_date && !datePattern.test(release_date)){
+            flash("[Client]: Date must be in form yyyy-mm-dd", "warning");
+            isValid = false;
+        }
+        if(tags && !tagsPattern.test(tags)){
+            flash("[Client]: Tags must be comma seperated with no space after comma", "warning");
+            isValid = false;
+        }
+
+        return isValid;
+    }
+</script>
+
 
 <?php
     require_once(__DIR__ . "/../../../partials/flash.php");
