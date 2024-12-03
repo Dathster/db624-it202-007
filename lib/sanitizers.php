@@ -17,8 +17,8 @@ function is_valid_password($password)
     return strlen($password) >= 8;
 }
 
-function validate_numbers($input){
-    return is_numeric($input) && $input > 0;
+function validate_numbers($input){ //db624 it202-007 11/28/24
+    return preg_match('/^[a-z0-9_-]+$/', $input);
 }
 
 function validateDateFormat($date, $format = 'Y-m-d') {

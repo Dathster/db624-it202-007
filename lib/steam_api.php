@@ -2,7 +2,7 @@
     require_once(__DIR__ . "/api_helper.php");
 
     function fetch_searchResults($search){
-        $data = ["sugg"=>$search];
+        $data = ["sugg"=>$search];//db624 it202-007 11/28/24
         $endpoint = "https://games-details.p.rapidapi.com/search";
         $isRapidAPI = true;
         $rapidAPIHost = "games-details.p.rapidapi.com";
@@ -70,10 +70,10 @@
             "publisher_name"=>$publisher_name,
             "franchise_name"=>$franchise_name
         ];
-    }
+    }//db624 it202-007 11/28/24
 
     function prep_gameMedia($game_id, $result){
-        $screenshot_array = $result['images']['screenshot'];
+        $screenshot_array = $result['images']['screenshot'];//db624 it202-007 11/28/24
         $videos_array = $result['images']['videos'];
         $output_arr = [];
 
@@ -131,7 +131,7 @@
                     $min_arr['storage']=substr($attr, strlen('Storage:')+1);
                 }
             }
-            
+            //db624 it202-007 11/28/24
             if($min_set){
                 $min_arr["os_version"]=(isset($min_arr["os_version"]))?$min_arr["os_version"]:NULL;
                 $min_arr["processor"]=(isset($min_arr["processor"]))?$min_arr["processor"]:NULL;
@@ -169,7 +169,7 @@
                         $recom_set = true;
                     }else if(str_starts_with($attr,'Storage:')){
                         $recom_arr['storage']=substr($attr, strlen('Storage:')+1);
-                        $recom_set = true;
+                        $recom_set = true;//db624 it202-007 11/28/24
                     }
                 }
                 if($recom_set){
@@ -203,6 +203,6 @@
                     "about"=>$about];
 
         return $output_arr;
-    }
+    }//db624 it202-007 11/28/24
 ?>
 
