@@ -1,13 +1,12 @@
-CREATE TABLE IF NOT EXISTS  `UserRoles`
+CREATE TABLE IF NOT EXISTS  `Game_associations`
 (
     `id`         int auto_increment not null,
     `user_id`    int,
-    `role_id`  int,
-    `is_active`  TINYINT(1) default 1,
+    `game_id`  int,
     `created`    timestamp default current_timestamp,
     `modified`   timestamp default current_timestamp on update current_timestamp,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`user_id`) REFERENCES Users(`id`),
-    FOREIGN KEY (`role_id`) REFERENCES Roles(`id`),
-    UNIQUE KEY (`user_id`, `role_id`)
+    FOREIGN KEY (`game_id`) REFERENCES Games_details(`game_id`),
+    UNIQUE KEY (`user_id`, `game_id`)
 )
