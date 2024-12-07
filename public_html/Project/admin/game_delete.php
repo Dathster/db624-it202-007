@@ -32,10 +32,13 @@ if ($id > 0) {
         }
         // flash("You were redirected from: " . htmlspecialchars($referrer), "success");
     } catch (PDOException $e) {
-        error_log("Error deleting: " . var_export($e, true));
-        echo "Error deleting: " . var_export($e, true);
+        //error_log("Error deleting: " . var_export($e, true));
+        //echo "Error deleting: " . var_export($e, true);
         flash("There was an error deleting the record", "danger");
     }
+}else{
+    //Flash message if given game ID is negative (invalid value)
+    flash("Error: Invalid game ID", "danger");
 }
 unset($_GET["game_id"]);
 $loc = get_url("games_view.php")."?" . http_build_query($_GET);

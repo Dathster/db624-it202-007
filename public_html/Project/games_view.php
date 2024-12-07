@@ -8,85 +8,16 @@
 
     $search = (isset($_GET["game_search"]))?se($_GET,"game_search","",false):NULL;
     $tag_search = (isset($_GET["tag_filter"]))?se($_GET,"tag_filter","",false):NULL;
-    $num_records = (isset($_GET["num_records"]))?$_GET["num_records"]:10;
+    $num_records = (isset($_GET["num_records"]) && !empty($_GET["num_records"]))?$_GET["num_records"]:10;
     $order_column = (isset($_GET["order_columns"]))?$_GET["order_columns"]:"game_name";
     $order = (isset($_GET["order"]))?$_GET["order"]:"asc";
     $api_filter = (isset($_GET["api_filter"]))?$_GET["api_filter"]:"Both";
-
-    // echo $search . "<br>" . $tag_search . "<br>" . $num_records . "<br>" . $order_column . "<br>" . $order . "<br>"; 
-    $query_games_details = "with `ct` as (
-    select `game_id`, group_concat(`tag` separator ', ') as `combined_tags` from `Game_tags`
-    group by `game_id`
-)
-select 
-`gd`.`game_id`,
-`gd`.`game_name`,
-`gd`.`release_date`,
-`gd`.`developer_name`,
-`ct`.`combined_tags`,
-case when `gd`.`price` = 0.00 then 'Free To Play'
-else concat('$', `gd`.`price`) end as `price`,
-if(`gd`.`from_api`, 'true', 'false') as `from_api`
- from `Games_details` `gd` left join `ct` on `gd`.`game_id` = `ct`.`game_id` where 1";
-
-    if($search){//db624 it202-007 11/28/24
-        $query_games_details .= " and `gd`.`game_name` like '%$search%'";
-    }
-
-    if($api_filter != "Both"){
-        $query_games_details .= " and `gd`.`from_api` = ";
-        $query_games_details .= ($api_filter == "Manual")?"0":"1";
-    }
-
-    if($tag_search){
-        $query_games_details .= " and exists (select 1 from `Game_tags` `gt` where `gd`.`game_id` = `gt`.`game_id` and `gt`.`tag` like '%$tag_search%')";
-    }
-
-    $query_games_details .= " order by `gd`.`$order_column` $order limit $num_records";
-
-    $results = [];
-    $results_games_details = select($query_games_details);
-    //echo var_export($query_games_details) . "<br>";
-    //echo var_export($results_games_details);
-
-    if($results_games_details){
-        foreach($results_games_details as $record){
-            // echo var_export($record) . "<br><br>";
-            $game_id = $record["game_id"];
-
-            $query_game_media = "select `url` from `Game_media` where `type` = 'screenshot' and `game_id` = $game_id limit 1";
-            $results_game_media = select($query_game_media);
-
-            $game_media_arr = (empty($results_game_media))?[]:$results_game_media;
-            //db624 it202-007 11/28/24
-            $query_game_description="select `description` from `Game_descriptions` where `game_id` = $game_id";
-            $result_game_description=select($query_game_description);
-            $game_description = (empty($result_game_description))?"":se($result_game_description[0],'description', "", false);
-            
-            $single_result = [
-                "game_id"=>$game_id,
-                "game_name"=>$record["game_name"],
-                "price"=>$record["price"],
-                "release_date"=>$record["release_date"],
-                "developer_name"=>$record["developer_name"],
-                "from_api"=>$record["from_api"],
-                "combined_tags"=>$record["combined_tags"],
-                "screenshots"=>$game_media_arr,
-                "about"=>$game_description,
-                "view_url"=>get_url("single_game_view.php")
-            ]; 
-            if(has_role("Admin")){
-                $single_result["edit_url"]=get_url("admin/game_edit.php");
-                $single_result["delete_url"]=get_url("admin/game_delete.php");
-                $single_result["query_string"]=se($_SERVER, "QUERY_STRING", "", false);
-            }
-            $results[] = $single_result;
-        }
-            
-        unset($record);
-
-        
-    }  
+    $page = (isset($_GET["page"]))?$_GET["page"]-1:0;
+    
+    $total=0;
+    $offset=$page * $num_records;
+    $results = returnSearchResults($search, $tag_search, $num_records, $order_column, $order, $api_filter, $total, $offset);
+    //echo $total;
 ?>
 <div class="container-fluid">
     <h3 class='mt-3 mb-3'>Steam Game Data</h3>
@@ -145,6 +76,10 @@ if(`gd`.`from_api`, 'true', 'false') as `from_api`
             <?php endforeach; ?>
     </div>
 </div>
+
+<?php
+require_once(__DIR__ . "/../../partials/pagination_nav.php");
+?> 
 
 <?php
 require_once(__DIR__ . "/../../partials/flash.php");
