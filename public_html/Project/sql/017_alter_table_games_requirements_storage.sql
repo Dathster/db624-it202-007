@@ -1,2 +1,2 @@
 alter table `Game_requirements`
-modify column `storage` varchar(100);
+modify column `storage` varchar(500);

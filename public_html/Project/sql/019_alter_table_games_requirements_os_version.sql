@@ -1,1 +1,0 @@
-modify column `os_version` varchar(200);

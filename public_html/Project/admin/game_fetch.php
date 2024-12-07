@@ -41,18 +41,18 @@
             // Check if the error is a duplicate entry error
             if ($e->getCode() == 23000) {
                 flash("Duplicate entry detected: Please try a different game", "danger");
-                error_log(var_export($e->getMessage(),true));
+                error_log(var_export($e->getMessage(),true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
             } else {
                 // Handle other PDO exceptions
                 flash("A database error occured, please try again later","danger");
-                error_log(var_export($e->getMessage(),true));
+                error_log(var_export($e->getMessage(),true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
                 // echo var_export($e->getMessage(),true);
                 
             }
             $insert_rest = false;
         }catch (Exception $e){
             flash("An unknown error has occured, please try again later","danger");
-            error_log(var_export($e->getMessage(),true));
+            error_log(var_export($e->getMessage(),true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
             $insert_rest = false;
         }
 
@@ -71,17 +71,17 @@
                 // Check if the error is a duplicate entry error
                 if ($e->getCode() == 23000) {
                     flash("Duplicate entry detected: Please try a different game", "danger");
-                    error_log(var_export($e->getMessage(),true));
+                    error_log(var_export($e->getMessage(),true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
                 } else {
                     // Handle other PDO exceptions
                     flash("A database error occured, please try again later","danger");
-                    error_log(var_export($e->getMessage(),true));
+                    error_log(var_export($e->getMessage(),true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
                     // echo var_export($e->getMessage(),true);
                     
                 }
             }catch (Exception $e){
                 flash("An unknown error has occured, please try again later","danger");
-                error_log(var_export($e->getMessage(),true));
+                error_log(var_export($e->getMessage(),true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
             }
         }
     }
