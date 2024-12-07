@@ -96,7 +96,7 @@ function insert($table_name, $data, $opts = ["debug" => false, "update_duplicate
     $db = getDB(); // Assume getDB is a function that returns your PDO instance
     $stmt = $db->prepare($query);
     if ($is_debug) {
-        error_log("Query: " . $query);
+        error_log("Query: " . $query, 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
     }
 
     try {

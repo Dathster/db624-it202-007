@@ -1,5 +1,5 @@
 <?php 
-    function returnSearchResults($search, $tag_search, $num_records, $order_column, $order, $api_filter){
+    function returnSearchResults($search, $tag_search, $num_records, $order_column, $order, $api_filter, &$total_records, $offset=0){
         $query_games_details = 
             "with `ct` as (
             select `game_id`, group_concat(`tag` separator ', ') as `combined_tags` from `Game_tags`
@@ -28,8 +28,11 @@
             if($tag_search){
                 $query_games_details .= " and exists (select 1 from `Game_tags` `gt` where `gd`.`game_id` = `gt`.`game_id` and `gt`.`tag` like '%$tag_search%')";
             }
-        
-            $query_games_details .= " order by `gd`.`$order_column` $order limit $num_records";
+            
+            //Get total number results for pagination
+            $total_records = potentialTotalRecords($query_games_details);
+
+            $query_games_details .= " order by `gd`.`$order_column` $order limit $offset, $num_records";
         
             $results = [];
             $results_games_details = select($query_games_details);
@@ -86,4 +89,8 @@
             return $results;
     }
 
+    function potentialTotalRecords($query){
+        return count(select($query));
+    }
 ?>
+

@@ -8,12 +8,16 @@
 
     $search = (isset($_GET["game_search"]))?se($_GET,"game_search","",false):NULL;
     $tag_search = (isset($_GET["tag_filter"]))?se($_GET,"tag_filter","",false):NULL;
-    $num_records = (isset($_GET["num_records"]))?$_GET["num_records"]:10;
+    $num_records = (isset($_GET["num_records"]) && !empty($_GET["num_records"]))?$_GET["num_records"]:10;
     $order_column = (isset($_GET["order_columns"]))?$_GET["order_columns"]:"game_name";
     $order = (isset($_GET["order"]))?$_GET["order"]:"asc";
     $api_filter = (isset($_GET["api_filter"]))?$_GET["api_filter"]:"Both";
+    $page = (isset($_GET["page"]))?$_GET["page"]-1:0;
     
-    $results = returnSearchResults($search, $tag_search, $num_records, $order_column, $order, $api_filter);
+    $total=0;
+    $offset=$page * $num_records;
+    $results = returnSearchResults($search, $tag_search, $num_records, $order_column, $order, $api_filter, $total, $offset);
+    //echo $total;
 ?>
 <div class="container-fluid">
     <h3 class='mt-3 mb-3'>Steam Game Data</h3>
@@ -72,6 +76,10 @@
             <?php endforeach; ?>
     </div>
 </div>
+
+<?php
+require_once(__DIR__ . "/../../partials/pagination_nav.php");
+?> 
 
 <?php
 require_once(__DIR__ . "/../../partials/flash.php");
