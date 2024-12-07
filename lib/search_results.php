@@ -1,5 +1,5 @@
 <?php 
-    function returnSearchResults($search, $tag_search, $num_records, $order_column, $order, $api_filter, &$total_records, $offset=0){
+    function returnSearchResults($search, $tag_search, $num_records, $order_column, $order, $api_filter, &$total_records, $offset=0, $mode="all"){
         $query_games_details = 
             "with `ct` as (
             select `game_id`, group_concat(`tag` separator ', ') as `combined_tags` from `Game_tags`
@@ -15,7 +15,13 @@
             else concat('$', `gd`.`price`) end as `price`,
             if(`gd`.`from_api`, 'true', 'false') as `from_api`
             from `Games_details` `gd` left join `ct` on `gd`.`game_id` = `ct`.`game_id` where 1";
-        
+
+            $user_id = get_user_id();
+
+            if($mode === "saved"){
+                $query_games_details .= " and `gd`.`game_id` in (select `ga`.`game_id` from `Game_associations` `ga` where `ga`.`user_id` = $user_id)";
+            }
+            
             if($search){//db624 it202-007 11/28/24
                 $query_games_details .= " and `gd`.`game_name` like '%$search%'";
             }
@@ -30,8 +36,8 @@
             }
             
             //Get total number results for pagination
-            $total_records = potentialTotalRecords($query_games_details);
-
+            $total_records = potentialTotalRecords($query_games_details, $mode);
+            
             $query_games_details .= " order by `gd`.`$order_column` $order limit $offset, $num_records";
         
             $results = [];
@@ -64,11 +70,21 @@
                         "about"=>$game_description,
                         "view_url"=>get_url("single_game_view.php")
                     ]; 
-                    if(is_logged_in()){
+                    if($mode === "unsaved"){
+                        $query_no_game_associations = "select 1 from `Game_associations` where `game_id` = $game_id";
+                        $result_no_game_associations = select($query_no_game_associations);
+                        if(count($result_no_game_associations)){
+                            continue;
+                        }
+                    }
+                    if(is_logged_in() && $mode!=="unsaved"){
                          //Check if the game has been saved by the user by getting their user ID and game ID and checking game associations table
                         $user_id = get_user_id();
                         $query_game_associations = "select * from `Game_associations` where `user_id` = $user_id and `game_id` = $game_id";
                         $result_game_associations = select($query_game_associations);
+                        if($mode === "saved" && !count($result_game_associations)){
+                            continue;
+                        }
                         $saved = (count($result_game_associations))?1:0;
                         $single_result["save_url"]=get_url("game_save.php");
                         $single_result["saved"]=$saved;
@@ -89,8 +105,14 @@
             return $results;
     }
 
-    function potentialTotalRecords($query){
-        return count(select($query));
+    function potentialTotalRecords($query, $mode="all"){
+        $results = select($query);
+        // $user_id = get_user_id();
+        // if($mode === "saved"){
+        //     $query = "select * from `Game_associations` where `user_id` = $user_id and `game_id` in (select `dt`.`game_id` from ($query) `dt`)";
+        //     $results = select($query);
+        // }
+        return count($results);
     }
 ?>
 

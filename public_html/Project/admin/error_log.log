@@ -1,1 +1,484 @@
-'SQLSTATE[22001]: String data, right truncated: 1406 Data too long for column \'os_version\' at row 1''SQLSTATE[22001]: String data, right truncated: 1406 Data too long for column \'processor\' at row 1'
+'SQLSTATE[22001]: String data, right truncated: 1406 Data too long for column \'os_version\' at row 1''SQLSTATE[22001]: String data, right truncated: 1406 Data too long for column \'processor\' at row 1'\PDOException::__set_state(array(
+   'message' => 'SQLSTATE[42000]: Syntax error or access violation: 1248 Every derived table must have its own alias',
+   'string' => '',
+   'code' => '42000',
+   'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/lib/db_helpers.php',
+   'line' => 253,
+   'trace' => 
+  array (
+    0 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/lib/db_helpers.php',
+      'line' => 253,
+      'function' => 'execute',
+      'class' => 'PDOStatement',
+      'type' => '->',
+      'args' => 
+      array (
+      ),
+    ),
+    1 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/lib/search_results.php',
+      'line' => 107,
+      'function' => 'select',
+      'args' => 
+      array (
+        0 => 'select count(*) from `Game_associations` where `user_id` = 3 and `game_id` in (select `game_id` from (with `ct` as (
+            select `game_id`, group_concat(`tag` separator \', \') as `combined_tags` from `Game_tags`
+            group by `game_id`
+            )
+            select 
+            `gd`.`game_id`,
+            `gd`.`game_name`,
+            `gd`.`release_date`,
+            `gd`.`developer_name`,
+            `ct`.`combined_tags`,
+            case when `gd`.`price` = 0.00 then \'Free To Play\'
+            else concat(\'$\', `gd`.`price`) end as `price`,
+            if(`gd`.`from_api`, \'true\', \'false\') as `from_api`
+            from `Games_details` `gd` left join `ct` on `gd`.`game_id` = `ct`.`game_id` where 1))',
+      ),
+    ),
+    2 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/lib/search_results.php',
+      'line' => 33,
+      'function' => 'potentialTotalRecords',
+      'args' => 
+      array (
+        0 => 'select count(*) from `Game_associations` where `user_id` = 3 and `game_id` in (select `game_id` from (with `ct` as (
+            select `game_id`, group_concat(`tag` separator \', \') as `combined_tags` from `Game_tags`
+            group by `game_id`
+            )
+            select 
+            `gd`.`game_id`,
+            `gd`.`game_name`,
+            `gd`.`release_date`,
+            `gd`.`developer_name`,
+            `ct`.`combined_tags`,
+            case when `gd`.`price` = 0.00 then \'Free To Play\'
+            else concat(\'$\', `gd`.`price`) end as `price`,
+            if(`gd`.`from_api`, \'true\', \'false\') as `from_api`
+            from `Games_details` `gd` left join `ct` on `gd`.`game_id` = `ct`.`game_id` where 1))',
+        1 => 'saved',
+      ),
+    ),
+    3 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/home.php',
+      'line' => 32,
+      'function' => 'returnSearchResults',
+      'args' => 
+      array (
+        0 => NULL,
+        1 => NULL,
+        2 => 10,
+        3 => 'game_name',
+        4 => 'asc',
+        5 => 'Both',
+        6 => 0,
+        7 => 0,
+        8 => 'saved',
+      ),
+    ),
+  ),
+   'previous' => NULL,
+   'errorInfo' => 
+  array (
+    0 => '42000',
+    1 => 1248,
+    2 => 'Every derived table must have its own alias',
+  ),
+))\PDOException::__set_state(array(
+   'message' => 'SQLSTATE[42000]: Syntax error or access violation: 1248 Every derived table must have its own alias',
+   'string' => '',
+   'code' => '42000',
+   'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/lib/db_helpers.php',
+   'line' => 253,
+   'trace' => 
+  array (
+    0 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/lib/db_helpers.php',
+      'line' => 253,
+      'function' => 'execute',
+      'class' => 'PDOStatement',
+      'type' => '->',
+      'args' => 
+      array (
+      ),
+    ),
+    1 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/lib/search_results.php',
+      'line' => 107,
+      'function' => 'select',
+      'args' => 
+      array (
+        0 => 'select count(*) from `Game_associations` where `user_id` = 3 and `game_id` in (select `game_id` from (with `ct` as (
+            select `game_id`, group_concat(`tag` separator \', \') as `combined_tags` from `Game_tags`
+            group by `game_id`
+            )
+            select 
+            `gd`.`game_id`,
+            `gd`.`game_name`,
+            `gd`.`release_date`,
+            `gd`.`developer_name`,
+            `ct`.`combined_tags`,
+            case when `gd`.`price` = 0.00 then \'Free To Play\'
+            else concat(\'$\', `gd`.`price`) end as `price`,
+            if(`gd`.`from_api`, \'true\', \'false\') as `from_api`
+            from `Games_details` `gd` left join `ct` on `gd`.`game_id` = `ct`.`game_id` where 1))',
+      ),
+    ),
+    2 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/lib/search_results.php',
+      'line' => 33,
+      'function' => 'potentialTotalRecords',
+      'args' => 
+      array (
+        0 => 'select count(*) from `Game_associations` where `user_id` = 3 and `game_id` in (select `game_id` from (with `ct` as (
+            select `game_id`, group_concat(`tag` separator \', \') as `combined_tags` from `Game_tags`
+            group by `game_id`
+            )
+            select 
+            `gd`.`game_id`,
+            `gd`.`game_name`,
+            `gd`.`release_date`,
+            `gd`.`developer_name`,
+            `ct`.`combined_tags`,
+            case when `gd`.`price` = 0.00 then \'Free To Play\'
+            else concat(\'$\', `gd`.`price`) end as `price`,
+            if(`gd`.`from_api`, \'true\', \'false\') as `from_api`
+            from `Games_details` `gd` left join `ct` on `gd`.`game_id` = `ct`.`game_id` where 1))',
+        1 => 'saved',
+      ),
+    ),
+    3 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/home.php',
+      'line' => 32,
+      'function' => 'returnSearchResults',
+      'args' => 
+      array (
+        0 => NULL,
+        1 => NULL,
+        2 => 10,
+        3 => 'game_name',
+        4 => 'asc',
+        5 => 'Both',
+        6 => 0,
+        7 => 0,
+        8 => 'saved',
+      ),
+    ),
+  ),
+   'previous' => NULL,
+   'errorInfo' => 
+  array (
+    0 => '42000',
+    1 => 1248,
+    2 => 'Every derived table must have its own alias',
+  ),
+))\PDOException::__set_state(array(
+   'message' => 'SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'and `game_id`=\' at line 1',
+   'string' => '',
+   'code' => '42000',
+   'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/lib/db_helpers.php',
+   'line' => 253,
+   'trace' => 
+  array (
+    0 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/lib/db_helpers.php',
+      'line' => 253,
+      'function' => 'execute',
+      'class' => 'PDOStatement',
+      'type' => '->',
+      'args' => 
+      array (
+      ),
+    ),
+    1 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/lib/search_results.php',
+      'line' => 103,
+      'function' => 'select',
+      'args' => 
+      array (
+        0 => 'select * from `Game_associations` where `user_id`= and `game_id`=',
+      ),
+    ),
+    2 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/home.php',
+      'line' => 36,
+      'function' => 'potentialTotalRecords',
+      'args' => 
+      array (
+        0 => 'select * from `Game_associations` where `user_id`= and `game_id`=',
+      ),
+    ),
+  ),
+   'previous' => NULL,
+   'errorInfo' => 
+  array (
+    0 => '42000',
+    1 => 1064,
+    2 => 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'and `game_id`=\' at line 1',
+  ),
+))\PDOException::__set_state(array(
+   'message' => 'SQLSTATE[42S22]: Column not found: 1054 Unknown column \'dt.game_id\' in \'field list\'',
+   'string' => '',
+   'code' => '42S22',
+   'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/lib/db_helpers.php',
+   'line' => 253,
+   'trace' => 
+  array (
+    0 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/lib/db_helpers.php',
+      'line' => 253,
+      'function' => 'execute',
+      'class' => 'PDOStatement',
+      'type' => '->',
+      'args' => 
+      array (
+      ),
+    ),
+    1 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/lib/search_results.php',
+      'line' => 109,
+      'function' => 'select',
+      'args' => 
+      array (
+        0 => 'with `ct` as (
+            select `game_id`, group_concat(`tag` separator \', \') as `combined_tags` from `Game_tags`
+            group by `game_id`
+            )
+            select 
+            `gd`.`game_id`,
+            `gd`.`game_name`,
+            `gd`.`release_date`,
+            `gd`.`developer_name`,
+            `ct`.`combined_tags`,
+            case when `gd`.`price` = 0.00 then \'Free To Play\'
+            else concat(\'$\', `gd`.`price`) end as `price`,
+            if(`gd`.`from_api`, \'true\', \'false\') as `from_api`
+            from `Games_details` `gd` left join `ct` on `gd`.`game_id` = `ct`.`game_id` where 1 and `gd`.`game_id` in (select `dt`.`game_id` from `Game_associations` where `user_id` = 3)',
+      ),
+    ),
+    2 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/lib/search_results.php',
+      'line' => 39,
+      'function' => 'potentialTotalRecords',
+      'args' => 
+      array (
+        0 => 'with `ct` as (
+            select `game_id`, group_concat(`tag` separator \', \') as `combined_tags` from `Game_tags`
+            group by `game_id`
+            )
+            select 
+            `gd`.`game_id`,
+            `gd`.`game_name`,
+            `gd`.`release_date`,
+            `gd`.`developer_name`,
+            `ct`.`combined_tags`,
+            case when `gd`.`price` = 0.00 then \'Free To Play\'
+            else concat(\'$\', `gd`.`price`) end as `price`,
+            if(`gd`.`from_api`, \'true\', \'false\') as `from_api`
+            from `Games_details` `gd` left join `ct` on `gd`.`game_id` = `ct`.`game_id` where 1 and `gd`.`game_id` in (select `dt`.`game_id` from `Game_associations` where `user_id` = 3)',
+        1 => 'saved',
+      ),
+    ),
+    3 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/home.php',
+      'line' => 56,
+      'function' => 'returnSearchResults',
+      'args' => 
+      array (
+        0 => NULL,
+        1 => NULL,
+        2 => 10,
+        3 => 'game_name',
+        4 => 'asc',
+        5 => 'Both',
+        6 => 0,
+        7 => 0,
+        8 => 'saved',
+      ),
+    ),
+  ),
+   'previous' => NULL,
+   'errorInfo' => 
+  array (
+    0 => '42S22',
+    1 => 1054,
+    2 => 'Unknown column \'dt.game_id\' in \'field list\'',
+  ),
+))\PDOException::__set_state(array(
+   'message' => 'SQLSTATE[42S22]: Column not found: 1054 Unknown column \'dt.game_id\' in \'field list\'',
+   'string' => '',
+   'code' => '42S22',
+   'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/lib/db_helpers.php',
+   'line' => 253,
+   'trace' => 
+  array (
+    0 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/lib/db_helpers.php',
+      'line' => 253,
+      'function' => 'execute',
+      'class' => 'PDOStatement',
+      'type' => '->',
+      'args' => 
+      array (
+      ),
+    ),
+    1 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/lib/search_results.php',
+      'line' => 113,
+      'function' => 'select',
+      'args' => 
+      array (
+        0 => 'select * from `Game_associations` where `user_id` = 3 and `game_id` in (select `dt`.`game_id` from (with `ct` as (
+            select `game_id`, group_concat(`tag` separator \', \') as `combined_tags` from `Game_tags`
+            group by `game_id`
+            )
+            select 
+            `gd`.`game_id`,
+            `gd`.`game_name`,
+            `gd`.`release_date`,
+            `gd`.`developer_name`,
+            `ct`.`combined_tags`,
+            case when `gd`.`price` = 0.00 then \'Free To Play\'
+            else concat(\'$\', `gd`.`price`) end as `price`,
+            if(`gd`.`from_api`, \'true\', \'false\') as `from_api`
+            from `Games_details` `gd` left join `ct` on `gd`.`game_id` = `ct`.`game_id` where 1 and `gd`.`game_id` in (select `dt`.`game_id` from `Game_associations` where `user_id` = 3)) `dt`)',
+      ),
+    ),
+    2 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/lib/search_results.php',
+      'line' => 39,
+      'function' => 'potentialTotalRecords',
+      'args' => 
+      array (
+        0 => 'select * from `Game_associations` where `user_id` = 3 and `game_id` in (select `dt`.`game_id` from (with `ct` as (
+            select `game_id`, group_concat(`tag` separator \', \') as `combined_tags` from `Game_tags`
+            group by `game_id`
+            )
+            select 
+            `gd`.`game_id`,
+            `gd`.`game_name`,
+            `gd`.`release_date`,
+            `gd`.`developer_name`,
+            `ct`.`combined_tags`,
+            case when `gd`.`price` = 0.00 then \'Free To Play\'
+            else concat(\'$\', `gd`.`price`) end as `price`,
+            if(`gd`.`from_api`, \'true\', \'false\') as `from_api`
+            from `Games_details` `gd` left join `ct` on `gd`.`game_id` = `ct`.`game_id` where 1 and `gd`.`game_id` in (select `dt`.`game_id` from `Game_associations` where `user_id` = 3)) `dt`)',
+        1 => 'saved',
+      ),
+    ),
+    3 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/home.php',
+      'line' => 56,
+      'function' => 'returnSearchResults',
+      'args' => 
+      array (
+        0 => NULL,
+        1 => NULL,
+        2 => 10,
+        3 => 'game_name',
+        4 => 'asc',
+        5 => 'Both',
+        6 => 0,
+        7 => 0,
+        8 => 'saved',
+      ),
+    ),
+  ),
+   'previous' => NULL,
+   'errorInfo' => 
+  array (
+    0 => '42S22',
+    1 => 1054,
+    2 => 'Unknown column \'dt.game_id\' in \'field list\'',
+  ),
+))\PDOException::__set_state(array(
+   'message' => 'SQLSTATE[42S22]: Column not found: 1054 Unknown column \'dt.game_id\' in \'field list\'',
+   'string' => '',
+   'code' => '42S22',
+   'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/lib/db_helpers.php',
+   'line' => 253,
+   'trace' => 
+  array (
+    0 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/lib/db_helpers.php',
+      'line' => 253,
+      'function' => 'execute',
+      'class' => 'PDOStatement',
+      'type' => '->',
+      'args' => 
+      array (
+      ),
+    ),
+    1 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/lib/search_results.php',
+      'line' => 44,
+      'function' => 'select',
+      'args' => 
+      array (
+        0 => 'with `ct` as (
+            select `game_id`, group_concat(`tag` separator \', \') as `combined_tags` from `Game_tags`
+            group by `game_id`
+            )
+            select 
+            `gd`.`game_id`,
+            `gd`.`game_name`,
+            `gd`.`release_date`,
+            `gd`.`developer_name`,
+            `ct`.`combined_tags`,
+            case when `gd`.`price` = 0.00 then \'Free To Play\'
+            else concat(\'$\', `gd`.`price`) end as `price`,
+            if(`gd`.`from_api`, \'true\', \'false\') as `from_api`
+            from `Games_details` `gd` left join `ct` on `gd`.`game_id` = `ct`.`game_id` where 1 and `gd`.`game_id` in (select `dt`.`game_id` from `Game_associations` where `user_id` = 3) order by `gd`.`game_name` asc limit 0, 10',
+      ),
+    ),
+    2 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/home.php',
+      'line' => 56,
+      'function' => 'returnSearchResults',
+      'args' => 
+      array (
+        0 => NULL,
+        1 => NULL,
+        2 => 10,
+        3 => 'game_name',
+        4 => 'asc',
+        5 => 'Both',
+        6 => 0,
+        7 => 0,
+        8 => 'saved',
+      ),
+    ),
+  ),
+   'previous' => NULL,
+   'errorInfo' => 
+  array (
+    0 => '42S22',
+    1 => 1054,
+    2 => 'Unknown column \'dt.game_id\' in \'field list\'',
+  ),
+))

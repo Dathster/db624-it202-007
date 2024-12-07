@@ -27,13 +27,16 @@ div {
 
 
 nav li{display: inline;}
-nav li a, input[type=submit]{
+/* , input[type=submit] */
+nav li a{
     background-color: #e3e3e3;
     color: #233142;
     /* text-decoration: none; */
 }
 
-nav li a:hover, input[type=submit]:hover{
+/* , input[type=submit]:hover */
+
+nav li a:hover{
     transition: background-color 0.1s ease-in-out !important;
     /* transition: color 0.5s ease-in-out; */
     background-color: #888888 !important;

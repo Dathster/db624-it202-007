@@ -67,7 +67,19 @@
 
     unset($_GET["game_id"]);
     unset($_GET["saved"]);
-    $loc = get_url("games_view.php")."?" . http_build_query($_GET);
+    if (isset($_SERVER['HTTP_REFERER'])) {
+        $referrer = $_SERVER['HTTP_REFERER'];
+        // Parse the URL to extract components
+        $parsed_url = parse_url($referrer);
+    
+        // Reconstruct the base URL without query parameters
+        $base_url = $parsed_url['scheme'] . "://" . $parsed_url['host'] . (isset($parsed_url['path']) ? $parsed_url['path'] : '');
+    
+        $loc = $referrer;
+    } else {
+        $loc = get_url("games_view.php")."?" . http_build_query($_GET);
+    }
+    
     error_log("Location: $loc");
     die(header("Location: $loc"));
 
