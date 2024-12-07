@@ -36,4 +36,7 @@ require(__DIR__ . "/steam_api.php");
 
 //Function for helping with database inserts
 require(__DIR__ . "/db_helpers.php");
+
+//Function for returning search results for games in database
+require(__DIR__ . "/search_results.php");
 ?>
