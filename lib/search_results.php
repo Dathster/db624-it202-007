@@ -20,6 +20,8 @@
 
             if($mode === "saved"){
                 $query_games_details .= " and `gd`.`game_id` in (select `ga`.`game_id` from `Game_associations` `ga` where `ga`.`user_id` = $user_id)";
+            }elseif($mode === "unsaved"){
+                $query_games_details .= " and `gd`.`game_id` not in (select `ga`.`game_id` from `Game_associations` `ga`)";
             }
             
             if($search){//db624 it202-007 11/28/24
@@ -105,13 +107,8 @@
             return $results;
     }
 
-    function potentialTotalRecords($query, $mode="all"){
+    function potentialTotalRecords($query){
         $results = select($query);
-        // $user_id = get_user_id();
-        // if($mode === "saved"){
-        //     $query = "select * from `Game_associations` where `user_id` = $user_id and `game_id` in (select `dt`.`game_id` from ($query) `dt`)";
-        //     $results = select($query);
-        // }
         return count($results);
     }
 ?>
