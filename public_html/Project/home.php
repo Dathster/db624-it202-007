@@ -1,9 +1,7 @@
 <?php
 require(__DIR__ . "/../../partials/nav.php");
 ?>
-<div class='container-fluid'>
-    <h1>Home</h1>  
-</div>
+
 
 <?php
 
@@ -15,12 +13,11 @@ if (is_logged_in(true)) {
 
 
 <?php
-
-    $user_id = get_user_id();
-
-    if(isset($_GET["reset"])){
-        $_GET = [];
+    $user_id = se($_GET, "user_id", get_user_id(), false);
+    if(empty($user_id)){
+        $user_id = get_user_id();
     }
+    
     if(isset($_GET["remove_all"])){
         $query_remove_all_game_associations = "delete from `Game_associations` where `user_id` = $user_id";
         $db = getDB();
@@ -53,14 +50,20 @@ if (is_logged_in(true)) {
     $total=0;
     $offset=$page * $num_records;
     //echo $offset . " " . $num_records;
-    $results = returnSearchResults($search, $tag_search, $num_records, $order_column, $order, $api_filter, $total, $offset, "saved");
+    $results = returnSearchResults($search, $tag_search, $num_records, $order_column, $order, $api_filter, $total, $offset, "saved", $user_id);
+    
     //echo $total;
 
     $query_num_saved_games = "select count(*) as `ct` from `Game_associations` where `user_id`=$user_id";
-    $num_saved_games = select($query_num_saved_games)[0]["ct"];
+    $num_saved_games = exec_query($query_num_saved_games)[0]["ct"];
 ?>
+
+<div class='container-fluid'>
+    <h1><?php echo get_username($user_id) ?>'s games</h1>  
+</div>
+
 <div class="container-fluid">
-    <h3 class='mt-3 mb-3'>There are <?php echo $num_saved_games; ?> games saved in your profile</h3>
+    <h3 class='mt-3 mb-3'>There are a total of <?php echo $num_saved_games; ?> games saved</h3>
     <hr class='mt-3 mb-3'>
     <h3 class='mt-3 mb-3'>Filter Results</h3>
     <form method="GET">
@@ -91,6 +94,7 @@ if (is_logged_in(true)) {
         </div>
         <div class="row">
             <div class="col-1">
+                <?php render_input(["type"=>"hidden", "name"=>"user_id", "value"=>$user_id]); ?>
                 <?php render_button(["text" => "Filter", "type" => "submit"]); ?>
             </div>
         </div>
@@ -99,6 +103,7 @@ if (is_logged_in(true)) {
     <div class="col-3">
         <form method="GET">
             <?php render_input(["type"=>"hidden", "name"=>"reset", "value"=>"1"]); ?>
+            <?php render_input(["type"=>"hidden", "name"=>"user_id", "value"=>$user_id]); ?>
             <?php render_button(["text" => "Reset", "type" => "submit"]); ?>
         </form>
     </div>
@@ -111,12 +116,12 @@ if (is_logged_in(true)) {
     
     <h4>Number of games meeting search criteria: <?php echo $total ?></h4>
     <hr class='mt-3 mb-3'>
-    <?php if(empty($results)):?>
+    <?php if(empty($results) && $num_saved_games):?>
         <?php flash("No games were found meeting search criteria", "warning"); ?>
     <?php endif ?>
-    <div class="row">
+    <div class="row d-flex">
             <?php foreach ($results as $games): ?>
-                <div class="col-3">
+                <div class="col-3" style='flex: 1 1 calc(33.333% - 1rem); max-width: calc(33.333% - 1rem);'>
                     <?php render_card($games); ?> <!-- db624 it202-007 11/28/24 -->
                 </div>
             <?php endforeach; ?>

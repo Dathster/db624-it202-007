@@ -1,4 +1,7 @@
 <?php
+
+
+
 function is_logged_in($redirect = false, $destination = "login.php")//db624 it202-007 11/11/24
 {
     $isLoggedIn = isset($_SESSION["user"]);
@@ -20,8 +23,11 @@ function has_role($role) //db624 it202-007 11/11/24
     }
     return false;
 }
-function get_username()
-{
+function get_username($user_id=NULL)
+{   
+    if($user_id){
+        return exec_query("select `username` from `Users` where `id` = $user_id")[0]["username"];
+    }
     if (is_logged_in()) { //we need to check for login first because "user" key may not exist
         return se($_SESSION["user"], "username", "", false);
     }

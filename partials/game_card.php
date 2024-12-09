@@ -30,7 +30,7 @@
     
     
     
-    <div class="card">
+    <div class="card" >
         <div id="HASH" class="card-header">
             <?php 
                 echo "From API: ".$data["from_api"];
