@@ -244,7 +244,7 @@ if (php_sapi_name() == "cli") {
     test_insert();
 }
 
-function select($query){
+function exec_query($query){
     
     $db = getDB();
     $stmt = $db->prepare($query);

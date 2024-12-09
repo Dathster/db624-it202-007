@@ -26,10 +26,10 @@
 	$query_game_media = "select * from `Game_media` where `game_id` = $game_id";
 	$query_game_about = "select `about` from `Game_descriptions` where `game_id` = $game_id";
 
-	$results_games_details = select($query_games_details);
-	$results_game_tags = select($query_game_tags);
-	$results_game_media = select($query_game_media);
-	$result_game_about = select($query_game_about);
+	$results_games_details = exec_query($query_games_details);
+	$results_game_tags = exec_query($query_game_tags);
+	$results_game_media = exec_query($query_game_media);
+	$result_game_about = exec_query($query_game_about);
 
 	$game_about = (empty($result_game_about))?"":se($result_game_about[0],'about', "", false);
 
@@ -40,16 +40,16 @@
 	}
 
 	$query_screenshots = "select distinct `url` from `Game_media` where `game_id` = $game_id and `type` = 'screenshot'";
-	$results_screenshots = select($query_screenshots);
+	$results_screenshots = exec_query($query_screenshots);
 
 	$query_videos = "select distinct `url` from `Game_media` where `game_id` = $game_id and `type` = 'video'";
-	$results_videos = select($query_videos);
+	$results_videos = exec_query($query_videos);
 
 	$query_min_requirements = "select * from `Game_requirements` where `game_id` = $game_id and `requirement_type` = 'min'";
-	$results_min_requirements = select($query_min_requirements);
+	$results_min_requirements = exec_query($query_min_requirements);
 
 	$query_recom_requirements = "select * from `Game_requirements` where `game_id` = $game_id and `requirement_type` = 'recom'";
-	$results_recom_requirements = select($query_recom_requirements);
+	$results_recom_requirements = exec_query($query_recom_requirements);
 
 	$table_min_requirements = ["data"=>$results_min_requirements, "title"=>"min requirements"];
 	$table_recom_requirements = ["data"=>$results_recom_requirements, "title"=>"recom requirements"];

@@ -36,11 +36,11 @@ if (!has_role("Admin")) {
     $results = returnSearchResults($search, $tag_search, $num_records, $order_column, $order, $api_filter, $total, $offset, "unsaved");
     //echo $total;
 
-    $query_num_saved_games = "select count(`game_id`) as `ct` from `Games_details` where `game_id` not in (select `ga`.`game_id` from `Game_associations` `ga`)";
-    $num_saved_games = select($query_num_saved_games)[0]["ct"];
+    $query_num_unsaved_games = "select count(`game_id`) as `ct` from `Games_details` where `game_id` not in (select `ga`.`game_id` from `Game_associations` `ga`)";
+    $num_unsaved_games = exec_query($query_num_unsaved_games)[0]["ct"];
 ?>
 <div class="container-fluid">
-    <h3 class='mt-3 mb-3'>There are <?php echo $num_saved_games; ?> games not saved by any user</h3>
+    <h3 class='mt-3 mb-3'>There are <?php echo $num_unsaved_games; ?> games not saved by any user</h3>
     <hr class='mt-3 mb-3'>
     <h3 class='mt-3 mb-3'>Filter Results</h3>
     <form method="GET">
@@ -89,9 +89,9 @@ if (!has_role("Admin")) {
     <?php if(empty($results)):?>
         <?php flash("No games were found meeting search criteria", "warning"); ?>
     <?php endif ?>
-    <div class="row">
+    <div class="row d-flex" >
             <?php foreach ($results as $games): ?>
-                <div class="col-3">
+                <div class="col-3" style='flex: 1 1 calc(33.333% - 1rem); max-width: calc(33.333% - 1rem);'>
                     <?php render_card($games); ?> <!-- db624 it202-007 11/28/24 -->
                 </div>
             <?php endforeach; ?>
@@ -101,7 +101,3 @@ if (!has_role("Admin")) {
 <?php
 require_once(__DIR__ . "/../../../partials/pagination_nav.php");
 ?> 
-
-<?php
-require_once(__DIR__ . "/../../../partials/flash.php");
-?>  

@@ -62,3 +62,10 @@ body{
     justify-content: space-between;
   }
   
+.bordered-list {
+    max-height: 150px;
+    overflow-y: auto;
+    border: 1px solid #ccc; /* Light gray border */
+    border-radius: 5px;     /* Rounded corners */
+    padding: 5px;           /* Optional padding for spacing */
+}

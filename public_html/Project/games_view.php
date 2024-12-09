@@ -68,9 +68,9 @@
     <?php if(empty($results)):?>
         <?php flash("No games were found meeting search criteria", "warning"); ?>
     <?php endif ?>
-    <div class="row">
+    <div class="row ms-3 me-3 d-flex">
             <?php foreach ($results as $games): ?>
-                <div class="col-3">
+                <div class="col-3" style='flex: 1 1 calc(33.333% - 1rem); max-width: calc(33.333% - 1rem);'>
                     <?php render_card($games); ?> <!-- db624 it202-007 11/28/24 -->
                 </div>
             <?php endforeach; ?>
