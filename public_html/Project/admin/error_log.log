@@ -6577,4 +6577,85 @@
     1 => 1064,
     2 => 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'\' at line 1',
   ),
+))\PDOException::__set_state(array(
+   'message' => 'SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'from `Game_associations` `ga` where `ga`.`user_id` in (Array)\' at line 1',
+   'string' => '',
+   'code' => '42000',
+   'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/saved_games.php',
+   'line' => 67,
+   'trace' => 
+  array (
+    0 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/saved_games.php',
+      'line' => 67,
+      'function' => 'execute',
+      'class' => 'PDOStatement',
+      'type' => '->',
+      'args' => 
+      array (
+      ),
+    ),
+  ),
+   'previous' => NULL,
+   'errorInfo' => 
+  array (
+    0 => '42000',
+    1 => 1064,
+    2 => 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'from `Game_associations` `ga` where `ga`.`user_id` in (Array)\' at line 1',
+  ),
+))\PDOException::__set_state(array(
+   'message' => 'SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'from `Game_associations` `ga` where `ga`.`user_id` in (17,3,18,19,5,15,4,16)\' at line 1',
+   'string' => '',
+   'code' => '42000',
+   'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/saved_games.php',
+   'line' => 67,
+   'trace' => 
+  array (
+    0 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/saved_games.php',
+      'line' => 67,
+      'function' => 'execute',
+      'class' => 'PDOStatement',
+      'type' => '->',
+      'args' => 
+      array (
+      ),
+    ),
+  ),
+   'previous' => NULL,
+   'errorInfo' => 
+  array (
+    0 => '42000',
+    1 => 1064,
+    2 => 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'from `Game_associations` `ga` where `ga`.`user_id` in (17,3,18,19,5,15,4,16)\' at line 1',
+  ),
+))\PDOException::__set_state(array(
+   'message' => 'SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \')\' at line 1',
+   'string' => '',
+   'code' => '42000',
+   'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/saved_games.php',
+   'line' => 27,
+   'trace' => 
+  array (
+    0 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/saved_games.php',
+      'line' => 27,
+      'function' => 'execute',
+      'class' => 'PDOStatement',
+      'type' => '->',
+      'args' => 
+      array (
+      ),
+    ),
+  ),
+   'previous' => NULL,
+   'errorInfo' => 
+  array (
+    0 => '42000',
+    1 => 1064,
+    2 => 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \')\' at line 1',
+  ),
 ))
