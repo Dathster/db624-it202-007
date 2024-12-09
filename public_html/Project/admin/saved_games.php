@@ -3,6 +3,11 @@
 ?>
 
 <?php 
+    if (!has_role("Admin")) {
+        flash("You don't have permission to view this page", "warning");
+        die(header("Location: $BASE_PATH" . "/home.php"));
+    }
+
     if(isset($_GET["reset"])){
         $_GET = [];
     }
@@ -26,6 +31,37 @@
     $result_user_filter = exec_query($query_user_filter);
     $results = [];
 
+
+    if(isset($_GET["remove_all"])){
+        $user_ids = [];
+        foreach($result_user_filter as $user){
+            $user_ids[] = $user["id"];
+        }
+        $users_string = implode(",", $user_ids);
+
+        $query_remove_games = "delete from `Game_associations` `ga` where `ga`.`user_id` in ($users_string)";
+        $db = getDB();
+        $stmt = $db->prepare($query_remove_games);
+        try{
+            $stmt->execute();
+            if($stmt->rowCount()>0){
+                flash("All games removed successfully", "success");
+            }else{
+                flash("Removing games from selected users unsuccessful", "warning");
+            }
+        }catch (PDOException $e){
+            flash("A database error occured, please try again later", "danger");
+            error_log(var_export($e, true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
+        }catch (Exception $e){
+            flash("An unknown error has occured", "danger");
+            error_log(var_export($e, true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
+        }
+
+        unset($_GET["remove_all"]);
+    }
+
+
+
     foreach($result_user_filter as $user){
         $user_id = $user["id"];
 
@@ -47,6 +83,9 @@
     
     $_view_classes = "btn btn-primary btn-sm fs-7";
     $_remove_classes = "btn btn-danger btn-sm fs-7";
+
+    
+    
 ?>
 
 <div class='container-fluid mt-3'>
@@ -79,6 +118,12 @@
         <form method="GET">
             <?php render_input(["type"=>"hidden", "name"=>"reset", "value"=>"1"]); ?>
             <?php render_button(["text" => "Reset", "type" => "submit"]); ?>
+        </form>
+    </div>
+    <div class="col-3">
+        <form method="GET">
+            <?php render_input(["type"=>"hidden", "name"=>"remove_all", "value"=>"1"]); ?>
+            <?php render_button(["text" => "Remove all", "type" => "submit", "color"=>"danger"]); ?>
         </form>
     </div>
 
