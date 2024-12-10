@@ -61,6 +61,7 @@ session_start();
             <li><a class="dropdown-item" href="<?php echo get_url('admin/game_fetch.php'); ?>">Fetch/Insert Games</a></li>
             <li><a class="dropdown-item" href="<?php echo get_url('admin/unsaved_games.php'); ?>">Unsaved Games</a></li>
             <li><a class="dropdown-item" href="<?php echo get_url('admin/saved_games.php'); ?>">Saved Games</a></li>
+            <li><a class="dropdown-item" href="<?php echo get_url('admin/assign_games.php'); ?>">Assign Games</a></li>
           </ul>
         <?php endif; ?>
         <?php if (is_logged_in()) : ?>
