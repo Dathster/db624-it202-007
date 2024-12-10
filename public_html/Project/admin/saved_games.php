@@ -17,9 +17,9 @@
     $total_saved_games = potentialTotalRecords($query_total_saved_games);
 
     $num_records = se($_GET, "num_records", 10, false);
-    $order = se($_GET,"order", "asc", false);
+    $order_users = se($_GET,"order_users", "asc", false);
     $user_filter = (isset($_GET["user_filter"]))?se($_GET,"user_filter","",false):"";
-
+    echo $num_records;
     $total = 0;
     $page = (isset($_GET["page"]))?$_GET["page"]-1:0;
 
@@ -27,10 +27,16 @@
     $query_user_filter = "select `username`, `id` from `Users` where `username` like '%$user_filter%'";
     $total = potentialTotalRecords($query_user_filter);
     $offset=$page * $num_records;
-    $query_user_filter .=  " order by `username` $order limit $offset, $num_records";
+    $query_user_filter .=  " order by `username` $order_users limit $offset, $num_records";
     $result_user_filter = exec_query($query_user_filter);
     $results = [];
 
+    $game_search = (isset($_GET["game_search"]))?se($_GET,"game_search","",false):NULL;
+    $tag_search = (isset($_GET["tag_filter"]))?se($_GET,"tag_filter","",false):NULL;
+    $num_games = (isset($_GET["num_games"]) && !empty($_GET["num_games"]))?$_GET["num_games"]:10;
+    $order_column = (isset($_GET["order_columns"]))?$_GET["order_columns"]:"game_name";
+    $order_games = (isset($_GET["order_games"]))?$_GET["order_games"]:"asc";
+    $api_filter = (isset($_GET["api_filter"]))?$_GET["api_filter"]:"Both";
 
     if(isset($_GET["remove_all"])){
         $user_ids = [];
@@ -65,10 +71,12 @@
     foreach($result_user_filter as $user){
         $user_id = $user["id"];
 
-        $query_user_saved_games = "select `gd`.`game_name`, `gd`.`game_id` from `Games_details` `gd`
-                                    where `gd`.`game_id` in (select `ga`.`game_id` from `Game_associations` `ga`
-                                                            where `ga`.`user_id` = $user_id)";
-        $result_user_saved_games = exec_query($query_user_saved_games);
+        // $query_user_saved_games = "select `gd`.`game_name`, `gd`.`game_id` from `Games_details` `gd`
+        //                             where `gd`.`game_id` in (select `ga`.`game_id` from `Game_associations` `ga`
+        //                                                     where `ga`.`user_id` = $user_id)";
+        // $result_user_saved_games = exec_query($query_user_saved_games);
+        $num_saved = 0;
+        $result_user_saved_games = returnSearchResults($game_search, $tag_search, $num_games, $order_column, $order_games, $api_filter, $num_saved, 0, "saved", $user_id);
         $user["saved_games"] = $result_user_saved_games;
         $results[] = $user;
     }
@@ -100,12 +108,40 @@
                 <?php render_input(["type"=>"search", "label"=>"Search users", "name"=>"user_filter", "value"=>$user_filter]) ?>
             </div>
             <div class="col-2">
-                <?php render_input(["type"=>"select", "name"=>"order", "label"=>"Order users", "options"=>["asc", "desc"], "selected"=>$order]); ?>
+                <?php render_input(["type"=>"select", "name"=>"order_users", "label"=>"Order users", "options"=>["asc", "desc"], "selected"=>$order_users]); ?>
             </div>
             <div class="col-1">
             <?php render_input(["type"=>"number", "name"=>"num_records", "label"=>"Limit", "value"=>$num_records, "rules"=>["min"=>1, "max"=>100]]); ?>
             </div>
+
+
+            <div class="row"> <!-- db624 it202-007 11/28/24 -->
+            <div class="col-3">
+            <?php render_input(["type" => "search", "label"=>"Search game by name", "name" => "game_search", "value"=>$game_search]);/*lazy value to check if form submitted, not ideal*/ ?>
+            </div>
+
+            <div class="col-3">
+                <?php render_input(["type" => "search", "label"=>"Filter by tag", "name" => "tag_filter", "value"=>$tag_search]);/*lazy value to check if form submitted, not ideal*/ ?>    
+            </div>
+
+            <div class="col-2">
+            <?php render_input(["type"=>"select", "name"=>"order_columns", "label"=>"Sort Game Details data by", "options"=>["game_name", "price", "release_date", "developer_name"], "selected"=>$order_column]); ?>
+            </div>
+
+            <div class="col-2">
+                <?php render_input(["type"=>"select", "name"=>"order_games", "label"=>"Order games", "options"=>["asc", "desc"], "selected"=>$order_games]); ?>
+            </div>
+            
+            <div class="col-1">
+            <?php render_input(["type"=>"number", "name"=>"num_games", "label"=>"Limit", "value"=>$num_games, "rules"=>["min"=>1, "max"=>100]]); ?>
+            </div>
+
+            <div class="col-2">
+                <?php render_input(["type"=>"select", "name"=>"api_filter", "label"=>"Display manually inserted or api data", "options"=>["Both", "Api", "Manual"], "selected"=>$api_filter]); ?>
+            </div>
         </div>
+        
+    </div>
 
         <div class="row">
             <div class="col">
@@ -132,7 +168,9 @@
     <div class='row ms-3 me-3 d-flex align-items-start'>
 
         <?php foreach($results as $result): ?>
-
+            <?php if(empty($result["saved_games"])): ?>
+            <?php continue; ?>
+            <?php endif ?>
             <div class="card col-3 d-flex flex-column" style='flex: 1 1 calc(33.333% - 1rem); max-width: calc(33.333% - 1rem);'>
                 <div class="card-body">
                     <h5 class="card-title"><a href=<?php echo get_url("home.php") . "?" . "user_id=" . $result["id"]?> class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"><?php echo $result["username"]; ?></a></h5>
