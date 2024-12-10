@@ -1,5 +1,5 @@
 <?php 
-    function returnSearchResults($search, $tag_search, $num_records, $order_column, $order, $api_filter, &$total_records, $offset=0, $mode="all", $user_id = ""){
+    function returnSearchResults($search = "", $tag_search = "", $num_records = 10, $order_column = "game_name", $order = "asc", $api_filter = "Both", &$total_records = 0, $offset = 0, $mode = "all", $user_id = ""){
         if($num_records < 1 || $num_records > 100){
             $num_records = 10;
         }
@@ -21,15 +21,17 @@
             if(`gd`.`from_api`, 'true', 'false') as `from_api`
             from `Games_details` `gd` left join `ct` on `gd`.`game_id` = `ct`.`game_id` where 1";
 
+            echo $user_id;
+            echo $mode;
             $user_id = (empty($user_id))?get_user_id():$user_id;
-
+            // echo $user_id;
             if($mode === "saved"){
                 $query_games_details .= " and `gd`.`game_id` in (select `ga`.`game_id` from `Game_associations` `ga` where `ga`.`user_id` = $user_id)";
             }elseif($mode === "unsaved"){
                 $query_games_details .= " and `gd`.`game_id` not in (select `ga`.`game_id` from `Game_associations` `ga`)";
             }
             
-            if($search){//db624 it202-007 11/28/24
+            if(isset($search) && !empty($search)){//db624 it202-007 11/28/24
                 $query_games_details .= " and `gd`.`game_name` like '%$search%'";
             }
         
@@ -38,7 +40,7 @@
                 $query_games_details .= ($api_filter == "Manual")?"0":"1";
             }
         
-            if($tag_search){
+            if(isset($tag_search) && !empty($tag_search)){
                 $query_games_details .= " and exists (select 1 from `Game_tags` `gt` where `gd`.`game_id` = `gt`.`game_id` and `gt`.`tag` like '%$tag_search%')";
             }
             
