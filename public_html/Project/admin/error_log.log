@@ -6658,4 +6658,196 @@
     1 => 1064,
     2 => 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \')\' at line 1',
   ),
+))\PDOException::__set_state(array(
+   'message' => 'SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'DELIMITER\' at line 12',
+   'string' => '',
+   'code' => '42000',
+   'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/lib/db_helpers.php',
+   'line' => 253,
+   'trace' => 
+  array (
+    0 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/lib/db_helpers.php',
+      'line' => 253,
+      'function' => 'execute',
+      'class' => 'PDOStatement',
+      'type' => '->',
+      'args' => 
+      array (
+      ),
+    ),
+    1 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/assign_games.php',
+      'line' => 32,
+      'function' => 'exec_query',
+      'args' => 
+      array (
+        0 => 'CREATE TRIGGER check_and_delete_duplicate
+                            BEFORE INSERT ON `Game_associations`
+                            FOR EACH ROW
+                            BEGIN
+                                -- Check if a duplicate exists
+                                IF EXISTS (SELECT 1 FROM `Game_associations` WHERE `user_id` = NEW.`user_id` and `game_id` = NEW.`game_id`) THEN
+                                    -- If a duplicate exists, delete the original record
+                                    DELETE FROM `Game_associations` WHERE `user_id` = NEW.`user_id` and `game_id` = NEW.`game_id`;
+                                END IF;
+                            END$$
+
+                            DELIMITER ;',
+      ),
+    ),
+  ),
+   'previous' => NULL,
+   'errorInfo' => 
+  array (
+    0 => '42000',
+    1 => 1064,
+    2 => 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'DELIMITER\' at line 12',
+  ),
+))\PDOException::__set_state(array(
+   'message' => 'SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'DELIMITER\' at line 12',
+   'string' => '',
+   'code' => '42000',
+   'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/lib/db_helpers.php',
+   'line' => 253,
+   'trace' => 
+  array (
+    0 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/lib/db_helpers.php',
+      'line' => 253,
+      'function' => 'execute',
+      'class' => 'PDOStatement',
+      'type' => '->',
+      'args' => 
+      array (
+      ),
+    ),
+    1 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/assign_games.php',
+      'line' => 32,
+      'function' => 'exec_query',
+      'args' => 
+      array (
+        0 => 'CREATE TRIGGER check_and_delete_duplicate
+                            BEFORE INSERT ON `Game_associations`
+                            FOR EACH ROW
+                            BEGIN
+                                -- Check if a duplicate exists
+                                IF EXISTS (SELECT 1 FROM `Game_associations` WHERE `user_id` = NEW.`user_id` and `game_id` = NEW.`game_id`) THEN
+                                    -- If a duplicate exists, delete the original record
+                                    DELETE FROM `Game_associations` WHERE `user_id` = NEW.`user_id` and `game_id` = NEW.`game_id`;
+                                END IF;
+                            END$$
+
+                            DELIMITER ;',
+      ),
+    ),
+  ),
+   'previous' => NULL,
+   'errorInfo' => 
+  array (
+    0 => '42000',
+    1 => 1064,
+    2 => 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'DELIMITER\' at line 12',
+  ),
+))\PDOException::__set_state(array(
+   'message' => 'SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'DELIMITER\' at line 12',
+   'string' => '',
+   'code' => '42000',
+   'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/lib/db_helpers.php',
+   'line' => 253,
+   'trace' => 
+  array (
+    0 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/lib/db_helpers.php',
+      'line' => 253,
+      'function' => 'execute',
+      'class' => 'PDOStatement',
+      'type' => '->',
+      'args' => 
+      array (
+      ),
+    ),
+    1 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/assign_games.php',
+      'line' => 32,
+      'function' => 'exec_query',
+      'args' => 
+      array (
+        0 => 'CREATE TRIGGER check_and_delete_duplicate
+                            BEFORE INSERT ON `Game_associations`
+                            FOR EACH ROW
+                            BEGIN
+                                -- Check if a duplicate exists
+                                IF EXISTS (SELECT 1 FROM `Game_associations` WHERE `user_id` = NEW.`user_id` and `game_id` = NEW.`game_id`) THEN
+                                    -- If a duplicate exists, delete the original record
+                                    DELETE FROM `Game_associations` WHERE `user_id` = NEW.`user_id` and `game_id` = NEW.`game_id`;
+                                END IF;
+                            END$$
+
+                            DELIMITER ;',
+      ),
+    ),
+  ),
+   'previous' => NULL,
+   'errorInfo' => 
+  array (
+    0 => '42000',
+    1 => 1064,
+    2 => 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'DELIMITER\' at line 12',
+  ),
+))\PDOException::__set_state(array(
+   'message' => 'SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'DELIMITER\' at line 12',
+   'string' => '',
+   'code' => '42000',
+   'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/lib/db_helpers.php',
+   'line' => 253,
+   'trace' => 
+  array (
+    0 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/lib/db_helpers.php',
+      'line' => 253,
+      'function' => 'execute',
+      'class' => 'PDOStatement',
+      'type' => '->',
+      'args' => 
+      array (
+      ),
+    ),
+    1 => 
+    array (
+      'file' => '/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/assign_games.php',
+      'line' => 32,
+      'function' => 'exec_query',
+      'args' => 
+      array (
+        0 => 'CREATE TRIGGER check_and_delete_duplicate
+                            BEFORE INSERT ON `Game_associations`
+                            FOR EACH ROW
+                            BEGIN
+                                -- Check if a duplicate exists
+                                IF EXISTS (SELECT 1 FROM `Game_associations` WHERE `user_id` = NEW.`user_id` and `game_id` = NEW.`game_id`) THEN
+                                    -- If a duplicate exists, delete the original record
+                                    DELETE FROM `Game_associations` WHERE `user_id` = NEW.`user_id` and `game_id` = NEW.`game_id`;
+                                END IF;
+                            END$$
+
+                            DELIMITER ;',
+      ),
+    ),
+  ),
+   'previous' => NULL,
+   'errorInfo' => 
+  array (
+    0 => '42000',
+    1 => 1064,
+    2 => 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'DELIMITER\' at line 12',
+  ),
 ))
