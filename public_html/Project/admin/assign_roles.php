@@ -22,7 +22,8 @@ if (isset($_POST["users"]) && isset($_POST["roles"])) {
                     $stmt->execute([":uid" => $uid, ":rid" => $rid]);
                     flash("Updated role", "success");
                 } catch (PDOException $e) {
-                    flash(var_export($e->errorInfo, true), "danger");
+                    error_log(var_export($e->errorInfo, true), "danger");
+                    flash("A database error has occured", "danger", 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
                 }
             }
         }
@@ -40,7 +41,8 @@ try {
         $active_roles = $results;
     }
 } catch (PDOException $e) {
-    flash(var_export($e->errorInfo, true), "danger");
+    error_log(var_export($e->errorInfo, true), "danger");
+    flash("A database error has occured", "danger", 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
 }
 
 //search for user by username
@@ -60,7 +62,8 @@ if (isset($_POST["username"])) {
                 $users = $results;
             }
         } catch (PDOException $e) {
-            flash(var_export($e->errorInfo, true), "danger");
+            error_log(var_export($e->errorInfo, true), "danger");
+            flash("A database error has occured", "danger", 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
         }
     } else {
         flash("Username must not be empty", "warning");

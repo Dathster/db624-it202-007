@@ -16,7 +16,8 @@ if (isset($_POST["role_id"])) {
             $stmt->execute([":rid" => $role_id]);
             flash("Updated Role", "success");
         } catch (PDOException $e) {
-            flash(var_export($e->errorInfo, true), "danger");
+            error_log(var_export($e->errorInfo, true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
+            flash("A database error has occured", "danger");
         }
     }
 }
@@ -41,50 +42,12 @@ try {
         flash("No matches found", "warning");
     }
 } catch (PDOException $e) {
-    flash(var_export($e->errorInfo, true), "danger");
+    error_log(var_export($e->errorInfo, true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
+    flash("A database error has occured", "danger");
 }
 
 ?>
-<!-- <form method="POST">
-    <input type="search" name="role" placeholder="Role Filter" value="<?php se($_POST, "role");?>" />
-    <input type="submit" value="Search" />
-</form>
-<table>
-    <thead>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Active</th>
-        <th>Action</th>
-    </thead>
-    <tbody> -->
-        
-        <?php //if (empty($roles)) : ?>
-            <!-- <tr>
-                <td colspan="100%">No roles</td>
-            </tr> -->
-        <?php //else : ?>
-            <?php //foreach ($roles as $role) : ?>
-                <!-- <tr>
-                    <td><?php //se($role, "id"); ?></td>
-                    <td><?php //se($role, "name"); ?></td>
-                    <td><?php //se($role, "description"); ?></td>
-                    <td><?php //echo (se($role, "is_active", 0, false) ? "active" : "disabled"); ?></td>
-                    <td>
-                        <form method="POST">
-                            <input type="hidden" name="role_id" value="<?php //se($role, 'id'); ?>" />
-                            <?php //if (isset($search) && !empty($search)) : ?>
-                                <?php /* if this is part of a search, lets persist the search criteria so it reloads correctly*/ ?>
-                                <input type="hidden" name="role" value="<//?php se($search, null); ?>" />
-                            <?php //endif; ?>
-                            <input type="submit" value="Toggle" />
-                        </form>
-                    </td>
-                </tr> -->
-            <?php //endforeach; ?>
-        <?php //endif; ?>
-    </tbody>
-</table>
+
 
 <?php
 

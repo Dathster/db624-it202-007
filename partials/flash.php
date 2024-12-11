@@ -6,12 +6,38 @@
     <?php $messages = getMessages() ?>
     <?php if ($messages) : ?>
         <?php foreach ($messages as $msg) : ?>
-            <div class="row justify-content-center">
-                <div class="alert alert-<?php se($msg, 'color', 'info'); ?>" role="alert"><?php se($msg, "text", ""); ?></div>
+            <div class="row">
+                
+
+            <div class="toast-container position-fixed top-1 end-0">
+                <div id="liveToast" class="toast bg-<?php se($msg, 'color', 'info'); ?>" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header">
+                        <strong class="me-auto">Steamed Games</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body bg-<?php se($msg, 'color', 'info'); ?>">
+                        <?php se($msg, "text", ""); ?>
+                    </div>
+                </div>
             </div>
+
+
+
+
+
+
+            </div>
+
+
+   
+
+
         <?php endforeach; ?>
+
+
     <?php endif; ?>
 </div>
+
 <script>
     //used to pretend the flash messages are below the first nav element
     function moveMeUp(ele) {
@@ -22,6 +48,17 @@
     }
 
     moveMeUp(document.getElementById("flash"));
+
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+    const toastElements = document.querySelectorAll('.toast');
+    toastElements.forEach(toastEl => {
+        const toast = new bootstrap.Toast(toastEl); // Initialize toast
+        toast.show(); // Show toast
+    });
+});
+
 </script>
 <style>
     .alert-success {
@@ -40,3 +77,6 @@
         background-color: teal;
     }
 </style>
+
+
+

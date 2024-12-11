@@ -13,7 +13,7 @@
     }
 
     //Obtain user ID from session and game ID from URL query parameter
-    $user_id = get_user_id();
+    $user_id = se($_GET, "user_id", get_user_id(), false);
     $game_id = se($_GET, "game_id", -1, false);
 
     //Check if the game is saved or not (Assume not saved by default and try to save)
@@ -67,7 +67,20 @@
 
     unset($_GET["game_id"]);
     unset($_GET["saved"]);
-    $loc = get_url("games_view.php")."?" . http_build_query($_GET);
+    unset($_GET["user_id"]);
+    if (isset($_SERVER['HTTP_REFERER'])) {
+        $referrer = $_SERVER['HTTP_REFERER'];
+        // Parse the URL to extract components
+        $parsed_url = parse_url($referrer);
+    
+        // Reconstruct the base URL without query parameters
+        $base_url = $parsed_url['scheme'] . "://" . $parsed_url['host'] . (isset($parsed_url['path']) ? $parsed_url['path'] : '');
+    
+        $loc = $referrer;
+    } else {
+        $loc = get_url("games_view.php")."?" . http_build_query($_GET);
+    }
+    
     error_log("Location: $loc");
     die(header("Location: $loc"));
 

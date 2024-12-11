@@ -135,11 +135,11 @@
                     flash("Update successful", "success");
                 
                 } catch (PDOException $e) {
-                    error_log(var_export($e, true),true);
+                    error_log(var_export($e, true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
                     flash("An unexpected database error occured", "danger");
                     // echo var_export($e, true);
                 } catch(Exception $e){
-                    error_log(var_export($e, true),true);
+                    error_log(var_export($e, true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
                     flash("An unexpected error occured", "danger");
                     // echo var_export($e, true);
                 }
@@ -154,9 +154,9 @@
     $query_game_tags = "select `game_id`, group_concat(`tag`) as `tags` from `Game_tags` where `game_id` = $game_id group by `game_id`";
     $query_game_descriptions = "select * from `Game_descriptions` where `game_id` = $game_id";
 
-    $results_games_details = select($query_games_details);
-    $results_game_tags = select($query_game_tags);
-    $results_game_descriptions = select($query_game_descriptions);
+    $results_games_details = exec_query($query_games_details);
+    $results_game_tags = exec_query($query_game_tags);
+    $results_game_descriptions = exec_query($query_game_descriptions);
 
     $game_name = se($results_games_details[0], "game_name", "", false);
     $price = se($results_games_details[0], "price", "", false);

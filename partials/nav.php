@@ -30,17 +30,13 @@ session_start();
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-<!-- Embeds for font and css styling -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
-
 <link rel = "stylesheet" href = "<?php echo get_url('styles.css'); ?>">
 <script src = "<?php echo get_url("helpers.js"); ?>"></script> 
 
 
 <nav class="navbar navbar-expand-lg bg-primary">
     <ul class='navbar-nav ms-3'>
+        <span class="navbar-brand mb-0 h1">Steamed Games</span>
         <?php if (is_logged_in()) : ?>
             <li class='nav-item'><a class='nav-link' href="<?php echo get_url('home.php'); ?>">Home</a></li>
             <li class='nav-item'><a class='nav-link' href="<?php echo get_url('profile.php'); ?>">Profile</a></li>
@@ -59,6 +55,9 @@ session_start();
             <li><a class="dropdown-item" href="<?php echo get_url('admin/list_roles.php'); ?>">List Roles</a></li>
             <li><a class="dropdown-item" href="<?php echo get_url('admin/assign_roles.php'); ?>">Assign Roles</a></li>
             <li><a class="dropdown-item" href="<?php echo get_url('admin/game_fetch.php'); ?>">Fetch/Insert Games</a></li>
+            <li><a class="dropdown-item" href="<?php echo get_url('admin/unsaved_games.php'); ?>">Unsaved Games</a></li>
+            <li><a class="dropdown-item" href="<?php echo get_url('admin/saved_games.php'); ?>">Saved Games</a></li>
+            <li><a class="dropdown-item" href="<?php echo get_url('admin/assign_games.php'); ?>">Assign Games</a></li>
           </ul>
         <?php endif; ?>
         <?php if (is_logged_in()) : ?>

@@ -261,7 +261,7 @@
             <a class="switcher nav-link" href="#" onclick="switchTab('fetch')">Create</a>
         </li>
     </ul>
-    <div id="fetch" class="tab-target">
+    <div id="fetch" class="mt-3 tab-target">
         <form method="POST" > <!-- db624 it202-007 11/28/24 -->
             <?php render_input(["type" => "search", "name" => "game_name", "placeholder" => "Game name"]); ?>
             <?php render_input(["type" => "hidden", "name" => "action", "value" => "fetch_search"]); ?>
@@ -283,7 +283,7 @@
             
         <?php endif; ?>
     </div>
-    <div id="create" style="display: none;" class="tab-target"> <!-- db624 it202-007 11/28/24 -->
+    <div id="create" style="display: none;" class="mt-3 tab-target"> <!-- db624 it202-007 11/28/24 -->
         <form method="POST" onsubmit="return validate(this);">
             <?php render_input(["type" => "number", "name" => "game_id", "label" => "Game ID", "rules" => ["required" => "required"]]); ?>
             <?php render_input(["type" => "text", "name" => "name", "label" => "Name", "rules" => ["required" => "required", "maxlength"=>100]]); ?>
