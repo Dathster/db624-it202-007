@@ -26,7 +26,8 @@
                 if($e->errorInfo[1] === 1062){
                     flash("A role with this name already exists, please try another", "warning");
                 }else{
-                    flash(var_export($e->errorInfo,true), "danger");
+                    error_log(var_export($e->errorInfo, true), "danger");
+                    flash("A database error has occured", "danger", 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
                 }
             }
         }

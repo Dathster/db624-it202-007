@@ -54,6 +54,7 @@
                 flash("All games removed successfully", "success");
             }else{
                 flash("Removing games from selected users unsuccessful", "warning");
+                error_log(var_export($stmt));
             }
         }catch (PDOException $e){
             flash("A database error occured, please try again later", "danger");

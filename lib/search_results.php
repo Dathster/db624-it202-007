@@ -21,8 +21,7 @@
             if(`gd`.`from_api`, 'true', 'false') as `from_api`
             from `Games_details` `gd` left join `ct` on `gd`.`game_id` = `ct`.`game_id` where 1";
 
-            echo $user_id;
-            echo $mode;
+            
             $user_id = (empty($user_id))?get_user_id():$user_id;
             // echo $user_id;
             if($mode === "saved"){
