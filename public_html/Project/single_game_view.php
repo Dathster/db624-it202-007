@@ -74,15 +74,29 @@
 
 	$_edit_classes = "btn btn-warning";
 	$_delete_classes = "btn btn-danger";
+
+	if(is_logged_in()){
+		$user_id = get_user_id();
+		$query_game_associations = "select * from `Game_associations` where `user_id` = $user_id and `game_id` = $game_id";
+        $result_game_associations = exec_query($query_game_associations);
+		$_save_url = get_url("game_save.php");;
+		$_save_label = "Save";
+		$_save_classes = "btn btn-info";
+		$_query_string = se($_SERVER, "QUERY_STRING", "", false);
+		$_is_saved = (count($result_game_associations))?1:0;
+	}
 ?>
 
 <div class='container-fluid'>
 <h1 class='ms-3 me-3'>
 	<?php se($game_name); ?>
+	<?php if(is_logged_in()): ?>
+                <a href="<?php echo $_save_url; ?>?<?php echo "game_id"; ?>=<?php echo $game_id . "&saved=$_is_saved&$_query_string"; ?>" class="<?php se($_save_classes); ?>"><?php render_like(["value"=>$_is_saved]) ?></a>
+    <?php endif ?>
 </h1>
 
 	<?php if (!(empty($results_screenshots) || empty($results_videos))) : ?>
-		<div class="row ms-3 me-3">
+		<div class="row ms-1 me-1">
 			<ul class="nav nav-pills">
 				<li class="nav-item">
 					<a class="switcher nav-link active" href="#" onclick="switchTab('video')">Screenshots</a>
@@ -94,9 +108,9 @@
 		</div>
 
 	
-		<div class='row '>
-			<div class='col-8'>
-				<div id="screenshot" class="carousel slide tab-target">
+		<div class='ms-1 me-1 row'>
+			<!-- <div class='col-8 border'> -->
+				<div id="screenshot" class="col-8 carousel slide tab-target">
 					<div class="carousel-inner">
 						<div class="carousel-item active">
 							<img src="<?php echo $results_screenshots[0]["url"]?>" class="d-block w-100" alt="...">
@@ -121,7 +135,7 @@
 					<?php endif ?>
 				</div>
 			
-				<div id="video" class="carousel slide tab-target" style="display: none;">
+				<div id="video" class="col-8 carousel slide tab-target" style="display: none;">
 					<div class="carousel-inner">
 						<div class="carousel-item active">
 							<div class="ratio ratio-16x9">
@@ -159,7 +173,7 @@
 						<span class="visually-hidden">Next</span>
 					</button>
 				<?php endif ?>	
-			</div>
+			<!-- </div> -->
 
 		</div>
 	<?php endif ?>
@@ -193,7 +207,7 @@
 	</div>
 </div>
 
-<div class="row card ms-3 me-3 mb-3">
+<div class="row card ms-1 me-1 mb-3">
 	<h5 class="card-header">Tags</h5>
 	<div class='row mt-3'>
 		<?php foreach ($results_game_tags as $tag): ?>
@@ -206,7 +220,7 @@
 
 <div class="row mb-3">
 	<div class='col mt-3'>
-		<div class="card ms-2">
+		<div class="card ms-1">
 			<h5 class="card-header">Minimum Specs</h5>
 			<div class="card-body">
 				<?php foreach($results_min_requirements as $min): ?>
@@ -225,7 +239,7 @@
 	</div>
 
 	<div class='col mt-3'>
-		<div class="card me-2">
+		<div class="card me-1">
 			<h5 class="card-header">Recommended Specs</h5>
 			<div class="card-body">
 				<?php foreach($results_recom_requirements as $recom): ?>
@@ -244,7 +258,7 @@
 	</div>				
 </div>
 
-<div class="card ms-3 me-3 mb-3">
+<div class="card ms-1 me-1 mb-3">
   <div class="card-body">
     <h5 class="card-title">About Game</h5>
     <p class="card-text"><?php se($game_about); ?></p>
@@ -252,7 +266,7 @@
 </div>
 
 <?php if(has_role("Admin")): ?>
-	<div class="row card ms-3 me-3 mb-3"> 
+	<div class="row card ms-1 me-1 mb-3"> 
 		<div class="card-body">
 			<h5 class="card-title">
 				Admin functions

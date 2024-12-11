@@ -30,11 +30,11 @@ function validate_email(email){
 
 //Validate usernames
 function validate_username(usr){
-    re = new RegExp('^[a-z0-9_-]{3,16}$');
+    re = new RegExp('^[a-z0-9_-]{3,30}$');
     isValid = true;
     //Raise an error messsage if username doesn't follow rules
     if(!re.test(usr)){
-        flash("[Client]: Username must be between 3 and 16 characters long and can only contain a-z, 0-9, _, -","warning");
+        flash("[Client]: Username must be between 3 and 30 characters long and can only contain a-z, 0-9, _, -","warning");
         isValid = false;
     }
     return isValid;
