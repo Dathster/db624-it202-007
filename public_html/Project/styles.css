@@ -61,11 +61,7 @@ body {
     /* padding: 1rem; Ensure consistent internal spacing */
 }
 
-.toast img {
-    width: 10%; /* Scale the image relative to the toast width */
-    max-width: 50px; /* Cap the size for larger toasts */
-    height: auto; /* Maintain aspect ratio */
-}
+
 
 .toast .btn-close {
     transform: scale(1.2); /* Scale the close button slightly for larger toasts */
