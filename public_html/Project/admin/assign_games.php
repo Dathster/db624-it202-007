@@ -60,7 +60,8 @@ try {
         $games = $results;
     }
 } catch (PDOException $e) {
-    flash(var_export($e->errorInfo, true), "danger");
+    flash("A database error has occured", "danger");
+    error_log(var_export($e->errorInfo, true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");;
 }
 
 //search for user by username
@@ -79,7 +80,8 @@ if (true) {
                 $users = $results;
             }
         } catch (PDOException $e) {
-            flash(var_export($e->errorInfo, true), "danger");
+            flash("A database error has occured", "danger");
+            error_log(var_export($e->errorInfo, true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
         }
     } else {
         flash("Username must not be empty", "warning");

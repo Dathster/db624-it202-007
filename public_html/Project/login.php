@@ -52,7 +52,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
     //TODO 3
     $hasError = false;
     if (empty($email)) {
-        flash("Email/Username must not be empty");
+        flash("Email/Username must not be empty", "warning");
         $hasError = true;
     }
     
@@ -66,22 +66,22 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
             $hasError = true;
         }*/
         if (!is_valid_email($email)) {
-            flash("Invalid email address");
+            flash("Invalid email address", "warning");
             $hasError = true;
         }
     }else{
         if(!is_valid_username($email)){
-            flash("Invalid username");
+            flash("Invalid username", "warning");
             $hasError = true;
         }
     }
     
     if (empty($password)) {
-        flash("password must not be empty");
+        flash("password must not be empty", "warning");
         $hasError = true;
     }
     if (!is_valid_password($password)) {
-        flash("Password too short");
+        flash("Password too short", "warning");
         $hasError = true;
     }
     if (!$hasError) { //db624 it202-007 11/11/24
@@ -120,10 +120,10 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                         flash("Welcome, " . get_username());
                         die(header("Location: home.php"));
                     } else {
-                        flash("Invalid password");
+                        flash("Invalid password", "warning");
                     }
                 } else {
-                    flash("Email not found");
+                    flash("Email not found", "warning");
                 }
             }
         } catch (Exception $e) {

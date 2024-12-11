@@ -135,11 +135,11 @@
                     flash("Update successful", "success");
                 
                 } catch (PDOException $e) {
-                    error_log(var_export($e, true),true);
+                    error_log(var_export($e, true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
                     flash("An unexpected database error occured", "danger");
                     // echo var_export($e, true);
                 } catch(Exception $e){
-                    error_log(var_export($e, true),true);
+                    error_log(var_export($e, true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
                     flash("An unexpected error occured", "danger");
                     // echo var_export($e, true);
                 }
