@@ -160,3 +160,9 @@ if(`gd`.`from_api`, 'true', 'false') as `from_api`
 
         update `Game_descriptions` set `description` = '$description',
         `about` = '$about' where `game_id` = 1
+
+
+
+
+
+        select * from `Games_details` as `gd`, `Game

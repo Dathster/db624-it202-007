@@ -96,7 +96,7 @@ function insert($table_name, $data, $opts = ["debug" => false, "update_duplicate
     $db = getDB(); // Assume getDB is a function that returns your PDO instance
     $stmt = $db->prepare($query);
     if ($is_debug) {
-        error_log("Query: " . $query);
+        error_log("Query: " . $query, 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
     }
 
     try {
@@ -244,7 +244,7 @@ if (php_sapi_name() == "cli") {
     test_insert();
 }
 
-function select($query){
+function exec_query($query){
     
     $db = getDB();
     $stmt = $db->prepare($query);
@@ -255,11 +255,11 @@ function select($query){
         return $r;
         // echo "result: " . var_export($r);
     } catch (PDOException $e) {
-        error_log(var_export($e, true),true);
+        error_log(var_export($e, true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
         flash("An unexpected database error occured", "danger");
         return [];
     } catch(Exception $e){
-        error_log(var_export($e, true),true);
+        error_log(var_export($e, true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
         flash("An unexpected error occured", "danger");
         return [];
     }
@@ -301,7 +301,7 @@ function update_data($table, $id,  $data, $ignore = ["id", "submit"])
         $stmt->execute($params);
         return true;
     } catch (PDOException $e) {
-        error_log(var_export($e->errorInfo, true));
+        error_log(var_export($e->errorInfo), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
         flash("Error updating table", "danger");
         return false;
     }

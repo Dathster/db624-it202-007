@@ -1,6 +1,6 @@
 <?php require(__DIR__ . "/../../../partials/nav.php");?>
 
-<?php
+<?php //db624 it202-007 11/28/24
     if (!has_role("Admin")) {
         flash("You don't have permission to view this page", "warning");
         die(header("Location: $BASE_PATH" . "/home.php"));
@@ -14,7 +14,7 @@
     $game_id = se($_GET, "game_id", -1, false);
 
     if(isset($_POST["action"])){
-
+        //db624 it202-007 11/28/24
         $update = true;
         
         if(empty($_POST["name"])){
@@ -64,7 +64,7 @@
                 flash("Franchise name must be maximum 50 characters long", "warning");
                 $update = False;
             }
-            if(!validateDateFormat($release_date)){
+            if(!validateDateFormat($release_date)){//db624 it202-007 11/28/24
                 flash("Date must follow yyyy-mm-dd format", "warning");
                 $insert = False;
             }
@@ -135,11 +135,11 @@
                     flash("Update successful", "success");
                 
                 } catch (PDOException $e) {
-                    error_log(var_export($e, true),true);
+                    error_log(var_export($e, true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
                     flash("An unexpected database error occured", "danger");
                     // echo var_export($e, true);
                 } catch(Exception $e){
-                    error_log(var_export($e, true),true);
+                    error_log(var_export($e, true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
                     flash("An unexpected error occured", "danger");
                     // echo var_export($e, true);
                 }
@@ -154,9 +154,9 @@
     $query_game_tags = "select `game_id`, group_concat(`tag`) as `tags` from `Game_tags` where `game_id` = $game_id group by `game_id`";
     $query_game_descriptions = "select * from `Game_descriptions` where `game_id` = $game_id";
 
-    $results_games_details = select($query_games_details);
-    $results_game_tags = select($query_game_tags);
-    $results_game_descriptions = select($query_game_descriptions);
+    $results_games_details = exec_query($query_games_details);
+    $results_game_tags = exec_query($query_game_tags);
+    $results_game_descriptions = exec_query($query_game_descriptions);
 
     $game_name = se($results_games_details[0], "game_name", "", false);
     $price = se($results_games_details[0], "price", "", false);
@@ -172,11 +172,11 @@
 ?>
 
 <div class='container-fluid'>
-    <h1>Edit Game Details</h1>  
+    <h1>Edit Game Details</h1>  <!-- db624 it202-007 11/28/24 -->
 
     <form method="POST" onsubmit="return validate(this);">
         <?php render_input(["type" => "text", "name" => "name", "value"=>$game_name, "label" => "Name", "rules" => ["required" => "required", "maxlength"=>100]]); ?>
-        <?php render_input(["type" => "number", "name" => "price", "value"=>$price, "label" => "Price", "rules" => ["required" => "required", "pattern"=>"\d{1,}\.\d\d"]]); ?>
+        <?php render_input(["type" => "text", "name" => "price", "value"=>$price, "label" => "Price", "rules" => ["required" => "required", "pattern"=>"\d{1,}\.\d\d"]]); ?>
         <?php render_input(["type" => "date", "name" => "release_date", "value"=>$release_date, "label" => "Release Date", "rules" => ["required" => "required"]]); ?>
         <?php render_input(["type" => "text", "name" => "dev_name", "value"=>$developer_name, "label" => "Developer Name", "rules" => ["required" => "required", "maxlength"=>50]]); ?>
         <?php render_input(["type" => "text", "name" => "publisher_name", "value"=>$publisher_name, "label" => "Publisher Name", "rules"=>["maxlength"=>50]]); ?>
@@ -195,8 +195,7 @@
 </div>
 
 <script>
-    function validate(form) {
-        let game_id = form.game_id.value;
+    function validate(form) {//db624 it202-007 11/28/24
         let name = form.name.value;
         let price = form.price.value;
         let release_date = form.release_date.value;
@@ -207,16 +206,13 @@
         let description = form.description.value;
         let about = form.about.value;
         let isValid = true;
+        
+        console.log(developer_name);
 
-        let gameIdPattern = /^\d+$/;
         let pricePattern = /^\d{1,7}\.\d\d$/;
         let datePattern = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
         let tagsPattern = /^([^,\s][^,]*,)*[^,\s][^,]*$/;
 
-        if(!game_id){
-            flash("[Client]: Game ID cannot be empty", "warning");
-            isValid = false;
-        }
         if(!name){
             flash("[Client]: Game Name cannot be empty", "warning");
             isValid = false;
@@ -254,15 +250,11 @@
             flash("[Client]: Description must be at most 1,000 characters long", "warning");
             isValid = false;
         }
-        if(about.length && about.length> 60000){
+        if(about.length && about.length> 60000){//db624 it202-007 11/28/24
             flash("[Client]: About field must be at most 60,0000 characters long", "warning");
             isValid = false;
         }
 
-        if(game_id && !gameIdPattern.test(game_id)){
-            flash("[Client]: Game ID must be a positive integer", "warning");
-            isValid = false;
-        }
         if(price && !pricePattern.test(price)){
             flash("[Client]: Price must be in d.dd format, at most 9 digits long, and be positive", "warning");
             isValid = false;

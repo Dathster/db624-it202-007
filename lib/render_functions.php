@@ -18,3 +18,7 @@ function render_table($data = array())
 function render_card($data = array()){
     include(__DIR__ . "/../partials/game_card.php");
 }
+
+function render_like($data = array()){
+    include(__DIR__ . "/../partials/like.php");
+}

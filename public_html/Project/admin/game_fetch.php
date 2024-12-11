@@ -22,7 +22,7 @@
     }
 
     if (isset($_POST["id"]) && !empty($_POST["id"])){
-        $game_id = $_POST["id"];
+        $game_id = $_POST["id"];//db624 it202-007 11/28/24
         
         $result = fetch_gameDetails($game_id);
 
@@ -41,22 +41,22 @@
             // Check if the error is a duplicate entry error
             if ($e->getCode() == 23000) {
                 flash("Duplicate entry detected: Please try a different game", "danger");
-                error_log(var_export($e->getMessage(),true));
+                error_log(var_export($e->getMessage(),true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
             } else {
                 // Handle other PDO exceptions
                 flash("A database error occured, please try again later","danger");
-                error_log(var_export($e->getMessage(),true));
+                error_log(var_export($e->getMessage(),true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
                 // echo var_export($e->getMessage(),true);
                 
             }
             $insert_rest = false;
         }catch (Exception $e){
             flash("An unknown error has occured, please try again later","danger");
-            error_log(var_export($e->getMessage(),true));
+            error_log(var_export($e->getMessage(),true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
             $insert_rest = false;
         }
 
-        if($insert_rest){
+        if($insert_rest){ //db624 it202-007 11/28/24
             try{
                 $a = insert('Game_media', $media);
     
@@ -71,24 +71,24 @@
                 // Check if the error is a duplicate entry error
                 if ($e->getCode() == 23000) {
                     flash("Duplicate entry detected: Please try a different game", "danger");
-                    error_log(var_export($e->getMessage(),true));
+                    error_log(var_export($e->getMessage(),true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
                 } else {
                     // Handle other PDO exceptions
                     flash("A database error occured, please try again later","danger");
-                    error_log(var_export($e->getMessage(),true));
+                    error_log(var_export($e->getMessage(),true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
                     // echo var_export($e->getMessage(),true);
                     
                 }
             }catch (Exception $e){
                 flash("An unknown error has occured, please try again later","danger");
-                error_log(var_export($e->getMessage(),true));
+                error_log(var_export($e->getMessage(),true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
             }
         }
     }
 
     if(isset($_POST["action3"])){
         $insert = True;
-        if(empty($_POST["game_id"])){
+        if(empty($_POST["game_id"])){ //db624 it202-007 11/28/24
             flash("Game ID field must not be empty", "warning");
             $insert = False;
         }
@@ -125,11 +125,11 @@
             $gamesDetailsdata= [];
             $gameTagsdata = [];
         
-            if(!validate_numbers($id) || $input % 1 == 0){
+            if(!validate_numbers($id)   ){
                 flash("Game ID must be a positive integer", "warning");
                 $insert = False;
             }
-            if(strlen($name)>100){
+            if(strlen($name)>100){  //db624 it202-007 11/28/24
                 flash("Game name must be maximum 100 characters long", "warning");
                 $insert = False;
             }
@@ -176,7 +176,7 @@
                 $tags = explode(",", $tags);
             }
 
-            $data = [
+            $data = [//db624 it202-007 11/28/24
                 "game_id"=>$id,
                 "game_name"=>$name,
                 "price"=>$price,
@@ -196,7 +196,7 @@
             $gameDescriptionData[] = ["game_id"=>$id, "description"=>$description, "about"=>$about];
             $insert_rest = false;
             try{
-                if($insert){
+                if($insert){//db624 it202-007 11/28/24
                     $a = insert('Games_details', $data);
                     if($tags){
                         $a = insert('Game_tags', $gameTagsdata);
@@ -219,7 +219,7 @@
             }
 
             if($insert_rest){
-                try{
+                try{//db624 it202-007 11/28/24
                     if($insert){
                         if($tags){
                             $a = insert('Game_tags', $gameTagsdata);
@@ -261,8 +261,8 @@
             <a class="switcher nav-link" href="#" onclick="switchTab('fetch')">Create</a>
         </li>
     </ul>
-    <div id="fetch" class="tab-target">
-        <form method="POST" >
+    <div id="fetch" class="mt-3 tab-target">
+        <form method="POST" > <!-- db624 it202-007 11/28/24 -->
             <?php render_input(["type" => "search", "name" => "game_name", "placeholder" => "Game name"]); ?>
             <?php render_input(["type" => "hidden", "name" => "action", "value" => "fetch_search"]); ?>
             <?php render_button(["text" => "Find game", "type" => "submit",]); ?>
@@ -283,11 +283,11 @@
             
         <?php endif; ?>
     </div>
-    <div id="create" style="display: none;" class="tab-target"> <!-- db624 it202-007 11/28/24 -->
+    <div id="create" style="display: none;" class="mt-3 tab-target"> <!-- db624 it202-007 11/28/24 -->
         <form method="POST" onsubmit="return validate(this);">
             <?php render_input(["type" => "number", "name" => "game_id", "label" => "Game ID", "rules" => ["required" => "required"]]); ?>
             <?php render_input(["type" => "text", "name" => "name", "label" => "Name", "rules" => ["required" => "required", "maxlength"=>100]]); ?>
-            <?php render_input(["type" => "number", "name" => "price", "label" => "Price", "rules" => ["required" => "required", "pattern"=>"\d{1,}\.\d\d"]]); ?>
+            <?php render_input(["type" => "text", "name" => "price", "label" => "Price", "rules" => ["required" => "required", "pattern"=>"\d{1,}\.\d\d"]]); ?>
             <?php render_input(["type" => "date", "name" => "release_date", "label" => "Release Date", "rules" => ["required" => "required"]]); ?>
             <?php render_input(["type" => "text", "name" => "dev_name", "label" => "Developer Name", "rules" => ["required" => "required", "maxlength"=>50]]); ?>
             <?php render_input(["type" => "text", "name" => "publisher_name", "label" => "Publisher Name", "rules"=>["maxlength"=>50]]); ?>
@@ -323,7 +323,7 @@
 
 <script>
     function validate(form) {
-        let game_id = form.game_id.value;
+        let game_id = form.game_id.value; //db624 it202-007 11/28/24
         let name = form.name.value;
         let price = form.price.value;
         let release_date = form.release_date.value;
@@ -331,6 +331,8 @@
         let publisher_name = form.publisher_name.value;
         let franchise_name = form.franchise_name.value;
         let tags = form.tags.value;
+        let description = form.description.value;
+        let about = form.about.value;
         let isValid = true;
 
         let gameIdPattern = /^\d+$/;
@@ -363,16 +365,24 @@
             flash("[Client]: Game name must be at most 100 characters long", "warning");
             isValid = false;
         }
-        if(developer_name.length > 100){
-            flash("[Client]: Game name must be at most 100 characters long", "warning");
+        if(developer_name.length > 50){ //db624 it202-007 11/28/24
+            flash("[Client]: Developer name must be at most 100 characters long", "warning");
             isValid = false;
         }
-        if(publisher_name && publisher_name.length > 100){
-            flash("[Client]: Game name must be at most 100 characters long", "warning");
+        if(publisher_name && publisher_name.length > 50){
+            flash("[Client]: Publisher name must be at most 100 characters long", "warning");
             isValid = false;
         }
-        if(franchise_name.length && franchise_name.length> 100){
-            flash("[Client]: Game name must be at most 100 characters long", "warning");
+        if(franchise_name.length && franchise_name.length> 50){
+            flash("[Client]: Franchise name must be at most 100 characters long", "warning");
+            isValid = false;
+        }
+        if(description.length && description.length> 1000){
+            flash("[Client]: Description must be at most 1,000 characters long", "warning");
+            isValid = false;
+        }
+        if(about.length && about.length> 60000){
+            flash("[Client]: About field must be at most 60,0000 characters long", "warning");
             isValid = false;
         }
 
