@@ -12,18 +12,18 @@
         $_GET = [];
     }
     unset($_GET["reset"]);
-
+    //db624 it202-007 12/11/24
     $query_total_saved_games = 'select distinct `game_id` from `Game_associations`';
     $total_saved_games = potentialTotalRecords($query_total_saved_games);
 
     $num_records = se($_GET, "num_records", 10, false);
     $order_users = se($_GET,"order_users", "asc", false);
     $user_filter = (isset($_GET["user_filter"]))?se($_GET,"user_filter","",false):"";
-    echo $num_records;
+
     $total = 0;
     $page = (isset($_GET["page"]))?$_GET["page"]-1:0;
 
-
+    //db624 it202 12/11/24
     $query_user_filter = "select `username`, `id` from `Users` where `username` like '%$user_filter%'";
     $total = potentialTotalRecords($query_user_filter);
     $offset=$page * $num_records;
@@ -68,17 +68,19 @@
     }
 
 
-
+    $total_games = 0;
+    returnSearchResults($game_search, $tag_search, $num_games, $order_column, $order_games, $api_filter, $total_games, 0, "game_filter_count");
+    //db624 it202 12/11/24
     foreach($result_user_filter as $user){
         $user_id = $user["id"];
 
-        // $query_user_saved_games = "select `gd`.`game_name`, `gd`.`game_id` from `Games_details` `gd`
-        //                             where `gd`.`game_id` in (select `ga`.`game_id` from `Game_associations` `ga`
-        //                                                     where `ga`.`user_id` = $user_id)";
-        // $result_user_saved_games = exec_query($query_user_saved_games);
         $num_saved = 0;
         $result_user_saved_games = returnSearchResults($game_search, $tag_search, $num_games, $order_column, $order_games, $api_filter, $num_saved, 0, "saved", $user_id);
+        if(empty($result_user_saved_games)){
+            continue;
+        }
         $user["saved_games"] = $result_user_saved_games;
+        
         $results[] = $user;
     }
 
@@ -165,7 +167,8 @@
     </div>
 
     <hr class='mt-3 mb-3'>
-    <h4>Number of users meeting search criteria: <?php echo $total ?></h4>    
+    <h4>Number of users meeting search criteria: <?php echo $total; ?></h4>
+    <h4>Number of games meeting search criteria: <?php echo $total_games; ?></h4>      
     <div class='row ms-3 me-3 d-flex align-items-start'>
 
         <?php foreach($results as $result): ?>
@@ -173,14 +176,10 @@
             <?php continue; ?>
             <?php endif ?>
             <div class="card col-3 d-flex flex-column" style='flex: 1 1 calc(33.333% - 1rem); max-width: calc(33.333% - 1rem);'>
-                <div class="card-body">
-                    <h5 class="card-title"><a href=<?php echo get_url("home.php") . "?" . "user_id=" . $result["id"]?> class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"><?php echo $result["username"]; ?></a></h5>
+                <div class="card-body"> <!-- db624 it202 12/11/24 -->
+                    <h5 class="card-title"><a href=<?php echo get_url("home.php") . "?" . "user_id=" . $result["id"]?> class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                        <?php echo $result["username"]; ?></a></h5>
                     <hr>
-
-
-                    <?php if(!empty($result["saved_games"])): ?>
-                    
-
                         <p class='ms-3'>Saved games:</p>
                         <ul class="list-group list-group-flush bordered-list" style="max-height: 200px; overflow-y: auto;">
                             <?php foreach($result["saved_games"] as $game): ?>
@@ -190,28 +189,18 @@
                                         $game_id = $game["game_id"];
                                         $game_name = $game["game_name"];
                                     ?>
-                                    <?php echo $game_name; ?>
+                                    <?php echo $game_name; ?><!-- db624 it202 12/11/24 -->
                                     <div class='col'>
-                                    <a href="<?php echo $_view_url; ?>?<?php echo "game_id"; ?>=<?php echo $game_id; ?>" class="<?php se($_view_classes); ?>"><?php se($_view_label); ?></a>
-                                    <a href="<?php echo $_remove_url; ?>?<?php echo "game_id"; ?>=<?php echo $game_id . "&saved=1&user_id=$user_id&$_query_string"; ?>" class="<?php echo $_remove_classes ?>"><?php echo $_remove_label ?></a>
+                                    <a href="<?php echo $_view_url; ?>?<?php echo "game_id"; ?>=<?php echo $game_id; ?>" class="<?php se($_view_classes); ?>">
+                                        <?php se($_view_label); ?></a>
+                                    <a href="<?php echo $_remove_url; ?>?<?php echo "game_id"; ?>=<?php echo $game_id . "&saved=1&user_id=$user_id&$_query_string"; ?>" class="<?php echo $_remove_classes ?>">
+                                        <?php echo $_remove_label ?></a>
                                     </div>
                                 </li>
                             <?php endforeach ?>
                         </ul>
-                        
-                    <?php else: ?>
-                        <p> No games have been saved by this user </p>
-                    <?php endif ?>
-
-
-
-
-
+                    
                 </div>
-                
-                
-                
-            
             </div>
 
         <?php endforeach ?>
