@@ -2,36 +2,19 @@
 /*put this at the bottom of the page so any templates
  populate the flash variable and then display at the proper timing*/
 ?>
-<div class="container" id="flash">
+<div class="container toast-container position-fixed top-1 end-0 me-3" id="flash">
     <?php $messages = getMessages() ?>
     <?php if ($messages) : ?>
-        <?php foreach ($messages as $msg) : ?>
-            <div class="row">
-                
-
-            <div class="toast-container position-fixed top-1 end-0">
-                <div id="liveToast" class="toast bg-<?php se($msg, 'color', 'info'); ?>" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="toast-header">
-                        <strong class="me-auto">Steamed Games</strong>
-                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        <?php foreach ($messages as $msg) : ?>                
+                    <div style = "margin-bottom: 2px" id="liveToast" class="toast bg-<?php se($msg, 'color', 'info'); ?>" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="toast-header">
+                            <strong class="me-auto">Steamed Games</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body bg-<?php se($msg, 'color', 'info'); ?>">
+                            <?php se($msg, "text", ""); ?>
+                        </div>
                     </div>
-                    <div class="toast-body bg-<?php se($msg, 'color', 'info'); ?>">
-                        <?php se($msg, "text", ""); ?>
-                    </div>
-                </div>
-            </div>
-
-
-
-
-
-
-            </div>
-
-
-   
-
-
         <?php endforeach; ?>
 
 

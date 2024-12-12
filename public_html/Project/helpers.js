@@ -15,6 +15,7 @@ function flash(message = "", color = "info") {
     toast.setAttribute('role', 'alert');
     toast.setAttribute('aria-live', 'assertive');
     toast.setAttribute('aria-atomic', 'true');
+    toast.style = "margin-bottom: 2px";
 
     // Create the toast header
     let toastHeader = document.createElement("div");
@@ -41,10 +42,10 @@ function flash(message = "", color = "info") {
     toast.appendChild(toastHeader);
     toast.appendChild(toastBody);
     toastContainer.appendChild(toast);
-    outerDiv.appendChild(toastContainer);
+    outerDiv.appendChild(toast);
 
     // Add the toast to the DOM
-    flash.appendChild(outerDiv);
+    flash.appendChild(toast);
 
     // Initialize the toast with the correct options
     const toastInstance = new bootstrap.Toast(toast, {
@@ -56,7 +57,7 @@ function flash(message = "", color = "info") {
 
     // Optional: Remove the toast container after it's hidden
     toast.addEventListener("hidden.bs.toast", () => {
-        outerDiv.remove();
+        toast.remove();
     });
 }
 

@@ -72,7 +72,7 @@ body {
 .toast {
     width: 600px; /* Set a fixed or flexible width */
     min-width: 400px; /* Minimum width to maintain usability */
-    max-width: 90%; /* Allow flexibility for smaller screens */
+    max-width: 100%; /* Allow flexibility for smaller screens */
     /* padding: 1rem; Use relative units */
     font-size: 1rem; /* Base font size */
 }
