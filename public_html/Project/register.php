@@ -69,40 +69,40 @@ if (isset($_POST["email"]) && isset($_POST["username"]) && isset($_POST["passwor
     //TODO 3
     $hasError = false;
     if (empty($email)) {
-        flash("Email must not be empty", "danger");
+        flash("Email must not be empty", "warning");
         $hasError = true;
     }
     if(empty($username)){
-        flash("Username must not be empty", "danger");
+        flash("Username must not be empty", "warning");
         $hasError = true;
     }
     //sanitize
     $email = sanitize_email($email);
     //validate
     if (!is_valid_email($email)) {
-        flash("Invalid email address", "danger");
+        flash("Invalid email address", "warning");
         $hasError = true;
     }
     if (!is_valid_username($username)) {
-        flash("Username must only contain 3-16 characters a-z, 0-9, _, or -", "danger");
+        flash("Username must only contain 3-30 characters a-z, 0-9, _, or -", "warning");
         $hasError = true;
     }
     if (empty($password)) {
-        flash("password must not be empty", "danger");
+        flash("password must not be empty", "warning");
         $hasError = true;
     }
     if (empty($confirm)) {
-        flash("Confirm password must not be empty", "danger");
+        flash("Confirm password must not be empty", "warning");
         $hasError = true;
     }
     if (!is_valid_password($password)) {
-        flash("Password too short", "danger");
+        flash("Password too short", "warning");
         $hasError = true;
     }
     if (
         strlen($password) > 0 && $password !== $confirm
     ) {
-        flash("Passwords must match", "danger");
+        flash("Passwords must match", "warning");
         $hasError = true;
     }
     //db624 it202-007 11/11/24

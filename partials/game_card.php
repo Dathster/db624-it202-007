@@ -8,7 +8,7 @@
         $_view_label = "View";
         $_edit_label = "Edit";
         $_delete_label = "Delete";
-        $_save_label = "Save";
+        $_save_label = "Save";//db624 it202 12/11/24
         
 
         $_view_classes = se($data, "view_classes", "btn btn-primary", false);
@@ -35,7 +35,7 @@
             <?php 
                 echo "From API: ".$data["from_api"];
             ?>
-            <?php if(!empty($_save_url)): ?>
+            <?php if(!empty($_save_url)): ?> <!-- db624 it202 12/11/24 -->
                 <a href="<?php echo $_save_url; ?>?<?php echo "game_id"; ?>=<?php echo $_game_id . "&saved=$_is_saved&$_query_string"; ?>" class="<?php se($_save_classes); ?>"><?php render_like(["value"=>$_is_saved]) ?></a>
             <?php endif ?>
         </div>
@@ -73,7 +73,7 @@
                 <p class="card-text"><?php se($_about); ?></p>
             <?php endif ?>
             
-            <div class="card-footer mt-3">
+            <div class="card-footer mt-3"> <!-- db624 it202 12/11/24 -->
                 <ul class="list-group list-group-flush">
                     <div class="row">
                         <div class="col-3">

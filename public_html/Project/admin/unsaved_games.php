@@ -21,7 +21,7 @@ if (!has_role("Admin")) {
     if(isset($_GET["reset"])){
         $_GET = [];
     }
-
+    //db624 it202-007 12/11/24
     $search = (isset($_GET["game_search"]))?se($_GET,"game_search","",false):NULL;
     $tag_search = (isset($_GET["tag_filter"]))?se($_GET,"tag_filter","",false):NULL;
     $num_records = (isset($_GET["num_records"]) && !empty($_GET["num_records"]))?$_GET["num_records"]:10;
@@ -32,9 +32,9 @@ if (!has_role("Admin")) {
     
     $total=0;
     $offset=$page * $num_records;
-    //echo $offset . " " . $num_records;
+
     $results = returnSearchResults($search, $tag_search, $num_records, $order_column, $order, $api_filter, $total, $offset, "unsaved");
-    //echo $total;
+
 
     $query_num_unsaved_games = "select count(`game_id`) as `ct` from `Games_details` where `game_id` not in (select `ga`.`game_id` from `Game_associations` `ga`)";
     $num_unsaved_games = exec_query($query_num_unsaved_games)[0]["ct"];
@@ -92,7 +92,7 @@ if (!has_role("Admin")) {
     <div class="row d-flex" >
             <?php foreach ($results as $games): ?>
                 <div class="col-3" style='flex: 1 1 calc(33.333% - 1rem); max-width: calc(33.333% - 1rem);'>
-                    <?php render_card($games); ?> <!-- db624 it202-007 11/28/24 -->
+                    <?php render_card($games); ?> <!-- db624 it202-007 12/11/24 -->
                 </div>
             <?php endforeach; ?>
     </div>

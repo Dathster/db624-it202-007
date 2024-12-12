@@ -13,9 +13,7 @@ if (isset($_POST["users"]) && isset($_POST["games"])) {
     if (empty($user_ids) || empty($game_ids)) {
         flash("Both users and roles need to be selected", "warning");
     } else {
-        // echo var_export($user_ids) . "<br><br>";
-        // echo var_export($game_ids) . "<br><br>";
-
+        //db624 it202 12/11/24
         try{
             foreach($user_ids as $user){
                 foreach($game_ids as $game){
@@ -41,7 +39,7 @@ if (isset($_POST["users"]) && isset($_POST["games"])) {
     }
 }
 
-//get active roles
+//get matched games db624 it202 12/11/24
 $games = [];
 $game_name = "";
 $db = getDB();
@@ -64,29 +62,26 @@ try {
     error_log(var_export($e->errorInfo, true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");;
 }
 
-//search for user by username
+//search for user by username db624 it202 12/11/24
 $users = [];
 $username = "";
-if (true) {
-    $username = se($_POST, "username", "", false);
-    if (true) {
-        $db = getDB();
-        $stmt = $db->prepare("SELECT Users.id, username
-        from Users WHERE username like :username");
-        try {
-            $stmt->execute([":username" => "%$username%"]);
-            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            if ($results) {
-                $users = $results;
-            }
-        } catch (PDOException $e) {
-            flash("A database error has occured", "danger");
-            error_log(var_export($e->errorInfo, true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
-        }
-    } else {
-        flash("Username must not be empty", "warning");
+
+$username = se($_POST, "username", "", false);
+
+$db = getDB();
+$stmt = $db->prepare("SELECT Users.id, username
+from Users WHERE username like :username limit 25");
+try {
+    $stmt->execute([":username" => "%$username%"]);
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    if ($results) {
+        $users = $results;
     }
+} catch (PDOException $e) {
+    flash("A database error has occured", "danger");
+    error_log(var_export($e->errorInfo, true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
 }
+
 
 
 ?>
@@ -94,11 +89,11 @@ if (true) {
 <div class="container-fluid">
     <h1>Assign Games</h1>
     <form method="POST">
-        <?php render_input(["type" => "search", "name" => "username", "placeholder" => "Username Search", "value" => $username]);/*lazy value to check if form submitted, not ideal*/ ?>
-        <?php render_input(["type" => "search", "name" => "game_name", "placeholder" => "Game Search", "value" => $game_name]);/*lazy value to check if form submitted, not ideal*/ ?>
+        <?php render_input(["type" => "search", "name" => "username", "placeholder" => "Username Search", "value" => $username]);/*db624 it202 12/11/24*/ ?>
+        <?php render_input(["type" => "search", "name" => "game_name", "placeholder" => "Game Search", "value" => $game_name]); ?>
         <?php render_button(["text" => "Search", "type" => "submit"]); ?>
     </form>
-    <form method="POST">
+    <form method="POST"> <!-- db624 it202 12/11/24 -->
         <?php if (isset($username) && !empty($username)) : ?>
             <input type="hidden" name="username" value="<?php se($username, false); ?>" />
         <?php endif; ?>

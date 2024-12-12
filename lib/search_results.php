@@ -3,7 +3,7 @@
         if($num_records < 1 || $num_records > 100){
             $num_records = 10;
         }
-
+        //db624 it202 12/11/24
 
         $query_games_details = 
             "with `ct` as (
@@ -43,7 +43,7 @@
                 $query_games_details .= " and exists (select 1 from `Game_tags` `gt` where `gd`.`game_id` = `gt`.`game_id` and `gt`.`tag` like '%$tag_search%')";
             }
             
-            //Get total number results for pagination
+            //Get total number results for pagination db624 it202 12/11/24
             $total_records = potentialTotalRecords($query_games_details, $mode);
             
             $query_games_details .= " order by `gd`.`$order_column` $order limit $offset, $num_records";
@@ -87,7 +87,7 @@
                     }
                     if(is_logged_in() && ($mode!=="unsaved")){
                          //Check if the game has been saved by the user by getting their user ID and game ID and checking game associations table
-                        //$user_id = get_user_id();
+                        //$user_id = get_user_id(); db624 it202 12/11/24
                         $query_game_associations = "select * from `Game_associations` where `user_id` = $user_id and `game_id` = $game_id";
                         $result_game_associations = exec_query($query_game_associations);
                         if($mode === "saved" && !count($result_game_associations)){
@@ -111,7 +111,7 @@
                     
                 unset($record);
         
-                
+                    
             }  
             return $results;
     }
@@ -119,6 +119,6 @@
     function potentialTotalRecords($query){
         $results = exec_query($query);
         return count($results);
-    }
+    }//db624 it202 12/11/24
 ?>
 

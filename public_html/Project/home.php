@@ -18,7 +18,7 @@ if (is_logged_in(true)) {
         $user_id = get_user_id();
     }
     
-    if(isset($_GET["remove_all"])){
+    if(isset($_GET["remove_all"])){//db624 it202 12/11/24
         $query_remove_all_game_associations = "delete from `Game_associations` where `user_id` = $user_id";
         $db = getDB();
         $stmt = $db->prepare($query_remove_all_game_associations);
@@ -53,7 +53,7 @@ if (is_logged_in(true)) {
     $results = returnSearchResults($search, $tag_search, $num_records, $order_column, $order, $api_filter, $total, $offset, "saved", $user_id);
     
     //echo $total;
-
+    //db624 it202 12/11/24
     $query_num_saved_games = "select count(*) as `ct` from `Game_associations` where `user_id`=$user_id";
     $num_saved_games = exec_query($query_num_saved_games)[0]["ct"];
 ?>
@@ -108,7 +108,7 @@ if (is_logged_in(true)) {
         </form>
     </div>
     <div class="col-3">
-        <form method="GET">
+        <form method="GET"> <!-- db624 it202 12/11/24 -->
             <?php render_input(["type"=>"hidden", "name"=>"remove_all", "value"=>"1"]); ?>
             <?php render_button(["text" => "Remove all", "type" => "submit", "color"=>"danger"]); ?>
         </form>
