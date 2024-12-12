@@ -19,7 +19,7 @@
     $num_records = se($_GET, "num_records", 10, false);
     $order_users = se($_GET,"order_users", "asc", false);
     $user_filter = (isset($_GET["user_filter"]))?se($_GET,"user_filter","",false):"";
-    echo $num_records;
+
     $total = 0;
     $page = (isset($_GET["page"]))?$_GET["page"]-1:0;
 

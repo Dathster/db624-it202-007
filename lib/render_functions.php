@@ -15,7 +15,7 @@ function render_table($data = array())
     include(__DIR__ . "/../partials/table.php");
 }
 
-function render_card($data = array()){
+function render_card($data = array()){ //db624 it202 12/11/24
     include(__DIR__ . "/../partials/game_card.php");
 }
 

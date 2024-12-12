@@ -3,7 +3,7 @@
 
     session_start();
 
-    //Check if the user is logged in and redirect otherwise
+    //Check if the user is logged in and redirect otherwise db624 it202 12/11/24
     is_logged_in($redirect = true);
 
     //Check if game id is set in url, else redirect to games view page 
@@ -34,7 +34,7 @@
                 }else{
                     flash("Game not saved to profile due to an unknown error", "warning");
                 }
-            }else{
+            }else{//db624 it202 12/11/24
                 $query = "delete from `Game_associations` where `user_id` = $user_id and `game_id` = $game_id"; 
                 $stmt = $db->prepare($query);
                 $stmt->execute();
@@ -73,7 +73,7 @@
         // Parse the URL to extract components
         $parsed_url = parse_url($referrer);
     
-        // Reconstruct the base URL without query parameters
+        // Reconstruct the base URL without query parameters db624 it202 12/11/24
         $base_url = $parsed_url['scheme'] . "://" . $parsed_url['host'] . (isset($parsed_url['path']) ? $parsed_url['path'] : '');
     
         $loc = $referrer;
