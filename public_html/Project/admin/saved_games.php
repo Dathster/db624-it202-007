@@ -23,7 +23,7 @@
     $total = 0;
     $page = (isset($_GET["page"]))?$_GET["page"]-1:0;
 
-
+    //db624 it202 12/11/24
     $query_user_filter = "select `username`, `id` from `Users` where `username` like '%$user_filter%'";
     $total = potentialTotalRecords($query_user_filter);
     $offset=$page * $num_records;
@@ -70,7 +70,7 @@
 
     $total_games = 0;
     returnSearchResults($game_search, $tag_search, $num_games, $order_column, $order_games, $api_filter, $total_games, 0, "game_filter_count");
-
+    //db624 it202 12/11/24
     foreach($result_user_filter as $user){
         $user_id = $user["id"];
 
@@ -176,14 +176,10 @@
             <?php continue; ?>
             <?php endif ?>
             <div class="card col-3 d-flex flex-column" style='flex: 1 1 calc(33.333% - 1rem); max-width: calc(33.333% - 1rem);'>
-                <div class="card-body">
-                    <h5 class="card-title"><a href=<?php echo get_url("home.php") . "?" . "user_id=" . $result["id"]?> class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"><?php echo $result["username"]; ?></a></h5>
+                <div class="card-body"> <!-- db624 it202 12/11/24 -->
+                    <h5 class="card-title"><a href=<?php echo get_url("home.php") . "?" . "user_id=" . $result["id"]?> class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
+                        <?php echo $result["username"]; ?></a></h5>
                     <hr>
-
-
-                    
-                    
-
                         <p class='ms-3'>Saved games:</p>
                         <ul class="list-group list-group-flush bordered-list" style="max-height: 200px; overflow-y: auto;">
                             <?php foreach($result["saved_games"] as $game): ?>
@@ -193,25 +189,18 @@
                                         $game_id = $game["game_id"];
                                         $game_name = $game["game_name"];
                                     ?>
-                                    <?php echo $game_name; ?>
+                                    <?php echo $game_name; ?><!-- db624 it202 12/11/24 -->
                                     <div class='col'>
-                                    <a href="<?php echo $_view_url; ?>?<?php echo "game_id"; ?>=<?php echo $game_id; ?>" class="<?php se($_view_classes); ?>"><?php se($_view_label); ?></a>
-                                    <a href="<?php echo $_remove_url; ?>?<?php echo "game_id"; ?>=<?php echo $game_id . "&saved=1&user_id=$user_id&$_query_string"; ?>" class="<?php echo $_remove_classes ?>"><?php echo $_remove_label ?></a>
+                                    <a href="<?php echo $_view_url; ?>?<?php echo "game_id"; ?>=<?php echo $game_id; ?>" class="<?php se($_view_classes); ?>">
+                                        <?php se($_view_label); ?></a>
+                                    <a href="<?php echo $_remove_url; ?>?<?php echo "game_id"; ?>=<?php echo $game_id . "&saved=1&user_id=$user_id&$_query_string"; ?>" class="<?php echo $_remove_classes ?>">
+                                        <?php echo $_remove_label ?></a>
                                     </div>
                                 </li>
                             <?php endforeach ?>
                         </ul>
-                        
                     
-
-
-
-
                 </div>
-                
-                
-                
-            
             </div>
 
         <?php endforeach ?>
