@@ -24,7 +24,12 @@
             
             $user_id = (empty($user_id))?get_user_id():$user_id;
             // echo $user_id;
-            if($mode === "saved"){
+            
+            if($mode === "game_filter_count"){
+                $query_games_details .= " and `gd`.`game_id` in (select `ga`.`game_id` from `Game_associations` `ga`)";
+                
+            }
+            elseif($mode === "saved"){
                 $query_games_details .= " and `gd`.`game_id` in (select `ga`.`game_id` from `Game_associations` `ga` where `ga`.`user_id` = $user_id)";
             }elseif($mode === "unsaved"){
                 $query_games_details .= " and `gd`.`game_id` not in (select `ga`.`game_id` from `Game_associations` `ga`)";
@@ -32,19 +37,22 @@
             
             if(isset($search) && !empty($search)){//db624 it202-007 11/28/24
                 $query_games_details .= " and `gd`.`game_name` like '%$search%'";
+                
             }
-        
+            
             if($api_filter != "Both"){
                 $query_games_details .= " and `gd`.`from_api` = ";
                 $query_games_details .= ($api_filter == "Manual")?"0":"1";
+                
             }
-        
+            
             if(isset($tag_search) && !empty($tag_search)){
                 $query_games_details .= " and exists (select 1 from `Game_tags` `gt` where `gd`.`game_id` = `gt`.`game_id` and `gt`.`tag` like '%$tag_search%')";
             }
             
             //Get total number results for pagination db624 it202 12/11/24
-            $total_records = potentialTotalRecords($query_games_details, $mode);
+            
+            $total_records = potentialTotalRecords($query_games_details);
             
             $query_games_details .= " order by `gd`.`$order_column` $order limit $offset, $num_records";
         
