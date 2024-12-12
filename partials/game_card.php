@@ -36,7 +36,9 @@
                 echo "From API: ".$data["from_api"];
             ?>
             <?php if(!empty($_save_url)): ?> <!-- db624 it202 12/11/24 -->
-                <a href="<?php echo $_save_url; ?>?<?php echo "game_id"; ?>=<?php echo $_game_id . "&saved=$_is_saved&$_query_string"; ?>" class="<?php se($_save_classes); ?>"><?php render_like(["value"=>$_is_saved]) ?></a>
+                <a href="<?php echo $_save_url; ?>?<?php echo "game_id"; ?>=<?php echo $_game_id . "&saved=$_is_saved&$_query_string"; ?>" class="<?php se($_save_classes); ?>">
+                    <?php render_like(["value"=>$_is_saved]) ?>
+                </a>
             <?php endif ?>
         </div>
         <?php if (count($data["screenshots"])): ?>
