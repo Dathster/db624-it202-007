@@ -39,50 +39,61 @@
     $api_filter = (isset($_GET["api_filter"]))?$_GET["api_filter"]:"Both";
 
     if(isset($_GET["remove_all"])){
-        $user_ids = [];
-        foreach($result_user_filter as $user){
-            $user_ids[] = $user["id"];
-        }
-        $users_string = implode(",", $user_ids);
-
-        $query_remove_games = "delete from `Game_associations` `ga` where `ga`.`user_id` in ($users_string)";
-        $db = getDB();
-        $stmt = $db->prepare($query_remove_games);
-        try{
-            $stmt->execute();
-            if($stmt->rowCount()>0){
-                flash("All games removed successfully", "success");
-            }else{
-                flash("Removing games from selected users unsuccessful", "warning");
-                error_log(var_export($stmt));
+        // $user_ids = [];
+        // foreach($result_user_filter as $user){
+        //     $user_ids[] = $user["id"];
+        // }
+        // $users_string = implode(",", $user_ids);
+        $users_str = se($_GET, "remove", "", false);
+        if(empty($users_str)){
+            flash("No users found meeting filter criteria to remove games from", "warning");
+        }else{
+            $query_remove_games = "delete from `Game_associations` `ga` where `ga`.`user_id` in ($users_str)";
+            $db = getDB();
+            $stmt = $db->prepare($query_remove_games);
+            try{
+                $stmt->execute();
+                if($stmt->rowCount()>0){
+                    flash("All games removed successfully", "success");
+                }else{
+                    flash("Removing games from selected users unsuccessful", "warning");
+                    error_log(var_export($stmt));
+                }
+            }catch (PDOException $e){
+                flash("A database error occured, please try again later", "danger");
+                error_log(var_export($e, true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
+            }catch (Exception $e){
+                flash("An unknown error has occured", "danger");
+                error_log(var_export($e, true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
             }
-        }catch (PDOException $e){
-            flash("A database error occured, please try again later", "danger");
-            error_log(var_export($e, true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
-        }catch (Exception $e){
-            flash("An unknown error has occured", "danger");
-            error_log(var_export($e, true), 3, "/Users/datha/Documents/IT202_Github/db624-it202-007/public_html/Project/admin/error_log.log");
         }
+        
 
         unset($_GET["remove_all"]);
+        unset($_GET["remove"]);
     }
 
 
     $total_games = 0;
     returnSearchResults($game_search, $tag_search, $num_games, $order_column, $order_games, $api_filter, $total_games, 0, "game_filter_count");
+    $users_string = "";
     //db624 it202 12/11/24
-    foreach($result_user_filter as $user){
+    foreach($result_user_filter as $key => $user){
         $user_id = $user["id"];
-
+        
         $num_saved = 0;
         $result_user_saved_games = returnSearchResults($game_search, $tag_search, $num_games, $order_column, $order_games, $api_filter, $num_saved, 0, "saved", $user_id);
         if(empty($result_user_saved_games)){
+            unset($result_user_filter[$key]);
             continue;
         }
+        $users_string .= $user_id . ",";
         $user["saved_games"] = $result_user_saved_games;
         
         $results[] = $user;
     }
+    $total = count($result_user_filter);
+    $users_string = rtrim($users_string, ",");
 
     $_query_string=se($_SERVER, "QUERY_STRING", "", false);
 
@@ -162,6 +173,7 @@
     <div class="col-3">
         <form method="GET">
             <?php render_input(["type"=>"hidden", "name"=>"remove_all", "value"=>"1"]); ?>
+            <?php render_input(["type"=>"hidden", "name"=>"remove", "value"=>$users_string]); ?>
             <?php render_button(["text" => "Remove all", "type" => "submit", "color"=>"danger"]); ?>
         </form>
     </div>
