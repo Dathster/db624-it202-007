@@ -12,7 +12,7 @@
         $_GET = [];
     }
     unset($_GET["reset"]);
-
+    //db624 it202-007 12/11/24
     $query_total_saved_games = 'select distinct `game_id` from `Game_associations`';
     $total_saved_games = potentialTotalRecords($query_total_saved_games);
 
@@ -68,17 +68,19 @@
     }
 
 
+    $total_games = 0;
+    returnSearchResults($game_search, $tag_search, $num_games, $order_column, $order_games, $api_filter, $total_games, 0, "game_filter_count");
 
     foreach($result_user_filter as $user){
         $user_id = $user["id"];
 
-        // $query_user_saved_games = "select `gd`.`game_name`, `gd`.`game_id` from `Games_details` `gd`
-        //                             where `gd`.`game_id` in (select `ga`.`game_id` from `Game_associations` `ga`
-        //                                                     where `ga`.`user_id` = $user_id)";
-        // $result_user_saved_games = exec_query($query_user_saved_games);
         $num_saved = 0;
         $result_user_saved_games = returnSearchResults($game_search, $tag_search, $num_games, $order_column, $order_games, $api_filter, $num_saved, 0, "saved", $user_id);
+        if(empty($result_user_saved_games)){
+            continue;
+        }
         $user["saved_games"] = $result_user_saved_games;
+        
         $results[] = $user;
     }
 
@@ -165,7 +167,8 @@
     </div>
 
     <hr class='mt-3 mb-3'>
-    <h4>Number of users meeting search criteria: <?php echo $total ?></h4>    
+    <h4>Number of users meeting search criteria: <?php echo $total; ?></h4>
+    <h4>Number of games meeting search criteria: <?php echo $total_games; ?></h4>      
     <div class='row ms-3 me-3 d-flex align-items-start'>
 
         <?php foreach($results as $result): ?>
@@ -178,7 +181,7 @@
                     <hr>
 
 
-                    <?php if(!empty($result["saved_games"])): ?>
+                    
                     
 
                         <p class='ms-3'>Saved games:</p>
@@ -199,10 +202,7 @@
                             <?php endforeach ?>
                         </ul>
                         
-                    <?php else: ?>
-                        <p> No games have been saved by this user </p>
-                    <?php endif ?>
-
+                    
 
 
 
